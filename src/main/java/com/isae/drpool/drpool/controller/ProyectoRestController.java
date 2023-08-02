@@ -118,6 +118,7 @@ public class ProyectoRestController {
 	public String ingresarProyecto(@RequestBody List<Agrupaciones> agrupaciones,
 			@PathVariable(value = "proyecto") String nombreProyecto,
 			@PathVariable(value = "tipoproyecto") String tipoProyecto) {
+		System.out.println("Tipo de proyecto: " + tipoProyecto);
 		String respuesta = "";
 		List<String> agrupacionesAux = new ArrayList<String>();
 		List<String> catalogosAIngresar = new ArrayList<String>();
@@ -150,10 +151,12 @@ public class ProyectoRestController {
 			agrupacionesAux.add(elemento.getAgrupacion().toUpperCase());
 		}
 		catalogosAIngresar.removeAll(listaTipo);
+		List<String> listaAEliminar = new ArrayList<String>();
 		for (Agrupacion agrupacion : agrupacionesAlmacenadas) {
-
-			agrupacionesAux.remove(agrupacion.getAgrupacion().toUpperCase());
-
+			listaAEliminar.add(agrupacion.getAgrupacion().toUpperCase());
+		}
+		if(!listaAEliminar.isEmpty()) {
+			agrupacionesAux.removeAll(listaAEliminar);
 		}
 
 		int ultimoId = 0;
