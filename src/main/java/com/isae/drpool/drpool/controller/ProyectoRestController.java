@@ -9,8 +9,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -177,6 +179,8 @@ public class ProyectoRestController {
 		}
 
 		if (!agrupacionesAIngresar.isEmpty()) {
+			//Comprobar que las agrupaciones no se repitan
+			eliminarAgrupacionesRepetidas(agrupacionesAIngresar);
 			this.agrupaciones.saveAll(agrupacionesAIngresar);
 		}
 
@@ -198,6 +202,20 @@ public class ProyectoRestController {
 
 		return respuesta;
 	}
+	
+	public static void eliminarAgrupacionesRepetidas(List<Agrupacion> lista) {
+        Set<String> nombresVistos = new HashSet<>();
+        List<Agrupacion> agrupacionesEliminar = new ArrayList<>();
+
+        for (Agrupacion agrupacion : lista) {
+            String nombreAgrupacion = agrupacion.getAgrupacion();
+            if (!nombresVistos.add(nombreAgrupacion)) {
+                agrupacionesEliminar.add(agrupacion);
+            }
+        }
+
+        lista.removeAll(agrupacionesEliminar);
+    }
 
 	@CrossOrigin(origins = "*")
 	@GetMapping("/obtener/proyectos")
