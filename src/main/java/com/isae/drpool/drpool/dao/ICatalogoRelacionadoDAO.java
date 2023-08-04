@@ -16,13 +16,13 @@ import com.isae.drpool.drpool.entity.VistaCatalogoRelacionado;
 @Repository
 public interface ICatalogoRelacionadoDAO extends JpaRepository<VistaCatalogoRelacionado,Integer>{
 
-	@Query("SELECT NEW com.isae.web.entity.VistaCatalogoRelacionado(vista.id, vista.tipoPadre, vista.catalogoPadre, vista.tipoHijo, vista.catalogoHijo, vista.idproyecto) FROM VistaCatalogoRelacionado as vista WHERE vista.tipoHijo =?1 AND vista.catalogoPadre =?2 AND vista.idproyecto =?3")
+	@Query("SELECT NEW com.isae.drpool.drpool.entity.VistaCatalogoRelacionado(vista.id, vista.tipoPadre, vista.catalogoPadre, vista.tipoHijo, vista.catalogoHijo, vista.idproyecto) FROM VistaCatalogoRelacionado as vista WHERE vista.tipoHijo =?1 AND vista.catalogoPadre =?2 AND vista.idproyecto =?3")
 	List<VistaCatalogoRelacionado> obtenerCatalogosRelacionados( String tipoHijo, String catalogoPadre, int idproyecto);
 	
-	@Query("SELECT NEW com.isae.web.entity.VistaCatalogoRelacionado(vista.id, vista.tipoPadre, vista.catalogoPadre, vista.tipoHijo, vista.catalogoHijo, vista.idproyecto) FROM VistaCatalogoRelacionado as vista WHERE vista.tipoPadre =?1 AND vista.catalogoPadre =?2 AND vista.idproyecto =?3 ")
+	@Query("SELECT NEW com.isae.drpool.drpool.entity.VistaCatalogoRelacionado(vista.id, vista.tipoPadre, vista.catalogoPadre, vista.tipoHijo, vista.catalogoHijo, vista.idproyecto) FROM VistaCatalogoRelacionado as vista WHERE vista.tipoPadre =?1 AND vista.catalogoPadre =?2 AND vista.idproyecto =?3 ")
 	List<VistaCatalogoRelacionado> obtenerCatalogoRelacionado(String tipoCatalogoPadre, String catalogoPadre, int idproyecto);
 	
-	@Query("SELECT NEW com.isae.web.entity.VistaCatalogoRelacionado(vista.id, vista.tipoPadre, vista.catalogoPadre, vista.tipoHijo, vista.catalogoHijo, vista.idproyecto) FROM VistaCatalogoRelacionado as vista WHERE vista.idproyecto =?1")
+	@Query("SELECT NEW com.isae.drpool.drpool.entity.VistaCatalogoRelacionado(vista.id, vista.tipoPadre, vista.catalogoPadre, vista.tipoHijo, vista.catalogoHijo, vista.idproyecto) FROM VistaCatalogoRelacionado as vista WHERE vista.idproyecto =?1")
 	List<VistaCatalogoRelacionado> obtenerCatalogosRelacionadosPorProyecto(int idproyecto);
 	
 	@Modifying
