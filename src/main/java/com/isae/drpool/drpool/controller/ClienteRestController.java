@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,7 +76,33 @@ public class ClienteRestController {
 		
 		List<Integer> listaBites = gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType());
 		
-		System.out.println(listaBites);
+		nuevoCliente.setEstatus("ACTIVO");
+		try {
+			if ( !listaBites.isEmpty() ) {
+				byte[] imagenClienteByte = new byte[listaBites.size()];
+				int i = 0;
+				for(int element : listaBites ) {
+					imagenClienteByte[i] = (byte) element;
+					i++;
+				}
+				File archivoImagen = File.createTempFile(nuevoCliente.getCliente(), ".png");
+				FileUtils.writeByteArrayToFile(archivoImagen, imagenClienteByte);
+				String urlImagen = guardarEvidencia(nuevoCliente, archivoImagen);
+				nuevoCliente.setUrllogo(urlImagen);
+				System.out.println(nuevoCliente);
+				this.cliente.save(nuevoCliente);
+				respuesta = "Cliente Guardado";
+			}else {
+				nuevoCliente.setUrllogo("");
+				System.out.println(nuevoCliente);
+				this.cliente.save(nuevoCliente);
+				respuesta = "Cliente Guardado";
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 		return respuesta;
 	}
 	
@@ -93,7 +120,7 @@ public String guardarEvidencia(Cliente cliente, File file) {
 
 			if (file != null) {
 				String objectName = "Clientes/" + cliente.getIdcliente() + "-"
-						+ cliente.getCliente().toUpperCase() + "/" + cliente.getCliente();
+						+ cliente.getCliente().toUpperCase() + "/" + cliente.getCliente() + ".png";
 
 				Map<String, String> map = new HashMap<>();
 				map.put("firebaseStorageDownloadTokens", cliente.getCliente().replace(" ", "") + ".png");
