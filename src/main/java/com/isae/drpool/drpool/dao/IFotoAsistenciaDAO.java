@@ -18,10 +18,10 @@ import com.isae.drpool.drpool.entity.Fotosasistencia;
 @Repository
 public interface IFotoAsistenciaDAO extends JpaRepository<Fotosasistencia,Integer>{
 
-	@Query(value="SELECT MAX(idinventario) FROM inventario" , nativeQuery = true)
+	@Query(value="SELECT COALESCE MAX(idinventario), 0) FROM inventario" , nativeQuery = true)
 	int obtenerUltimoId();
 	
-	@Query(value="SELECT MAX(idfoto) FROM fotosasistencia" , nativeQuery = true)
+	@Query(value="SELECT COALESCE( MAX(idfoto), 0) FROM fotosasistencia" , nativeQuery = true)
 	int obtenerUltimoIdFoto();
 	
 	@Procedure(procedureName = "proc_registrar_entrada" )

@@ -172,7 +172,7 @@ public class Alberca {
 		return tipoequipo;
 	}
 
-
+	
 	public void setTipoequipo(String tipoequipo) {
 		this.tipoequipo = tipoequipo;
 	}
