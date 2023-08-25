@@ -12,18 +12,30 @@ import javax.persistence.Table;
 @Entity
 @Table (name="sede")
 @NamedQuery (name="Sede.findAll", query="SELECT s FROM Sede s")
-
 public class Sede {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idsede;
 	private String nombre;
-	private String direccion;
+	
+	@OneToOne
+	@JoinColumn(name="iddireccion")
+	private DireccionSede direccion;
+	
 	private String encargado;
 	private String telefono;
 	private String correo;
 	private String estatus;
+	
+	@OneToOne
+	@JoinColumn(name="coordinador")
+	private Usuario coordinador;
+	
+	@OneToOne
+	@JoinColumn(name="operador")
+	private Usuario operador;
+	
 	@OneToOne
 	@JoinColumn(name="idcliente")
 	private Cliente cliente;
@@ -32,8 +44,8 @@ public class Sede {
 		super();
 	}
 
-	public Sede(int idsede, String nombre, String direccion, String encargado, String telefono, String correo,
-			String estatus, Cliente cliente) {
+	public Sede(int idsede, String nombre, DireccionSede direccion, String encargado, String telefono, String correo,
+			String estatus, Usuario coordinador, Usuario operador, Cliente cliente) {
 		super();
 		this.idsede = idsede;
 		this.nombre = nombre;
@@ -42,6 +54,8 @@ public class Sede {
 		this.telefono = telefono;
 		this.correo = correo;
 		this.estatus = estatus;
+		this.coordinador = coordinador;
+		this.operador = operador;
 		this.cliente = cliente;
 	}
 
@@ -61,11 +75,11 @@ public class Sede {
 		this.nombre = nombre;
 	}
 
-	public String getDireccion() {
+	public DireccionSede getDireccion() {
 		return direccion;
 	}
 
-	public void setDireccion(String direccion) {
+	public void setDireccion(DireccionSede direccion) {
 		this.direccion = direccion;
 	}
 
@@ -101,6 +115,22 @@ public class Sede {
 		this.estatus = estatus;
 	}
 
+	public Usuario getCoordinador() {
+		return coordinador;
+	}
+
+	public void setCoordinador(Usuario coordinador) {
+		this.coordinador = coordinador;
+	}
+
+	public Usuario getOperador() {
+		return operador;
+	}
+
+	public void setOperador(Usuario operador) {
+		this.operador = operador;
+	}
+
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -112,8 +142,8 @@ public class Sede {
 	@Override
 	public String toString() {
 		return "Sede [idsede=" + idsede + ", nombre=" + nombre + ", direccion=" + direccion + ", encargado=" + encargado
-				+ ", telefono=" + telefono + ", correo=" + correo + ", estatus=" + estatus + ", cliente=" + cliente
-				+ "]";
+				+ ", telefono=" + telefono + ", correo=" + correo + ", estatus=" + estatus + ", coordinador="
+				+ coordinador + ", operador=" + operador + ", cliente=" + cliente + "]";
 	}
 	
 }
