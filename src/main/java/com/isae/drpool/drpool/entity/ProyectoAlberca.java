@@ -9,6 +9,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.google.cloud.Date;
+
 @Entity
 @Table(name="proyectoalberca")
 @NamedQuery(name="ProyectoAlberca.findAll", query="SELECT p FROM ProyectoAlberca p")
@@ -23,7 +25,8 @@ public class ProyectoAlberca {
 	@JoinColumn(name="idalberca")
 	private Alberca alberca;
 	private String tiposervicio;
-	private String instrumentosmedicion;
+	private String fechainiciocontrato;
+	private String fechafincontrato;
 	private String estatus;
 	
 	public ProyectoAlberca() {
@@ -31,13 +34,14 @@ public class ProyectoAlberca {
 	}
 
 	public ProyectoAlberca(int idproyectoalberca, String nombreproyectoalberca, Alberca alberca, String tiposervicio,
-			String instrumentosmedicion, String estatus) {
+			String fechainiciocontrato, String fechafincontrato, String estatus) {
 		super();
 		this.idproyectoalberca = idproyectoalberca;
 		this.nombreproyectoalberca = nombreproyectoalberca;
 		this.alberca = alberca;
 		this.tiposervicio = tiposervicio;
-		this.instrumentosmedicion = instrumentosmedicion;
+		this.fechainiciocontrato = fechainiciocontrato;
+		this.fechafincontrato = fechafincontrato;
 		this.estatus = estatus;
 	}
 
@@ -73,12 +77,20 @@ public class ProyectoAlberca {
 		this.tiposervicio = tiposervicio;
 	}
 
-	public String getInstrumentosmedicion() {
-		return instrumentosmedicion;
+	public String getFechainiciocontrato() {
+		return fechainiciocontrato;
 	}
 
-	public void setInstrumentosmedicion(String instrumentosmedicion) {
-		this.instrumentosmedicion = instrumentosmedicion;
+	public void setFechainiciocontrato(String fechainiciocontrato) {
+		this.fechainiciocontrato = fechainiciocontrato;
+	}
+
+	public String getFechafincontrato() {
+		return fechafincontrato;
+	}
+
+	public void setFechafincontrato(String fechafincontrato) {
+		this.fechafincontrato = fechafincontrato;
 	}
 
 	public String getEstatus() {
@@ -93,8 +105,9 @@ public class ProyectoAlberca {
 	public String toString() {
 		return "ProyectoAlberca [idproyectoalberca=" + idproyectoalberca + ", nombreproyectoalberca="
 				+ nombreproyectoalberca + ", alberca=" + alberca + ", tiposervicio=" + tiposervicio
-				+ ", instrumentosmedicion=" + instrumentosmedicion + ", estatus=" + estatus + "]";
+				+ ", fechainiciocontrato=" + fechainiciocontrato + ", fechafincontrato=" + fechafincontrato
+				+ ", estatus=" + estatus + "]";
 	}
 
-		
+	
 }
