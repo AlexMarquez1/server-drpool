@@ -29,6 +29,7 @@ public class SedeRestController {
 	@PostMapping("/nueva/sede")
 	public String nuevaSede(@RequestBody Sede sede) {
 		String respuesta = "se guardo correctamente";
+		System.out.println(sede);
 		this.sede.save(sede);
 		return respuesta;
 	}

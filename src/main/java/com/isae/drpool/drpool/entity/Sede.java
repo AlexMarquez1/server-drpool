@@ -1,5 +1,6 @@
 package com.isae.drpool.drpool.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,11 +20,11 @@ public class Sede {
 	private int idsede;
 	private String nombre;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="iddireccion")
 	private DireccionSede direccion;
 	
-	private String encargado;
+	private String encargadosede;
 	private String telefono;
 	private String correo;
 	private String estatus;
@@ -44,13 +45,13 @@ public class Sede {
 		super();
 	}
 
-	public Sede(int idsede, String nombre, DireccionSede direccion, String encargado, String telefono, String correo,
-			String estatus, Usuario coordinador, Usuario operador, Cliente cliente) {
+	public Sede(int idsede, String nombre, DireccionSede direccion, String encargadosede, String telefono,
+			String correo, String estatus, Usuario coordinador, Usuario operador, Cliente cliente) {
 		super();
 		this.idsede = idsede;
 		this.nombre = nombre;
 		this.direccion = direccion;
-		this.encargado = encargado;
+		this.encargadosede = encargadosede;
 		this.telefono = telefono;
 		this.correo = correo;
 		this.estatus = estatus;
@@ -83,12 +84,12 @@ public class Sede {
 		this.direccion = direccion;
 	}
 
-	public String getEncargado() {
-		return encargado;
+	public String getEncargadosede() {
+		return encargadosede;
 	}
 
-	public void setEncargado(String encargado) {
-		this.encargado = encargado;
+	public void setEncargadosede(String encargadosede) {
+		this.encargadosede = encargadosede;
 	}
 
 	public String getTelefono() {
@@ -141,9 +142,9 @@ public class Sede {
 
 	@Override
 	public String toString() {
-		return "Sede [idsede=" + idsede + ", nombre=" + nombre + ", direccion=" + direccion + ", encargado=" + encargado
-				+ ", telefono=" + telefono + ", correo=" + correo + ", estatus=" + estatus + ", coordinador="
-				+ coordinador + ", operador=" + operador + ", cliente=" + cliente + "]";
+		return "Sede [idsede=" + idsede + ", nombre=" + nombre + ", direccion=" + direccion + ", encargadosede="
+				+ encargadosede + ", telefono=" + telefono + ", correo=" + correo + ", estatus=" + estatus
+				+ ", coordinador=" + coordinador + ", operador=" + operador + ", cliente=" + cliente + "]";
 	}
-	
+
 }
