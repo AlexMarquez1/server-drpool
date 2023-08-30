@@ -104,6 +104,14 @@ public class ProyectoAlberca {
 		this.estatus = estatus;
 	}
 
+	public List<ProyectoSede> getProyectoSedes() {
+		return proyectoSedes;
+	}
+
+	public void setProyectoSedes(List<ProyectoSede> proyectoSedes) {
+		this.proyectoSedes = proyectoSedes;
+	}
+
 	@Override
 	public String toString() {
 		return "ProyectoAlberca [idproyectoalberca=" + idproyectoalberca + ", nombreproyectoalberca="
