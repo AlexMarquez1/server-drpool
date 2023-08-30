@@ -44,6 +44,12 @@ public class Sede {
 	public Sede() {
 		super();
 	}
+	
+
+	public Sede(int idsede) {
+		super();
+		this.idsede = idsede;
+	}
 
 	public Sede(int idsede, String nombre, DireccionSede direccion, String encargadosede, String telefono,
 			String correo, String estatus, Usuario coordinador, Usuario operador, Cliente cliente) {
