@@ -1,5 +1,6 @@
 package com.isae.drpool.drpool.controller;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,14 @@ public class ProyectoAlbercaRestController {
 	@PostMapping("/nuevo/proyectoalberca")
 	public String nuevoProyectoAlberca(@RequestBody ProyectoAlberca proyectoAlberca) {
 		String respuesta = "se guardo correctamente el proyecto";
+		List<ProyectoSede> lista = new ArrayList<>();
+		for(int i =0; i< proyectoAlberca.getProyectoSedes().size(); i++ ) {
+			lista.add(new ProyectoSede(0,proyectoAlberca.getProyectoSedes().get(i).getSede(), proyectoAlberca));
+		}
+		proyectoAlberca.setProyectoSedes(lista);
+		System.out.println(proyectoAlberca);
+		
 		this.proyectoalberca.save(proyectoAlberca);
 		return respuesta;
 	}
-	
-
 }

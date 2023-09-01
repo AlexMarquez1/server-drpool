@@ -35,12 +35,21 @@ public class ProyectoSede {
 	public ProyectoSede() {
 		super();
 	}
+	
+	
 
 	public ProyectoSede(int idproyectosedes, Sede sede, ProyectoAlberca proyectoalberca) {
 		super();
 		this.idproyectosedes = idproyectosedes;
 		this.sede = sede;
 		this.proyectoalberca = proyectoalberca;
+	}
+
+	
+	public ProyectoSede(int idproyectosedes, Sede sede) {
+		super();
+		this.idproyectosedes = idproyectosedes;
+		this.sede = sede;
 	}
 
 	public int getIdproyectosedes() {
@@ -58,7 +67,4 @@ public class ProyectoSede {
 	public void setSede(Sede sede) {
 		this.sede = sede;
 	}
-
-
-
 }

@@ -119,5 +119,4 @@ public class ProyectoAlberca {
 				+ ", fechainiciocontrato=" + fechainiciocontrato + ", fechafincontrato=" + fechafincontrato
 				+ ", estatus=" + estatus + "]";
 	}
-	
 }
