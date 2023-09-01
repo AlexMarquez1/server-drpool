@@ -273,9 +273,12 @@ public class GenerarPDFRestController {
 	}
 	
 	private Map<String,Object> parametrosBitacoraDrPool(List<Agrupaciones> listaAgrupaciones, List<firmasdocumento> firmas,
-			String nombreProyecto, Inventario inventario){
+			String nombreProyecto, Inventario inventario) throws IOException{
 		Map<String, Object> parametros = new HashMap<String,Object>();
 		Map<String, String> tablaBitacora = new HashMap<String,String>();
+		Map<String, Object> respuesta = new HashMap<String,Object>();
+		File pdfFile;
+		String nombrePdf = inventario.getFolio();
 		
 		for (Agrupaciones agrupacion : listaAgrupaciones) {
 			for (Campos campo : agrupacion.getCampos()) {
@@ -285,13 +288,17 @@ public class GenerarPDFRestController {
 						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
 					}
 				}else {
-					tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
+						System.out.println(campo.getNombreCampo()+":"+ campo.getValor());
+						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
+						break;
 				}
 			}
 		}
 		
 		for(firmasdocumento firma : firmas) {
-			tablaBitacora.put(firma.getCamposProyecto().getCampo(), firma.getUrl());
+			if(firma.getCamposProyecto().getCampo() != null) {
+				tablaBitacora.put(firma.getCamposProyecto().getCampo(), firma.getUrl());
+			}
 		}
 		
 		List<Map<String, String>> bitacora = new ArrayList<Map<String, String>>();
@@ -302,9 +309,25 @@ public class GenerarPDFRestController {
 
 		parametros.put("CollectionBeanParam", jrc);
 		
+		pdfFile = File.createTempFile("ReporteCell", ".pdf");
 		
-		
-		return parametros;
+		try (FileOutputStream pos = new FileOutputStream(pdfFile)) {
+			System.out.println("Nombre Proyecto: "+ nombreProyecto);
+			final JasperReport report = loadTemplate(nombreProyecto);
+//			final Map<String, Object> parameters = parameters(listaAgrupaciones, firmas, nombreProyecto, idInventario);
+
+			final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
+					Collections.singletonList("Invoice"));
+			JasperReportsUtils.renderAsPdf(report, parametros, dataSource, pos);
+			respuesta = new HashMap<String, Object>();
+			respuesta.put("archivo", pdfFile);
+			respuesta.put("nombre", nombrePdf);
+			return respuesta;
+
+		} catch (final Exception e) {
+			System.out.println(String.format("An error occured during PDF creation: %s", e));
+			return null;
+		}
 	}
 	
 	@CrossOrigin(origins = "*")
