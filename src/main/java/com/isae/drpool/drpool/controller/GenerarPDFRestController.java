@@ -230,9 +230,17 @@ public class GenerarPDFRestController {
 					inventario.getProyecto().getIdproyecto());
 
 			List<firmasdocumento> firmas = obtenerFirmasP(listaAgrupaciones, Integer.parseInt(idInventario));
-
-			Map<String, Object> pdf = generateInvoiceFor(listaAgrupaciones, firmas,
-					inventario.getProyecto().getProyecto(), inventario);
+			
+			Map<String, Object> pdf = new HashMap<String,Object>();
+			
+			if(inventario.getProyecto().getProyecto().startsWith("BITACORA")) {
+				pdf = parametrosBitacoraDrPool(listaAgrupaciones, firmas,
+						inventario.getProyecto().getProyecto(), inventario);
+			}else {
+				pdf = generateInvoiceFor(listaAgrupaciones, firmas,
+						inventario.getProyecto().getProyecto(), inventario);
+			}
+			
 			System.out.println("Despues de obtener el documento, GenerarNuevo Documento ");
 
 			File invoicePdf = (File) pdf.get("archivo");
@@ -262,6 +270,41 @@ public class GenerarPDFRestController {
 //			return (ResponseEntity<InputStreamResource>) ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
 			return "";
 		}
+	}
+	
+	private Map<String,Object> parametrosBitacoraDrPool(List<Agrupaciones> listaAgrupaciones, List<firmasdocumento> firmas,
+			String nombreProyecto, Inventario inventario){
+		Map<String, Object> parametros = new HashMap<String,Object>();
+		Map<String, String> tablaBitacora = new HashMap<String,String>();
+		
+		for (Agrupaciones agrupacion : listaAgrupaciones) {
+			for (Campos campo : agrupacion.getCampos()) {
+				if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
+					parametros.put(campo.getNombreCampo(), campo.getValor());
+					if(campo.getNombreCampo().equalsIgnoreCase("FECHA REGISTRO")) {
+						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
+					}
+				}else {
+					tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
+				}
+			}
+		}
+		
+		for(firmasdocumento firma : firmas) {
+			tablaBitacora.put(firma.getCamposProyecto().getCampo(), firma.getUrl());
+		}
+		
+		List<Map<String, String>> bitacora = new ArrayList<Map<String, String>>();
+		
+		bitacora.add(tablaBitacora);
+		
+		JRBeanCollectionDataSource jrc = new JRBeanCollectionDataSource(bitacora);
+
+		parametros.put("CollectionBeanParam", jrc);
+		
+		
+		
+		return parametros;
 	}
 	
 	@CrossOrigin(origins = "*")

@@ -35,5 +35,32 @@ public class ProyectoAlbercaRestController {
 		return respuesta;
 	}
 	
+	@CrossOrigin(origins="*")
+	@GetMapping("/nuevo/prueba")
+	public String nuevoProyectoAlberca() {
+		String respuesta = "se guardo correctamente el proyecto";
+		
+		List<ProyectoSede> lista = new ArrayList();
+		
+		ProyectoAlberca proyectoAlberca = new ProyectoAlberca();
+		proyectoAlberca.setIdproyectoalberca(0);
+		proyectoAlberca.setNombreproyectoalberca("Nombre del proyecto");
+		proyectoAlberca.setNumeroproyecto("10");
+		proyectoAlberca.setTiposervicio("Tipo de servicio");
+		proyectoAlberca.setFechafincontrato("12/12/12");
+		proyectoAlberca.setFechainiciocontrato("11/11/11");
+		proyectoAlberca.setEstatus("Estatus");
+		
+		lista.add(new ProyectoSede(0,new Sede(5),proyectoAlberca));
+		
+		proyectoAlberca.setProyectoSedes(lista);
+		
+		System.out.println(proyectoAlberca);
+		this.proyectoalberca.save(proyectoAlberca);
+		
+		
+		return respuesta;
+	}
+	
 
 }
