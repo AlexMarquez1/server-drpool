@@ -275,7 +275,7 @@ public class GenerarPDFRestController {
 	private Map<String,Object> parametrosBitacoraDrPool(List<Agrupaciones> listaAgrupaciones, List<firmasdocumento> firmas,
 			String nombreProyecto, Inventario inventario) throws IOException{
 		Map<String, Object> parametros = new HashMap<String,Object>();
-		Map<String, String> tablaBitacora = new HashMap<String,String>();
+		Map<String, Object> tablaBitacora = new HashMap<String,Object>();
 		Map<String, Object> respuesta = new HashMap<String,Object>();
 		File pdfFile;
 		String nombrePdf = inventario.getFolio();
@@ -288,20 +288,24 @@ public class GenerarPDFRestController {
 						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
 					}
 				}else {
-						System.out.println(campo.getNombreCampo()+":"+ campo.getValor());
-						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
-						break;
+						if(!campo.getTipoCampo().equalsIgnoreCase("FIRMA")) {
+							String campoPlantilla = campo.getNombreCampo().replaceAll("[()]", "");;
+							System.out.println(campoPlantilla+":"+ campo.getValor());
+							tablaBitacora.put(campoPlantilla, campo.getValor());
+						}
 				}
 			}
 		}
 		
 		for(firmasdocumento firma : firmas) {
 			if(firma.getCamposProyecto().getCampo() != null) {
-				tablaBitacora.put(firma.getCamposProyecto().getCampo(), firma.getUrl());
+				URL url = new URL(firma.getUrl());
+				tablaBitacora.put(firma.getCamposProyecto().getCampo(), url);
 			}
 		}
 		
-		List<Map<String, String>> bitacora = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> bitacora = new ArrayList<Map<String, Object>>();
+		
 		
 		bitacora.add(tablaBitacora);
 		
