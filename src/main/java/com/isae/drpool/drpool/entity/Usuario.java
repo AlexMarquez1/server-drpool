@@ -33,6 +33,10 @@ public class Usuario implements Serializable {
 	private String status;
 	
 	private String token;
+	
+	private String fechanacimiento; 
+	
+	private String fechaingreso; 
 
 	//bi-directional many-to-one association to Perfile
 	@OneToOne
@@ -55,7 +59,7 @@ public class Usuario implements Serializable {
 		this.idusuario = idusuario;
 	}
 	
-	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+	/*public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
 			String telefono, String ubicacion, String usuario, String status, String token, Perfile perfile,
 			ClienteAplicacion clienteAplicacion) {
 		super();
@@ -72,9 +76,32 @@ public class Usuario implements Serializable {
 		this.token = token;
 		this.perfile = perfile;
 		this.clienteAplicacion = clienteAplicacion;
+	}*/
+	
+	//Metodo con fecha de nacimiento e ingreso de perfile y clienteAplicacion
+	
+	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento, String fechaingreso,Perfile perfile,
+			ClienteAplicacion clienteAplicacion) {
+		super();
+		this.idusuario = idusuario;
+		this.correo = correo;
+		this.jefeinmediato = jefeinmediato;
+		this.nombre = nombre;
+		this.pass = pass;
+		this.passtemp = passtemp;
+		this.telefono = telefono;
+		this.ubicacion = ubicacion;
+		this.usuario = usuario;
+		this.status = status;
+		this.token = token;
+		this.fechanacimiento = fechanacimiento; 
+		this.fechaingreso = fechaingreso; 
+		this.perfile = perfile;
+		this.clienteAplicacion = clienteAplicacion;
 	}
 
-	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+	/*public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
 			String telefono, String ubicacion, String usuario, String status, String token, Perfile perfile) {
 		super();
 		this.idusuario = idusuario;
@@ -89,9 +116,30 @@ public class Usuario implements Serializable {
 		this.status = status;
 		this.token = token;
 		this.perfile = perfile;
+	}*/
+	
+	//Metodo con fecha de nacimiento e ingreso de perfile 
+	
+	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento, String fechaingreso, Perfile perfile) {
+		super();
+		this.idusuario = idusuario;
+		this.correo = correo;
+		this.jefeinmediato = jefeinmediato;
+		this.nombre = nombre;
+		this.pass = pass;
+		this.passtemp = passtemp;
+		this.telefono = telefono;
+		this.ubicacion = ubicacion;
+		this.usuario = usuario;
+		this.status = status;
+		this.token = token;
+		this.fechanacimiento = fechanacimiento; 
+		this.fechaingreso = fechaingreso; 
+		this.perfile = perfile;
 	}
 
-	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+	/*public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
 			String telefono, String ubicacion, String usuario, String status, String token, Perfile perfile,
 			ClienteAplicacion clienteAplicacion, Cliente vistaCliente) {
 		super();
@@ -106,6 +154,30 @@ public class Usuario implements Serializable {
 		this.usuario = usuario;
 		this.status = status;
 		this.token = token;
+		this.perfile = perfile;
+		this.clienteAplicacion = clienteAplicacion;
+		this.vistaCliente = vistaCliente;
+	}*/
+	
+	//Metodo con fecha de nacimiento e ingreso de perfile, cliente aplicacion e VistaCliente
+	
+	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento, String fechaingreso, Perfile perfile,
+			ClienteAplicacion clienteAplicacion, Cliente vistaCliente) {
+		super();
+		this.idusuario = idusuario;
+		this.correo = correo;
+		this.jefeinmediato = jefeinmediato;
+		this.nombre = nombre;
+		this.pass = pass;
+		this.passtemp = passtemp;
+		this.telefono = telefono;
+		this.ubicacion = ubicacion;
+		this.usuario = usuario;
+		this.status = status;
+		this.token = token;
+		this.fechanacimiento = fechanacimiento; 
+		this.fechaingreso = fechaingreso; 
 		this.perfile = perfile;
 		this.clienteAplicacion = clienteAplicacion;
 		this.vistaCliente = vistaCliente;
@@ -223,13 +295,29 @@ public class Usuario implements Serializable {
 		this.vistaCliente = vistaCliente;
 	}
 
+	public String getFechanacimiento() {
+		return fechanacimiento;
+	}
+
+	public void setFechanacimiento(String fechanacimiento) {
+		this.fechanacimiento = fechanacimiento;
+	}
+
+	public String getFechaingreso() {
+		return fechaingreso;
+	}
+
+	public void setFechaingreso(String fechaingreso) {
+		this.fechaingreso = fechaingreso;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [idusuario=" + idusuario + ", correo=" + correo + ", jefeinmediato=" + jefeinmediato
 				+ ", nombre=" + nombre + ", pass=" + pass + ", passtemp=" + passtemp + ", telefono=" + telefono
 				+ ", ubicacion=" + ubicacion + ", usuario=" + usuario + ", status=" + status + ", token=" + token
-				+ ", perfile=" + perfile + ", clienteAplicacion=" + clienteAplicacion + ", vistaCliente=" + vistaCliente
-				+ "]";
-	}
+				+ ", fechanacimiento=" + fechanacimiento + ", fechaingreso=" + fechaingreso + ", perfile=" + perfile
+				+ ", clienteAplicacion=" + clienteAplicacion + ", vistaCliente=" + vistaCliente + "]";
+	}	
 
 }
