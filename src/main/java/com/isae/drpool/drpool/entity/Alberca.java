@@ -21,9 +21,20 @@ public class Alberca {
 	private String nombrealberca;
 	private String tipoalberca;
 	private String capacidad;
+	//Recien agregado
+	
+	private String caracteristica; 
+	private String forma; 
+	
 	private String medidalargo;
 	private String medidaancho;
-	private String medidaprofundidad;
+	//Cambio de medidaprofundidad por profundidad minima
+	private String profundidadminima;
+	//Recien agregado
+	private String profundidadmaxima;
+	private String observaciones; 
+	
+	
 	private String ubicacion;
 	
 	@OneToOne
@@ -39,23 +50,30 @@ public class Alberca {
 	}
 
 
-	public Alberca(int idalberca, String nombrealberca, String tipoalberca, String capacidad, String medidalargo,
-			String medidaancho, String medidaprofundidad, String ubicacion, Sede sede, String estatus,
-			String equiponombre, String tipoequipo) {
+	public Alberca(int idalberca, String nombrealberca, String tipoalberca, String capacidad, String caracteristica,
+			String forma, String medidalargo, String medidaancho, String profundidadminima, String profundidadmaxima,
+			String observaciones, String ubicacion, Sede sede, String estatus, String equiponombre, String tipoequipo) {
 		super();
 		this.idalberca = idalberca;
 		this.nombrealberca = nombrealberca;
 		this.tipoalberca = tipoalberca;
 		this.capacidad = capacidad;
+		this.caracteristica = caracteristica;
+		this.forma = forma;
 		this.medidalargo = medidalargo;
 		this.medidaancho = medidaancho;
-		this.medidaprofundidad = medidaprofundidad;
+		this.profundidadminima = profundidadminima;
+		this.profundidadmaxima = profundidadmaxima;
+		this.observaciones = observaciones;
 		this.ubicacion = ubicacion;
 		this.sede = sede;
 		this.estatus = estatus;
 		this.equiponombre = equiponombre;
 		this.tipoequipo = tipoequipo;
 	}
+
+
+
 
 
 	public int getIdalberca() {
@@ -118,13 +136,53 @@ public class Alberca {
 	}
 
 
-	public String getMedidaprofundidad() {
-		return medidaprofundidad;
+	public String getCaracteristica() {
+		return caracteristica;
 	}
 
 
-	public void setMedidaprofundidad(String medidaprofundidad) {
-		this.medidaprofundidad = medidaprofundidad;
+	public void setCaracteristica(String caracteristica) {
+		this.caracteristica = caracteristica;
+	}
+
+
+	public String getForma() {
+		return forma;
+	}
+
+
+	public void setForma(String forma) {
+		this.forma = forma;
+	}
+
+
+	public String getProfundidadminima() {
+		return profundidadminima;
+	}
+
+
+	public void setProfundidadminima(String profundidadminima) {
+		this.profundidadminima = profundidadminima;
+	}
+
+
+	public String getProfundidadmaxima() {
+		return profundidadmaxima;
+	}
+
+
+	public void setProfundidadmaxima(String profundidadmaxima) {
+		this.profundidadmaxima = profundidadmaxima;
+	}
+
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 
@@ -181,10 +239,15 @@ public class Alberca {
 	@Override
 	public String toString() {
 		return "Alberca [idalberca=" + idalberca + ", nombrealberca=" + nombrealberca + ", tipoalberca=" + tipoalberca
-				+ ", capacidad=" + capacidad + ", medidalargo=" + medidalargo + ", medidaancho=" + medidaancho
-				+ ", medidaprofundidad=" + medidaprofundidad + ", ubicacion=" + ubicacion + ", sede=" + sede
-				+ ", estatus=" + estatus + ", equiponombre=" + equiponombre + ", tipoequipo=" + tipoequipo + "]";
+				+ ", capacidad=" + capacidad + ", caracteristica=" + caracteristica + ", forma=" + forma
+				+ ", medidalargo=" + medidalargo + ", medidaancho=" + medidaancho + ", profundidadminima="
+				+ profundidadminima + ", profundidadmaxima=" + profundidadmaxima + ", observaciones=" + observaciones
+				+ ", ubicacion=" + ubicacion + ", sede=" + sede + ", estatus=" + estatus + ", equiponombre="
+				+ equiponombre + ", tipoequipo=" + tipoequipo + "]";
 	}
+
+
+	
 	
 	
 }
