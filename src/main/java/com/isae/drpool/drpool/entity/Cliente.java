@@ -21,6 +21,9 @@ public class Cliente {
 	private String cliente;
 	private String telefono;
 	private String direccion;
+	
+	//Recien agregado 06 - 09 - 23
+	private String rfc;
 	private String urllogo;
 	private String estatus;
 	
@@ -32,17 +35,20 @@ public class Cliente {
 		super();
 	}
 
-	public Cliente(int idcliente, String cliente, String telefono, String direccion, String urllogo, String estatus,
-			ClienteAplicacion clienteAplicacion) {
+	public Cliente(int idcliente, String cliente, String telefono, String direccion, String rfc, String urllogo,
+			String estatus, ClienteAplicacion clienteAplicacion) {
 		super();
 		this.idcliente = idcliente;
 		this.cliente = cliente;
 		this.telefono = telefono;
 		this.direccion = direccion;
+		this.rfc = rfc;
 		this.urllogo = urllogo;
 		this.estatus = estatus;
 		this.clienteAplicacion = clienteAplicacion;
 	}
+
+
 
 	public int getIdcliente() {
 		return idcliente;
@@ -75,6 +81,15 @@ public class Cliente {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
+	
+
+	public String getRfc() {
+		return rfc;
+	}
+
+	public void setRfc(String rfc) {
+		this.rfc = rfc;
+	}
 
 	public String getUrllogo() {
 		return urllogo;
@@ -103,8 +118,10 @@ public class Cliente {
 	@Override
 	public String toString() {
 		return "Cliente [idcliente=" + idcliente + ", cliente=" + cliente + ", telefono=" + telefono + ", direccion="
-				+ direccion + ", urllogo=" + urllogo + ", estatus=" + estatus + ", clienteAplicacion="
+				+ direccion + ", rfc=" + rfc + ", urllogo=" + urllogo + ", estatus=" + estatus + ", clienteAplicacion="
 				+ clienteAplicacion + "]";
 	}
+
+	
 	
 }
