@@ -35,7 +35,7 @@ public class Alberca {
 	private String observaciones; 
 	
 	
-	private String ubicacion;
+	//private String ubicacion; se elimina ubicacion de la bd
 	
 	@OneToOne
 	@JoinColumn(name="idsede")
@@ -49,10 +49,9 @@ public class Alberca {
 		super();
 	}
 
-
 	public Alberca(int idalberca, String nombrealberca, String tipoalberca, String capacidad, String caracteristica,
 			String forma, String medidalargo, String medidaancho, String profundidadminima, String profundidadmaxima,
-			String observaciones, String ubicacion, Sede sede, String estatus, String equiponombre, String tipoequipo) {
+			String observaciones, Sede sede, String estatus, String equiponombre, String tipoequipo) {
 		super();
 		this.idalberca = idalberca;
 		this.nombrealberca = nombrealberca;
@@ -65,15 +64,11 @@ public class Alberca {
 		this.profundidadminima = profundidadminima;
 		this.profundidadmaxima = profundidadmaxima;
 		this.observaciones = observaciones;
-		this.ubicacion = ubicacion;
 		this.sede = sede;
 		this.estatus = estatus;
 		this.equiponombre = equiponombre;
 		this.tipoequipo = tipoequipo;
 	}
-
-
-
 
 
 	public int getIdalberca() {
@@ -185,17 +180,6 @@ public class Alberca {
 		this.observaciones = observaciones;
 	}
 
-
-	public String getUbicacion() {
-		return ubicacion;
-	}
-
-
-	public void setUbicacion(String ubicacion) {
-		this.ubicacion = ubicacion;
-	}
-
-
 	public Sede getSede() {
 		return sede;
 	}
@@ -235,19 +219,15 @@ public class Alberca {
 		this.tipoequipo = tipoequipo;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Alberca [idalberca=" + idalberca + ", nombrealberca=" + nombrealberca + ", tipoalberca=" + tipoalberca
 				+ ", capacidad=" + capacidad + ", caracteristica=" + caracteristica + ", forma=" + forma
 				+ ", medidalargo=" + medidalargo + ", medidaancho=" + medidaancho + ", profundidadminima="
 				+ profundidadminima + ", profundidadmaxima=" + profundidadmaxima + ", observaciones=" + observaciones
-				+ ", ubicacion=" + ubicacion + ", sede=" + sede + ", estatus=" + estatus + ", equiponombre="
-				+ equiponombre + ", tipoequipo=" + tipoequipo + "]";
+				+ ", sede=" + sede + ", estatus=" + estatus + ", equiponombre=" + equiponombre + ", tipoequipo="
+				+ tipoequipo + "]";
 	}
-
-
-	
 	
 	
 }
