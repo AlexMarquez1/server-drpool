@@ -76,7 +76,7 @@ public class ClienteRestController {
 		
 		List<Integer> listaBites = gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType());
 		
-		nuevoCliente.setEstatus("ACTIVO");
+		//nuevoCliente.setEstatus("ACTIVO");
 		try {
 			if ( !listaBites.isEmpty() ) {
 				byte[] imagenClienteByte = new byte[listaBites.size()];
