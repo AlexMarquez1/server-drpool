@@ -982,8 +982,10 @@ public class InventarioRestController {
             if(indAgrupacion != 0) {
             	 for(Campos campo : listaAgrupaciones.get(indAgrupacion).getCampos() ) {
                  	if(campo.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
-                 		inventario.setFolio(campo.getValor());
-                 		this.inventario.cambiarFolio(campo.getValor(), inventario.getIdinventario());
+                 		if(campo.getNombreCampo().equalsIgnoreCase("FOLIO")) {
+                 			inventario.setFolio(campo.getValor());
+                     		this.inventario.cambiarFolio(campo.getValor(), inventario.getIdinventario());
+                 		}
                  	}
                  	
                  	if(!campo.getTipoCampo().equals("FOTO") || !campo.getTipoCampo().equals("CHECKBOX-EVIDENCIA") || !campo.getTipoCampo().equals("FIRMA")) {            		
