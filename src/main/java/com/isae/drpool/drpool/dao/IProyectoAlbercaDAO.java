@@ -15,7 +15,7 @@ public interface IProyectoAlbercaDAO extends JpaRepository<ProyectoAlberca, Inte
 	
 	@Modifying
 	@Transactional
-	@Query(value = "DELETE FROM poyectosede WHERE idproyecto = :idproyecto", nativeQuery = true)
+	@Query(value = "DELETE FROM proyectosede WHERE idproyecto = :idproyecto", nativeQuery = true)
 	void eliminarSedePorProyecto(@Param("idproyecto") int idproyecto);
 
 }
