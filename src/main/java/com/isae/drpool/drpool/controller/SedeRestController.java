@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isae.drpool.drpool.dao.IDireccionSedeDAO;
 import com.isae.drpool.drpool.dao.ISedeDAO;
 import com.isae.drpool.drpool.entity.Sede;
 
@@ -18,6 +19,10 @@ public class SedeRestController {
 	
 	@Autowired
 	private ISedeDAO sede;
+	@Autowired
+	private IDireccionSedeDAO direccion; 
+	
+	
 	
 	@CrossOrigin(origins = "*")
 	@GetMapping("/obtener/sedes")
@@ -30,6 +35,11 @@ public class SedeRestController {
 	public String nuevaSede(@RequestBody Sede sede) {
 		String respuesta = "se guardo correctamente";
 		System.out.println(sede);
+		
+		if(sede.getDireccion().getIddireccion() != 0) {
+			this.direccion.save(sede.getDireccion());
+		}
+		
 		this.sede.save(sede);
 		return respuesta;
 	}
