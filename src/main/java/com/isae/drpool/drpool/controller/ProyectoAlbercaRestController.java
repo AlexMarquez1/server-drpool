@@ -39,6 +39,8 @@ public class ProyectoAlbercaRestController {
 		proyectoAlberca.setProyectoSedes(lista);
 		System.out.println(proyectoAlberca);
 		
+		this.proyectoalberca.eliminarSedePorProyecto(proyectoAlberca.getIdproyectoalberca());
+		
 		this.proyectoalberca.save(proyectoAlberca);
 		return respuesta;
 	}

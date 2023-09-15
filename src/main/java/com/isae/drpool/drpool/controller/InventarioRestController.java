@@ -982,8 +982,10 @@ public class InventarioRestController {
             if(indAgrupacion != 0) {
             	 for(Campos campo : listaAgrupaciones.get(indAgrupacion).getCampos() ) {
                  	if(campo.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
-                 		inventario.setFolio(campo.getValor());
-                 		this.inventario.cambiarFolio(campo.getValor(), inventario.getIdinventario());
+                 		if(campo.getNombreCampo().equalsIgnoreCase("FOLIO")) {
+                 			inventario.setFolio(campo.getValor());
+                     		this.inventario.cambiarFolio(campo.getValor(), inventario.getIdinventario());
+                 		}
                  	}
                  	
                  	if(!campo.getTipoCampo().equals("FOTO") || !campo.getTipoCampo().equals("CHECKBOX-EVIDENCIA") || !campo.getTipoCampo().equals("FIRMA")) {            		
@@ -995,8 +997,10 @@ public class InventarioRestController {
             	for(int i =0; i < listaAgrupaciones.size(); i++) {
             		 for(Campos campo : listaAgrupaciones.get(i).getCampos() ) {
                       	if(campo.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
+                     		if(campo.getNombreCampo().equalsIgnoreCase("FOLIO")) {
                       		inventario.setFolio(campo.getValor());
                       		this.inventario.cambiarFolio(campo.getValor(), inventario.getIdinventario());
+                     		}
                       	}
                       	
                       	if(!campo.getTipoCampo().equals("FOTO") || !campo.getTipoCampo().equals("CHECKBOX-EVIDENCIA") || !campo.getTipoCampo().equals("FIRMA")) {            		
