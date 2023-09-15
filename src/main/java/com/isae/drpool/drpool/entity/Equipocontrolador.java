@@ -15,6 +15,8 @@ public class Equipocontrolador {
 	@JoinColumn(name="idalberca")
 	private Alberca alberca;
 	
+	private String tipoequipo;
+	
 	private String numero; 
 	
 	private String marcacontrolador;
@@ -43,6 +45,14 @@ public class Equipocontrolador {
 
 	public void setAlberca(Alberca alberca) {
 		this.alberca = alberca;
+	}
+
+	public String getTipoequipo() {
+		return tipoequipo;
+	}
+
+	public void setTipoequipo(String tipoequipo) {
+		this.tipoequipo = tipoequipo;
 	}
 
 	public String getNumero() {
@@ -101,12 +111,17 @@ public class Equipocontrolador {
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
 	}
 
-	public Equipocontrolador(int idcontrolador, Alberca alberca, String numero, String marcacontrolador,
-			String modelocontrolador, String numero_equipos_controladores, String estatus, String observaciones,
-			String fecha_ultimo_mantenimiento) {
+	public Equipocontrolador() {
+		super();
+	}
+
+	public Equipocontrolador(int idcontrolador, Alberca alberca, String tipoequipo, String numero,
+			String marcacontrolador, String modelocontrolador, String numero_equipos_controladores, String estatus,
+			String observaciones, String fecha_ultimo_mantenimiento) {
 		super();
 		this.idcontrolador = idcontrolador;
 		this.alberca = alberca;
+		this.tipoequipo = tipoequipo;
 		this.numero = numero;
 		this.marcacontrolador = marcacontrolador;
 		this.modelocontrolador = modelocontrolador;
@@ -116,14 +131,13 @@ public class Equipocontrolador {
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
 	}
 
-	public Equipocontrolador() {}
-
 	@Override
 	public String toString() {
-		return "Equipocontrolador [idcontrolador=" + idcontrolador + ", alberca=" + alberca + ", numero=" + numero
-				+ ", marcacontrolador=" + marcacontrolador + ", modelocontrolador=" + modelocontrolador
-				+ ", numero_equipos_controladores=" + numero_equipos_controladores + ", estatus=" + estatus
-				+ ", observaciones=" + observaciones + ", fecha_ultimo_mantenimiento=" + fecha_ultimo_mantenimiento
-				+ "]";
+		return "Equipocontrolador [idcontrolador=" + idcontrolador + ", alberca=" + alberca + ", tipoequipo="
+				+ tipoequipo + ", numero=" + numero + ", marcacontrolador=" + marcacontrolador + ", modelocontrolador="
+				+ modelocontrolador + ", numero_equipos_controladores=" + numero_equipos_controladores + ", estatus="
+				+ estatus + ", observaciones=" + observaciones + ", fecha_ultimo_mantenimiento="
+				+ fecha_ultimo_mantenimiento + "]";
 	}
+
 }
