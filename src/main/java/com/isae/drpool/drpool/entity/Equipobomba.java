@@ -16,6 +16,8 @@ public class Equipobomba {
 	@JoinColumn(name="idalberca")
 	private Alberca alberca;
 	
+	private String tipoequipo;
+	
 	private String numero; 
 	
 	private String potencia;
@@ -50,6 +52,14 @@ public class Equipobomba {
 
 	public void setAlberca(Alberca alberca) {
 		this.alberca = alberca;
+	}
+
+	public String getTipoequipo() {
+		return tipoequipo;
+	}
+
+	public void setTipoequipo(String tipoequipo) {
+		this.tipoequipo = tipoequipo;
 	}
 
 	public String getNumero() {
@@ -132,15 +142,17 @@ public class Equipobomba {
 		this.numerofases = numerofases;
 	}
 
+	public Equipobomba() {
+		super();
+	}
 
-	public Equipobomba() {}
-
-	public Equipobomba(int idbomba, Alberca alberca, String numero, String potencia, String marca, String modelo,
-			String capacidad, String voltaje, String estatus, String observaciones, String fecha_ultimo_mantenimiento,
-			String numerofases) {
+	public Equipobomba(int idbomba, Alberca alberca, String tipoequipo, String numero, String potencia, String marca,
+			String modelo, String capacidad, String voltaje, String estatus, String observaciones,
+			String fecha_ultimo_mantenimiento, String numerofases) {
 		super();
 		this.idbomba = idbomba;
 		this.alberca = alberca;
+		this.tipoequipo = tipoequipo;
 		this.numero = numero;
 		this.potencia = potencia;
 		this.marca = marca;
@@ -155,18 +167,10 @@ public class Equipobomba {
 
 	@Override
 	public String toString() {
-		return "Equipobomba [idbomba=" + idbomba + ", alberca=" + alberca + ", numero=" + numero + ", potencia="
-				+ potencia + ", marca=" + marca + ", modelo=" + modelo + ", capacidad=" + capacidad + ", voltaje="
-				+ voltaje + ", estatus=" + estatus + ", observaciones=" + observaciones
+		return "Equipobomba [idbomba=" + idbomba + ", alberca=" + alberca + ", tipoequipo=" + tipoequipo + ", numero="
+				+ numero + ", potencia=" + potencia + ", marca=" + marca + ", modelo=" + modelo + ", capacidad="
+				+ capacidad + ", voltaje=" + voltaje + ", estatus=" + estatus + ", observaciones=" + observaciones
 				+ ", fecha_ultimo_mantenimiento=" + fecha_ultimo_mantenimiento + ", numerofases=" + numerofases + "]";
 	}
-
-
-	
-	
-
-
-	
-
 		
 }
