@@ -24,6 +24,11 @@ public class Agrupacion implements Serializable {
 	public Agrupacion() {
 	}
 	
+	public Agrupacion(int idagrupacion) {
+		super();
+		this.idagrupacion = idagrupacion;
+	}
+
 	public Agrupacion(int idagrupacion, String agrupacion) {
 		super();
 		this.idagrupacion = idagrupacion;
