@@ -15,6 +15,8 @@ public class Equipocalentamiento {
 	@JoinColumn(name="idalberca")
 	private Alberca alberca;
 	
+	private String tipoequipo;
+	
 	private String numero; 
 	
 	private String marcabomba; 
@@ -62,13 +64,21 @@ public class Equipocalentamiento {
 	public void setIdcalentamiento(int idcalentamiento) {
 		this.idcalentamiento = idcalentamiento;
 	}
-	
+
 	public Alberca getAlberca() {
 		return alberca;
 	}
 
 	public void setAlberca(Alberca alberca) {
 		this.alberca = alberca;
+	}
+
+	public String getTipoequipo() {
+		return tipoequipo;
+	}
+
+	public void setTipoequipo(String tipoequipo) {
+		this.tipoequipo = tipoequipo;
 	}
 
 	public String getNumero() {
@@ -231,8 +241,12 @@ public class Equipocalentamiento {
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
 	}
 
-	public Equipocalentamiento(int idcalentamiento, Alberca alberca, String numero, String marcabomba,
-			String modelobomba, String capacidadbomba, String voltajebomba, String numerofasesbomba,
+	public Equipocalentamiento() {
+		super();
+	}
+
+	public Equipocalentamiento(int idcalentamiento, Alberca alberca, String tipoequipo, String numero,
+			String marcabomba, String modelobomba, String capacidadbomba, String voltajebomba, String numerofasesbomba,
 			String marcacaldera, String modelocaldera, String capacidadcaldera, String combustiblecaldera,
 			String marcacolector, String modelocolector, String numeropaneles, String numerointercambiador,
 			String modelointercambiador, String capacidadintercambiador, String informacionintercambiador,
@@ -240,6 +254,7 @@ public class Equipocalentamiento {
 		super();
 		this.idcalentamiento = idcalentamiento;
 		this.alberca = alberca;
+		this.tipoequipo = tipoequipo;
 		this.numero = numero;
 		this.marcabomba = marcabomba;
 		this.modelobomba = modelobomba;
@@ -262,25 +277,19 @@ public class Equipocalentamiento {
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
 	}
 
-	public Equipocalentamiento() {}
-
 	@Override
 	public String toString() {
-		return "Equipocalentamiento [idcalentamiento=" + idcalentamiento + ", alberca=" + alberca + ", numero=" + numero
-				+ ", marcabomba=" + marcabomba + ", modelobomba=" + modelobomba + ", capacidadbomba=" + capacidadbomba
-				+ ", voltajebomba=" + voltajebomba + ", numerofasesbomba=" + numerofasesbomba + ", marcacaldera="
-				+ marcacaldera + ", modelocaldera=" + modelocaldera + ", capacidadcaldera=" + capacidadcaldera
-				+ ", combustiblecaldera=" + combustiblecaldera + ", marcacolector=" + marcacolector
-				+ ", modelocolector=" + modelocolector + ", numeropaneles=" + numeropaneles + ", numerointercambiador="
-				+ numerointercambiador + ", modelointercambiador=" + modelointercambiador + ", capacidadintercambiador="
-				+ capacidadintercambiador + ", informacionintercambiador=" + informacionintercambiador + ", estatus="
-				+ estatus + ", observaciones=" + observaciones + ", fecha_ultimo_mantenimiento="
-				+ fecha_ultimo_mantenimiento + "]";
+		return "Equipocalentamiento [idcalentamiento=" + idcalentamiento + ", alberca=" + alberca + ", tipoequipo="
+				+ tipoequipo + ", numero=" + numero + ", marcabomba=" + marcabomba + ", modelobomba=" + modelobomba
+				+ ", capacidadbomba=" + capacidadbomba + ", voltajebomba=" + voltajebomba + ", numerofasesbomba="
+				+ numerofasesbomba + ", marcacaldera=" + marcacaldera + ", modelocaldera=" + modelocaldera
+				+ ", capacidadcaldera=" + capacidadcaldera + ", combustiblecaldera=" + combustiblecaldera
+				+ ", marcacolector=" + marcacolector + ", modelocolector=" + modelocolector + ", numeropaneles="
+				+ numeropaneles + ", numerointercambiador=" + numerointercambiador + ", modelointercambiador="
+				+ modelointercambiador + ", capacidadintercambiador=" + capacidadintercambiador
+				+ ", informacionintercambiador=" + informacionintercambiador + ", estatus=" + estatus
+				+ ", observaciones=" + observaciones + ", fecha_ultimo_mantenimiento=" + fecha_ultimo_mantenimiento
+				+ "]";
 	}
 
-
-
-	
-	
-	
 }

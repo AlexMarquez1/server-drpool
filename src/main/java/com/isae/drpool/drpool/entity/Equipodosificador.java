@@ -15,6 +15,8 @@ public class Equipodosificador {
 	@JoinColumn(name="idalberca")
 	private Alberca alberca;
 	
+	private String tipoequipo;
+	
 	private String numero; 
 	
 	private String marcasolido; 
@@ -57,6 +59,14 @@ public class Equipodosificador {
 
 	public void setAlberca(Alberca alberca) {
 		this.alberca = alberca;
+	}
+
+	public String getTipoequipo() {
+		return tipoequipo;
+	}
+
+	public void setTipoequipo(String tipoequipo) {
+		this.tipoequipo = tipoequipo;
 	}
 
 	public String getNumero() {
@@ -171,15 +181,18 @@ public class Equipodosificador {
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
 	}
 
-	public Equipodosificador() {}
+	public Equipodosificador() {
+		super();
+	}
 
-	public Equipodosificador(int iddosificador, Alberca alberca, String numero, String marcasolido, String modelosolido,
-			String pastillasolido, String marcaliquido, String modeloliquido, String flujoliquido, String marcaclorador,
-			String modeloclorador, String capacidadmaxclorador, String voltajeclorador, String estatus,
-			String observaciones, String fecha_ultimo_mantenimiento) {
+	public Equipodosificador(int iddosificador, Alberca alberca, String tipoequipo, String numero, String marcasolido,
+			String modelosolido, String pastillasolido, String marcaliquido, String modeloliquido, String flujoliquido,
+			String marcaclorador, String modeloclorador, String capacidadmaxclorador, String voltajeclorador,
+			String estatus, String observaciones, String fecha_ultimo_mantenimiento) {
 		super();
 		this.iddosificador = iddosificador;
 		this.alberca = alberca;
+		this.tipoequipo = tipoequipo;
 		this.numero = numero;
 		this.marcasolido = marcasolido;
 		this.modelosolido = modelosolido;
@@ -198,13 +211,13 @@ public class Equipodosificador {
 
 	@Override
 	public String toString() {
-		return "Equipodosificador [iddosificador=" + iddosificador + ", alberca=" + alberca + ", numero=" + numero
-				+ ", marcasolido=" + marcasolido + ", modelosolido=" + modelosolido + ", pastillasolido="
-				+ pastillasolido + ", marcaliquido=" + marcaliquido + ", modeloliquido=" + modeloliquido
-				+ ", flujoliquido=" + flujoliquido + ", marcaclorador=" + marcaclorador + ", modeloclorador="
-				+ modeloclorador + ", capacidadmaxclorador=" + capacidadmaxclorador + ", voltajeclorador="
-				+ voltajeclorador + ", estatus=" + estatus + ", observaciones=" + observaciones
+		return "Equipodosificador [iddosificador=" + iddosificador + ", alberca=" + alberca + ", tipoequipo="
+				+ tipoequipo + ", numero=" + numero + ", marcasolido=" + marcasolido + ", modelosolido=" + modelosolido
+				+ ", pastillasolido=" + pastillasolido + ", marcaliquido=" + marcaliquido + ", modeloliquido="
+				+ modeloliquido + ", flujoliquido=" + flujoliquido + ", marcaclorador=" + marcaclorador
+				+ ", modeloclorador=" + modeloclorador + ", capacidadmaxclorador=" + capacidadmaxclorador
+				+ ", voltajeclorador=" + voltajeclorador + ", estatus=" + estatus + ", observaciones=" + observaciones
 				+ ", fecha_ultimo_mantenimiento=" + fecha_ultimo_mantenimiento + "]";
 	}
-	
+
 }

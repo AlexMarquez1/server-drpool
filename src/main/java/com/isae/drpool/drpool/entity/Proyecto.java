@@ -31,6 +31,10 @@ public class Proyecto implements Serializable {
 	@JoinColumn(name="idtipo")
 	private Tipoproyecto tipoproyecto;
 	
+	@ManyToOne
+	@JoinColumn(name="idalberca")
+	private Alberca alberca;
+	
 	private String folioautomatico;
 
 	public Proyecto() {
@@ -48,13 +52,14 @@ public class Proyecto implements Serializable {
 	}
 
 	public Proyecto(int idproyecto, Date fechacreacion, String proyecto, String target, Tipoproyecto tipoproyecto,
-			String folioautomatico) {
+			Alberca alberca, String folioautomatico) {
 		super();
 		this.idproyecto = idproyecto;
 		this.fechacreacion = fechacreacion;
 		this.proyecto = proyecto;
 		this.target = target;
 		this.tipoproyecto = tipoproyecto;
+		this.alberca = alberca;
 		this.folioautomatico = folioautomatico;
 	}
 

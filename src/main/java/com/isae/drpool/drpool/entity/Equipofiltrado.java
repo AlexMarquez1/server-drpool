@@ -15,6 +15,8 @@ public class Equipofiltrado {
 	@JoinColumn(name="idalberca")
 	private Alberca alberca;
 	
+	private String tipoequipo;
+	
 	private String numero; 
 	
 	private String marcaarena; 
@@ -77,6 +79,14 @@ public class Equipofiltrado {
 
 	public void setAlberca(Alberca alberca) {
 		this.alberca = alberca;
+	}
+
+	public String getTipoequipo() {
+		return tipoequipo;
+	}
+
+	public void setTipoequipo(String tipoequipo) {
+		this.tipoequipo = tipoequipo;
 	}
 
 	public String getNumero() {
@@ -151,6 +161,14 @@ public class Equipofiltrado {
 		this.cantidadzeolita = cantidadzeolita;
 	}
 
+	public String getCantidadgravazeolita() {
+		return cantidadgravazeolita;
+	}
+
+	public void setCantidadgravazeolita(String cantidadgravazeolita) {
+		this.cantidadgravazeolita = cantidadgravazeolita;
+	}
+
 	public String getCantidadmaxzeolita() {
 		return cantidadmaxzeolita;
 	}
@@ -223,6 +241,14 @@ public class Equipofiltrado {
 		this.cantidadesponja = cantidadesponja;
 	}
 
+	public String getCantidadgravaesponja() {
+		return cantidadgravaesponja;
+	}
+
+	public void setCantidadgravaesponja(String cantidadgravaesponja) {
+		this.cantidadgravaesponja = cantidadgravaesponja;
+	}
+
 	public String getCantidadmaxesponja() {
 		return cantidadmaxesponja;
 	}
@@ -255,32 +281,21 @@ public class Equipofiltrado {
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
 	}
 
-	public String getCantidadgravazeolita() {
-		return cantidadgravazeolita;
+	public Equipofiltrado() {
+		super();
 	}
 
-	public void setCantidadgravazeolita(String cantidadgravazeolita) {
-		this.cantidadgravazeolita = cantidadgravazeolita;
-	}
-
-	public String getCantidadgravaesponja() {
-		return cantidadgravaesponja;
-	}
-
-	public void setCantidadgravaesponja(String cantidadgravaesponja) {
-		this.cantidadgravaesponja = cantidadgravaesponja;
-	}
-
-	public Equipofiltrado(int idfiltro, Alberca alberca, String numero, String marcaarena, String modeloarena,
-			String cantidadarena, String cantidadgravaarena, String cantidadmaxarena, String marcazeolita,
-			String modelozeolita, String cantidadzeolita, String cantidadgravazeolita, String cantidadmaxzeolita,
-			String marcacartucho, String modelocartucho, String cantidadcartucho, String cantidadgravacartucho,
-			String cantidadmaxcartucho, String marcaesponja, String modeloesponja, String cantidadesponja,
-			String cantidadgravaesponja, String cantidadmaxesponja, String estatus, String observaciones,
-			String fecha_ultimo_mantenimiento) {
+	public Equipofiltrado(int idfiltro, Alberca alberca, String tipoequipo, String numero, String marcaarena,
+			String modeloarena, String cantidadarena, String cantidadgravaarena, String cantidadmaxarena,
+			String marcazeolita, String modelozeolita, String cantidadzeolita, String cantidadgravazeolita,
+			String cantidadmaxzeolita, String marcacartucho, String modelocartucho, String cantidadcartucho,
+			String cantidadgravacartucho, String cantidadmaxcartucho, String marcaesponja, String modeloesponja,
+			String cantidadesponja, String cantidadgravaesponja, String cantidadmaxesponja, String estatus,
+			String observaciones, String fecha_ultimo_mantenimiento) {
 		super();
 		this.idfiltro = idfiltro;
 		this.alberca = alberca;
+		this.tipoequipo = tipoequipo;
 		this.numero = numero;
 		this.marcaarena = marcaarena;
 		this.modeloarena = modeloarena;
@@ -307,22 +322,20 @@ public class Equipofiltrado {
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
 	}
 
-	public Equipofiltrado() {}
-
 	@Override
 	public String toString() {
-		return "Equipofiltrado [idfiltro=" + idfiltro + ", alberca=" + alberca + ", numero=" + numero + ", marcaarena="
-				+ marcaarena + ", modeloarena=" + modeloarena + ", cantidadarena=" + cantidadarena
-				+ ", cantidadgravaarena=" + cantidadgravaarena + ", cantidadmaxarena=" + cantidadmaxarena
-				+ ", marcazeolita=" + marcazeolita + ", modelozeolita=" + modelozeolita + ", cantidadzeolita="
-				+ cantidadzeolita + ", cantidadgravazeolita=" + cantidadgravazeolita + ", cantidadmaxzeolita="
-				+ cantidadmaxzeolita + ", marcacartucho=" + marcacartucho + ", modelocartucho=" + modelocartucho
-				+ ", cantidadcartucho=" + cantidadcartucho + ", cantidadgravacartucho=" + cantidadgravacartucho
-				+ ", cantidadmaxcartucho=" + cantidadmaxcartucho + ", marcaesponja=" + marcaesponja + ", modeloesponja="
-				+ modeloesponja + ", cantidadesponja=" + cantidadesponja + ", cantidadgravaesponja="
-				+ cantidadgravaesponja + ", cantidadmaxesponja=" + cantidadmaxesponja + ", estatus=" + estatus
-				+ ", observaciones=" + observaciones + ", fecha_ultimo_mantenimiento=" + fecha_ultimo_mantenimiento
-				+ "]";
+		return "Equipofiltrado [idfiltro=" + idfiltro + ", alberca=" + alberca + ", tipoequipo=" + tipoequipo
+				+ ", numero=" + numero + ", marcaarena=" + marcaarena + ", modeloarena=" + modeloarena
+				+ ", cantidadarena=" + cantidadarena + ", cantidadgravaarena=" + cantidadgravaarena
+				+ ", cantidadmaxarena=" + cantidadmaxarena + ", marcazeolita=" + marcazeolita + ", modelozeolita="
+				+ modelozeolita + ", cantidadzeolita=" + cantidadzeolita + ", cantidadgravazeolita="
+				+ cantidadgravazeolita + ", cantidadmaxzeolita=" + cantidadmaxzeolita + ", marcacartucho="
+				+ marcacartucho + ", modelocartucho=" + modelocartucho + ", cantidadcartucho=" + cantidadcartucho
+				+ ", cantidadgravacartucho=" + cantidadgravacartucho + ", cantidadmaxcartucho=" + cantidadmaxcartucho
+				+ ", marcaesponja=" + marcaesponja + ", modeloesponja=" + modeloesponja + ", cantidadesponja="
+				+ cantidadesponja + ", cantidadgravaesponja=" + cantidadgravaesponja + ", cantidadmaxesponja="
+				+ cantidadmaxesponja + ", estatus=" + estatus + ", observaciones=" + observaciones
+				+ ", fecha_ultimo_mantenimiento=" + fecha_ultimo_mantenimiento + "]";
 	}
-	
+
 }
