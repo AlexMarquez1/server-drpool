@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isae.drpool.drpool.dao.IAgrupacionesDAO;
 import com.isae.drpool.drpool.dao.IAlbercaDAO;
 import com.isae.drpool.drpool.dao.ICamposProyectoDAO;
 import com.isae.drpool.drpool.dao.IEquipobombaDAO;
@@ -66,6 +67,9 @@ public class ProyectoAlbercaRestController {
 	
 	@Autowired
 	private IProyectoDAO proyecto;
+	
+	@Autowired
+	private IAgrupacionesDAO agrupacion;
 
 	@CrossOrigin(origins = "*")
 	@GetMapping("/obtener/proyectosalberca")
@@ -144,8 +148,8 @@ public class ProyectoAlbercaRestController {
 				for (Proyecto proyectoNuevo : listaProyectosAGenerar) {
 					List<Camposproyecto> camposBitacoraDiaria = new ArrayList<Camposproyecto>();
 					Proyecto proyecto = this.proyecto.save(proyectoNuevo);
-					camposBitacoraDiaria.addAll(bitacoraDiaria(proyecto, listaEquiposCalentamiento, listaEquiposControlador, listaEquiposDosificador, listaEquiposBomba, listaEquiposFiltrado));
-					System.out.println(camposBitacoraDiaria);
+					camposBitacoraDiaria = bitacoraDiaria(proyecto, listaEquiposCalentamiento, listaEquiposControlador, listaEquiposDosificador, listaEquiposBomba, listaEquiposFiltrado);
+					System.out.println(camposBitacoraDiaria.size());
 					this.camposproyecto.saveAll(camposBitacoraDiaria);
 				}
 				
@@ -166,8 +170,8 @@ public class ProyectoAlbercaRestController {
 			List<Equipocontrolador> listaEquiposControlador, List<Equipodosificador> listaEquiposDosificador,List<Equipobomba> listaEquiposBomba,
 			List<Equipofiltrado> listaEquiposFiltrado) {
 
-		List<Camposproyecto> camposBitacora = this.camposproyecto.obtenerCatalogoCampoPorProyecto(231);
-
+		List<Camposproyecto> camposBitacora = new ArrayList<>(this.camposproyecto.obtenerCatalogoCampoPorProyecto(231));
+		List<Camposproyecto> respuesta = new ArrayList<Camposproyecto>();
 		
 
 		List<Camposproyecto> camposBitacoraGenerada = new ArrayList<Camposproyecto>();
@@ -195,37 +199,49 @@ public class ProyectoAlbercaRestController {
 		camposBitacoraGenerada.addAll(camposBitacora.subList(114, 122));
 		
 		for (Camposproyecto camposproyecto : camposBitacoraGenerada) {
-			
-			camposproyecto.setIdcamposproyecto(0);
-			camposproyecto.setProyecto(proyecto);
+			Camposproyecto campoAux = new Camposproyecto();
+			campoAux.setIdcamposproyecto(0);
+			campoAux.setAgrupacion(camposproyecto.getAgrupacion());
+			campoAux.setAlerta(camposproyecto.getAlerta());
+			campoAux.setCampo(camposproyecto.getCampo());
+			campoAux.setEditable(camposproyecto.getEditable());
+			campoAux.setLongitud(camposproyecto.getLongitud());
+			campoAux.setPattern(camposproyecto.getPattern());
+			campoAux.setPordefecto(camposproyecto.getPordefecto());
+			campoAux.setProyecto(proyecto);
+			campoAux.setTipocampo(camposproyecto.getTipocampo());
+			campoAux.setValidarduplicidad(camposproyecto.getValidarduplicidad());
+			respuesta.add(campoAux);
+			System.out.println(campoAux.getIdcamposproyecto() + ": " + campoAux.getCampo());
 		}
 
-		return camposBitacoraGenerada;
+		return respuesta;
 	}
 	
-	private List<Camposproyecto> agregarEquipos(int numMuestra, int idagrupacion, List<Equipocalentamiento> listaEquiposCalentamiento,
+	private List<Camposproyecto> agregarEquipos(int numMuestra, int idAgrupacion, List<Equipocalentamiento> listaEquiposCalentamiento,
 			List<Equipocontrolador> listaEquiposControlador, List<Equipodosificador> listaEquiposDosificador,List<Equipobomba> listaEquiposBomba,
 			List<Equipofiltrado> listaEquiposFiltrado, Proyecto proyecto) {
 		List<Camposproyecto> campos = new ArrayList<Camposproyecto>();
+		Agrupacion agrupacion = this.agrupacion.findById(idAgrupacion).get();
 		int i =1;
 		for (Equipofiltrado filtro : listaEquiposFiltrado) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra +" FILTRO "+ i++ +" (PSI)","FALSE","TRUE",10,"CHECKBOX","[N/A]", new Agrupacion(idagrupacion,"REVISION DE EQUIPOS MUESTRA 1"),proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra +" FILTRO "+ i++ +" (PSI)","FALSE","TRUE",10,"CHECKBOX","[N/A]", agrupacion,proyecto,""));
 		}
-		i=0;
+		i=1;
 		for (Equipocalentamiento caldera : listaEquiposCalentamiento) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra +" CALDERA "+ i++ +" (°C)","FALSE","TRUE",10,"CHECKBOX","[N/A]", new Agrupacion(idagrupacion,"REVISION DE EQUIPOS MUESTRA 2"),proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra +" CALDERA "+ i++ +" (°C)","FALSE","TRUE",10,"CHECKBOX","[N/A]",agrupacion,proyecto,""));
 		}
-		i=0;
+		i=1;
 		for (Equipobomba bomba : listaEquiposBomba) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " MOTOBOMBA "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", new Agrupacion(idagrupacion,"REVISION DE EQUIPOS MUESTRA 3"),proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " MOTOBOMBA "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", agrupacion,proyecto,""));
 		}
-		i=0;
+		i=1;
 		for (Equipocontrolador controlador : listaEquiposControlador) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra + " CONTROLADOR "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", new Agrupacion(idagrupacion,"REVISION DE EQUIPOS MUESTRA 4"),proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra + " CONTROLADOR "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", agrupacion,proyecto,""));
 		}
-		i=0;
+		i=1;
 		for (Equipodosificador dosificador : listaEquiposDosificador) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " DOSIFICADOR "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", new Agrupacion(idagrupacion,"REVISION DE EQUIPOS MUESTRA 5"),proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " DOSIFICADOR "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", agrupacion,proyecto,""));
 		}
 		return campos;
 	}
