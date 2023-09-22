@@ -55,14 +55,17 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.gson.Gson;
 import com.google.protobuf.Struct;
+import com.isae.drpool.drpool.dao.IAlbercaDAO;
 import com.isae.drpool.drpool.dao.ICamposProyectoDAO;
 import com.isae.drpool.drpool.dao.IDocumentoGenerado;
 import com.isae.drpool.drpool.dao.IFirmaDocumentosDAO;
 import com.isae.drpool.drpool.dao.IFotoEvidenciaDAO;
 import com.isae.drpool.drpool.dao.IInventarioDAO;
 import com.isae.drpool.drpool.dao.IProyectoDAO;
+import com.isae.drpool.drpool.dao.ISedeDAO;
 import com.isae.drpool.drpool.dao.IValoresDAO;
 import com.isae.drpool.drpool.entity.Agrupaciones;
+import com.isae.drpool.drpool.entity.Alberca;
 import com.isae.drpool.drpool.entity.Campos;
 import com.isae.drpool.drpool.entity.Camposproyecto;
 import com.isae.drpool.drpool.entity.Documentogenerado;
@@ -71,6 +74,7 @@ import com.isae.drpool.drpool.entity.EvidenciaCheckList;
 import com.isae.drpool.drpool.entity.Fotoevidencia;
 import com.isae.drpool.drpool.entity.Inventario;
 import com.isae.drpool.drpool.entity.Proyecto;
+import com.isae.drpool.drpool.entity.Sede;
 import com.isae.drpool.drpool.entity.Tipoproyecto;
 import com.isae.drpool.drpool.entity.Usuario;
 import com.isae.drpool.drpool.entity.Valore;
@@ -116,6 +120,12 @@ public class GenerarPDFRestController {
 
 	@Autowired
 	private IDocumentoGenerado documentoGenerado;
+	
+	@Autowired
+	private IAlbercaDAO alberca;
+	
+	@Autowired
+	private ISedeDAO sede; 
 
 	private String firestorage_auth = "google-service-descarga.json";
 
@@ -284,9 +294,6 @@ public class GenerarPDFRestController {
 		
 		List<Map<String, Object>> listEquipos = new ArrayList<Map<String, Object>>();
 		
-		
-		
-		
 		List<Map<String, Object>> nameEquipos = new ArrayList<Map<String,Object>>();
 		Map<String, Object> list_contenedora_equipos = new HashMap<String, Object>();
 		List<Map<String, Object>> listCheckbox1 = new ArrayList<Map<String,Object>>();
@@ -298,6 +305,12 @@ public class GenerarPDFRestController {
 		
 		File pdfFile;
 		String nombrePdf = inventario.getFolio();
+		Proyecto proyecto = this.proyecto.obtenerProyectoPorId(inventario.getProyecto().getIdproyecto());
+		Alberca alberca = this.alberca.getById(proyecto.getAlberca().getIdalberca());
+		Sede sede = this.sede.getById(alberca.getSede().getIdsede());
+		
+		
+		
 		int contador = 1;
 		
 		 
@@ -322,11 +335,6 @@ public class GenerarPDFRestController {
 						list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
 						System.out.println("Se mando la fecha a checklist");
 						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
-						//Pasar la fecha
-						//if(!fecha.equals(campo.getValor())) {
-						//	list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
-						//	fecha = campo.getValor();
-						//}
 					}
 					//else if(campo.getNombreCampo().contains("PARAMETROS MUESTRA")) {}
 				}else {
@@ -421,7 +429,10 @@ public class GenerarPDFRestController {
 		System.out.println("Creacion y asignacion de los equipos");
 		
 		System.out.println("List equipos: ----- " + listEquipos);
-
+		
+		URL logoCliente = new URL (sede.getCliente().getUrllogo());
+		
+		parametros.put("LOGO CLIENTE", logoCliente);
 		
 		parametros.put("LIST_EQUIPOS", jrcEquiposFinal);
 
@@ -1178,6 +1189,8 @@ public class GenerarPDFRestController {
 				
 				Map<String, Object> parameters = new HashMap<>();
 				
+				URL urlCliente = new URL((String) listReport.get("LOGO CLIENTE"));
+				
 				parameters.put("FECHA", listReport.get("FECHA"));
 				parameters.put("FIRSTDATE", listReport.get("FIRSTDATE"));
 				parameters.put("LASTDATE", listReport.get("LASTDATE"));
@@ -1188,6 +1201,7 @@ public class GenerarPDFRestController {
 				parameters.put("REALIZO", listReport.get("REALIZO"));
 				parameters.put("REVISO", listReport.get("REVISO"));
 				parameters.put("CARACTERISTICA", listReport.get("CARACTERISTICA"));
+				parameters.put("LOGO CLIENTE", urlCliente);
 			
 				
 				//List de actividades

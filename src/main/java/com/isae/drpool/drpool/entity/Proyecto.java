@@ -62,6 +62,16 @@ public class Proyecto implements Serializable {
 		this.alberca = alberca;
 		this.folioautomatico = folioautomatico;
 	}
+	
+	
+
+	public Alberca getAlberca() {
+		return alberca;
+	}
+
+	public void setAlberca(Alberca alberca) {
+		this.alberca = alberca;
+	}
 
 	public int getIdproyecto() {
 		return idproyecto;

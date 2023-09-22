@@ -32,7 +32,7 @@ public class Alberca {
 	private String profundidadminima;
 	//Recien agregado
 	private String profundidadmaxima;
-	private String observaciones; 
+	private String observaciones;
 	
 	
 	//private String ubicacion; se elimina ubicacion de la bd
