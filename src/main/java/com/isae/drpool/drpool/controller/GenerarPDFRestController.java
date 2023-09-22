@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,6 +53,8 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.google.gson.Gson;
+import com.google.protobuf.Struct;
 import com.isae.drpool.drpool.dao.ICamposProyectoDAO;
 import com.isae.drpool.drpool.dao.IDocumentoGenerado;
 import com.isae.drpool.drpool.dao.IFirmaDocumentosDAO;
@@ -277,24 +280,122 @@ public class GenerarPDFRestController {
 		Map<String, Object> parametros = new HashMap<String,Object>();
 		Map<String, Object> tablaBitacora = new HashMap<String,Object>();
 		Map<String, Object> respuesta = new HashMap<String,Object>();
+		//Creamos el mapa de fecha para el check list 
+		
+		List<Map<String, Object>> listEquipos = new ArrayList<Map<String, Object>>();
+		
+		
+		
+		
+		List<Map<String, Object>> nameEquipos = new ArrayList<Map<String,Object>>();
+		Map<String, Object> list_contenedora_equipos = new HashMap<String, Object>();
+		List<Map<String, Object>> listCheckbox1 = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> listCheckbox2= new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> listCheckbox3 = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> listCheckbox4 = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> listCheckbox5 = new ArrayList<Map<String,Object>>();
+		
+		
 		File pdfFile;
 		String nombrePdf = inventario.getFolio();
+		int contador = 1;
 		
+		 
 		for (Agrupaciones agrupacion : listaAgrupaciones) {
+			
+			
 			for (Campos campo : agrupacion.getCampos()) {
-				if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
-					parametros.put(campo.getNombreCampo(), campo.getValor());
-					if(campo.getNombreCampo().equalsIgnoreCase("FECHA REGISTRO")) {
-						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
+				
+				
+				if(agrupacion.getAgrupacion().contains("PARAMETROS MUESTRA")) {
+					if(campo.getNombreCampo().contains("HORA")) {
+						System.out.println("Se mando la hora a checklist");
+						list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
 					}
+				}
+				
+				if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
+					 
+					parametros.put(campo.getNombreCampo(), campo.getValor());
+					
+					if(campo.getNombreCampo().equalsIgnoreCase("FECHA REGISTRO")) {
+						list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
+						System.out.println("Se mando la fecha a checklist");
+						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
+						//Pasar la fecha
+						//if(!fecha.equals(campo.getValor())) {
+						//	list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
+						//	fecha = campo.getValor();
+						//}
+					}
+					//else if(campo.getNombreCampo().contains("PARAMETROS MUESTRA")) {}
 				}else {
 						if(!campo.getTipoCampo().equalsIgnoreCase("FIRMA")) {
-							String campoPlantilla = campo.getNombreCampo().replaceAll("[()]", "");;
+							if(campo.getAgrupacion().contains("REVISION DE EQUIPOS MUESTRA")) {
+								contador++;
+								
+								
+								System.out.println("Contador es: " + contador);
+								Map<String,Object> mapTemp = new HashMap<String,Object>();
+								
+								if(campo.getNombreCampo().contains("TOMA DE MUESTRA 1")) {
+									mapTemp.put("NOMBRE_EQUIPO", campo.getNombreCampo());
+									nameEquipos.add(mapTemp);
+									mapTemp = new HashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_1", campo.getValor());
+									listCheckbox1.add(mapTemp);
+								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 2")) {
+									mapTemp = new HashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_2", campo.getValor());
+									listCheckbox2.add(mapTemp);
+								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 3")) {
+									mapTemp = new HashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_3", campo.getValor());
+									listCheckbox3.add(mapTemp);
+								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 4")) {
+									mapTemp = new HashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_4", campo.getValor());
+									listCheckbox4.add(mapTemp);
+								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 5")) {
+									mapTemp = new HashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_5", campo.getValor());
+									listCheckbox5.add(mapTemp);
+								}
+								
+								if(contador == 6) {								
+									JRBeanCollectionDataSource listNames = new JRBeanCollectionDataSource(nameEquipos);
+									JRBeanCollectionDataSource listHr1 = new JRBeanCollectionDataSource(listCheckbox1);
+									JRBeanCollectionDataSource listHr2 = new JRBeanCollectionDataSource(listCheckbox2);
+									JRBeanCollectionDataSource listHr3 = new JRBeanCollectionDataSource(listCheckbox3);
+									JRBeanCollectionDataSource listHr4 = new JRBeanCollectionDataSource(listCheckbox4);
+									JRBeanCollectionDataSource listHr5 = new JRBeanCollectionDataSource(listCheckbox5);
+									System.out.println("Creacion de JRC de los nombres de los equipos y hrs");
+									list_contenedora_equipos.put("LIST_NAME_EQUIPOS", listNames);
+									list_contenedora_equipos.put("LIST_HORA_1_CHECKBOX", listHr1);
+									list_contenedora_equipos.put("LIST_HORA_2_CHECKBOX", listHr2);
+									list_contenedora_equipos.put("LIST_HORA_3_CHECKBOX", listHr3);
+									list_contenedora_equipos.put("LIST_HORA_4_CHECKBOX", listHr4);
+									list_contenedora_equipos.put("LIST_HORA_5_CHECKBOX", listHr5);
+									System.out.println("Se agregan los equipos a listEquipos");
+
+										
+
+									contador = 1;
+								}
+							}
+							String campoPlantilla = campo.getNombreCampo().replaceAll("[()]", "");
 							System.out.println(campoPlantilla+":"+ campo.getValor());
 							tablaBitacora.put(campoPlantilla, campo.getValor());
+							
 						}
 				}
+			}	
+			
+			if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
+				listEquipos.add(list_contenedora_equipos);
 			}
+					
+			
 		}
 		
 		for(firmasdocumento firma : firmas) {
@@ -304,16 +405,31 @@ public class GenerarPDFRestController {
 			}
 		}
 		
+		// EMPEZAMOS A CREAR EL PARAMETRO DE FECHAS 
+		
 		List<Map<String, Object>> bitacora = new ArrayList<Map<String, Object>>();
 		
+		System.out.println("Tabla bitacora: " + tablaBitacora);
+		 
 		
 		bitacora.add(tablaBitacora);
 		
 		JRBeanCollectionDataSource jrc = new JRBeanCollectionDataSource(bitacora);
+		
+		//Creamos la coleccion de listas de las listas de equipos
+		JRBeanCollectionDataSource jrcEquiposFinal = new JRBeanCollectionDataSource(listEquipos);
+		System.out.println("Creacion y asignacion de los equipos");
+		
+		System.out.println("List equipos: ----- " + listEquipos);
+
+		
+		parametros.put("LIST_EQUIPOS", jrcEquiposFinal);
 
 		parametros.put("CollectionBeanParam", jrc);
 		
 		pdfFile = File.createTempFile("ReporteCell", ".pdf");
+		
+		System.out.println("Crear pdf");
 		
 		try (FileOutputStream pos = new FileOutputStream(pdfFile)) {
 			System.out.println("Nombre Proyecto: "+ nombreProyecto);
@@ -706,7 +822,6 @@ public class GenerarPDFRestController {
 
 	}
 
-
 	private Map<String, Object> parameters(List<Agrupaciones> listaAgrupaciones, List<firmasdocumento> firmas,
 			String nombreProyecto, int idInventario) throws IOException {
 		final Map<String, Object> parameters = new HashMap<>();
@@ -1026,4 +1141,133 @@ public class GenerarPDFRestController {
 		return listaDatosFirmas;
 	}
 
+
+	@CrossOrigin("*")
+	@PostMapping("/generar/reporte/mensual")
+	private void generarReporteMensualDRpool(@RequestBody Map<String, Object> listReport) {
+		
+		try {
+			FileInputStream serviceAccount = new FileInputStream("google-services.json");
+			String file_format = downloadTemplate(serviceAccount, "REPORTEMENSUAL");
+			
+			System.out.print("Se leyo el archivo");
+			
+			InputStream reportInputStream = null; 
+			InputStream employeeReportStream = null; 
+			
+			if(file_format != null) {
+				System.out.println("String.format(\"Inventario Proyect Template path : %s\", new Object[] { file_format })");
+				
+				File file = new File(file_format);
+				employeeReportStream = new FileInputStream(file);
+				reportInputStream = employeeReportStream;
+				
+				JasperDesign jasperDesign = JRXmlLoader.load(reportInputStream);
+				System.out.println("Se leyo el jasper design");
+				
+				JasperReport report = JasperCompileManager.compileReport(jasperDesign);
+				System.out.println("Se creo el informe jasper");
+				
+				final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
+						Collections.singletonList("Invoice"));
+				
+				File reportFile = File.createTempFile("reporte", ".pdf", new File("/Users/isae_1/Desktop/"));
+
+				
+				//Creando el map a enviar para el reporte 
+				
+				Map<String, Object> parameters = new HashMap<>();
+				
+				parameters.put("FECHA", listReport.get("FECHA"));
+				parameters.put("FIRSTDATE", listReport.get("FIRSTDATE"));
+				parameters.put("LASTDATE", listReport.get("LASTDATE"));
+				parameters.put("SEDE", listReport.get("SEDE"));
+				parameters.put("ALCALDIA", listReport.get("ALCALDIA"));
+				parameters.put("TIPOALBERCA", listReport.get("TIPOALBERCA"));
+				parameters.put("ALBERCA", listReport.get("ALBERCA"));
+				parameters.put("REALIZO", listReport.get("REALIZO"));
+				parameters.put("REVISO", listReport.get("REVISO"));
+				parameters.put("CARACTERISTICA", listReport.get("CARACTERISTICA"));
+			
+				
+				//List de actividades
+				
+				List<Map<String,String>> listActivities = new ArrayList<Map<String,String>>();
+				
+				//Segunda hoja -------------------
+				
+				List<Map<String, Object>> list_page_images = new ArrayList<Map<String, Object>>();
+				
+				List<List<Object>> reportImages = (List<List<Object>>) listReport.get("REPORT_LIST_IMAGES");
+				
+				for(List<Object> rpt:reportImages) {
+					//Creamos MAP temporales
+					Map<String, Object> mapTemp = new HashMap<>();
+					Map<String, String> mapTempActivities = new HashMap<>();
+					List<Map<String, Object>> images_1 = new ArrayList<Map<String, Object>>();
+					List<Map<String, Object>> images_2 = new ArrayList<Map<String, Object>>();
+					
+					
+					// LLenamos la lista de actividades de acuerdo a solicitado en el reporte 
+					mapTempActivities.put("LIST",  ((Map<String,String>) rpt.get(0)).get("ACTIVITY"));
+					listActivities.add(mapTempActivities);
+					
+					//Obtenemos el nombre de la actvidad de cada hoja
+					mapTemp.put("ACTIVITY",  ((Map<String,Object>) rpt.get(0)).get("ACTIVITY"));
+					
+					//Obtemos una lista de imagenes 
+					List<String> images = (List<String>) ((Map<String, Object>) rpt.get(1)).get("IMAGES");
+					int cont = 1;
+					//Convertimos cada String de url a un objecto Tipo URL
+					for(String url : images) {
+						URL img = new URL(url);
+						//Mapa temporal de imagenes
+						Map<String, Object> imgTemp = new HashMap<>();
+						//Agregamos la imagen dependiendo de si es par o impar a una lista diferente, una por cada columna
+						if(cont % 2 != 0) {
+							imgTemp.put("IMG1", img);
+							images_1.add(imgTemp);
+						}else {
+							imgTemp.put("IMG2", img);
+							images_2.add(imgTemp);
+						}
+						cont++;
+					}
+					
+					//Creamos la coleccion de imagenes por cada columna para jasper report
+					JRBeanCollectionDataSource jrcImages1 = new JRBeanCollectionDataSource(images_1);
+					JRBeanCollectionDataSource jrcImages2 = new JRBeanCollectionDataSource(images_2);
+					
+					mapTemp.put("IMAGES_1", jrcImages1);
+					mapTemp.put("IMAGES_2", jrcImages2);
+					
+					mapTemp.put("TEXT_IMAGES",  ((Map<String,Object>) rpt.get(2)).get("TEXT_IMAGES"));
+					mapTemp.put("OBSERVACIONES",  ((Map<String,Object>) rpt.get(3)).get("OBSERVACIONES"));
+					//Agregamos en mapTemp a la lista, cada uno es una hoja
+					list_page_images.add(mapTemp);
+					
+				}
+				
+				JRBeanCollectionDataSource jrc = new JRBeanCollectionDataSource(listActivities);
+				
+				JRBeanCollectionDataSource jrcImages = new JRBeanCollectionDataSource(list_page_images);
+				
+				parameters.put("CollectionBeanParam", jrc);
+				
+				parameters.put("REPORT_LIST_IMAGES", jrcImages);
+			
+				System.out.println(parameters);
+				//Generamos el pdf en la ubicacion  de reportFile
+				try(FileOutputStream fos = new FileOutputStream(reportFile)){
+					JasperReportsUtils.renderAsPdf(report, parameters, dataSource, fos);
+					System.out.println("Se creo el pdf");
+				}	
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+		
+	}
 }

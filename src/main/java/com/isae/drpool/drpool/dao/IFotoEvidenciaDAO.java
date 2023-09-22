@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.isae.drpool.drpool.entity.Fotoevidencia;
+import com.isae.drpool.drpool.entity.Inventario;
 
 
 @Repository
@@ -30,6 +31,13 @@ public interface IFotoEvidenciaDAO extends JpaRepository<Fotoevidencia,Integer>{
 	
 	@Query(value= "SELECT * FROM fotoevidencia WHERE nombrefoto = :nombrefoto AND idcampo = :idcampo AND idinventario = :idinventario", nativeQuery = true)
 	List<Fotoevidencia> obtenerConcidencia(@Param("nombrefoto") String nombreFoto, @Param("idcampo") int idcampo, @Param("idinventario") int idinventario);
+
+	
+	@Query(value="SELECT f FROM Fotoevidencia f INNER JOIN f.campoProyecto c WHERE f.inventario IN :inventario AND c.campo like %:actividad%")
+	List<Fotoevidencia> obtenerImagenes(@Param("inventario") List<Inventario> inventario, @Param("actividad") String actividad);
+	
+	//SELECT fotoevidencia.* FROM `fotoevidencia` inner join camposproyecto on fotoevidencia.idcampo = camposproyecto.idcamposproyecto 
+	//WHERE idinventario IN (SELECT valores.idinventario FROM `valores`  WHERE idinventario = 153764 ) AND camposproyecto.campo LIKE '%LIMPIEZA DE TRAMPAS%'
 
 	@Modifying
     @Transactional

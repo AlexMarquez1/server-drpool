@@ -31,6 +31,7 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.isae.drpool.drpool.dao.IFotoEvidenciaDAO;
 import com.isae.drpool.drpool.dao.IInventarioDAO;
+import com.isae.drpool.drpool.dao.IValoresDAO;
 import com.isae.drpool.drpool.entity.Evidencia;
 import com.isae.drpool.drpool.entity.Fotoevidencia;
 import com.isae.drpool.drpool.entity.Inventario;
@@ -400,4 +401,16 @@ public class FotoEvidenciaRestController {
 		}
 	}
 
+	
+	@CrossOrigin("*")
+	@PostMapping("/obtener/imagenes/actividades/")
+	private List<Fotoevidencia> getArrayUrl(@RequestBody Map<String, String> parametros){
+		int idalberca = Integer.parseInt(parametros.get("ALBERCA"));
+		List<Fotoevidencia> fotoevidencialist = new ArrayList<Fotoevidencia>();
+		List<Inventario> inv = new ArrayList<Inventario>();
+		inv = this.inventario.obtenerIdInventario(idalberca); 
+		fotoevidencialist = this.fotoEvidencia.obtenerImagenes(inv, parametros.get("ACTIVIDAD"));
+
+		return fotoevidencialist;
+	}
 }
