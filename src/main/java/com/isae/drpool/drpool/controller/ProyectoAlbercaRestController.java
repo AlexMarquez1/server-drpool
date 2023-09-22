@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isae.drpool.drpool.dao.IAgrupacionesDAO;
 import com.isae.drpool.drpool.dao.IAlbercaDAO;
+import com.isae.drpool.drpool.dao.IAsignacionProyectoDAO;
 import com.isae.drpool.drpool.dao.ICamposProyectoDAO;
 import com.isae.drpool.drpool.dao.IEquipobombaDAO;
 import com.isae.drpool.drpool.dao.IEquipocalentamientoDAO;
@@ -26,6 +27,7 @@ import com.isae.drpool.drpool.dao.IProyectoAlbercaDAO;
 import com.isae.drpool.drpool.dao.IProyectoDAO;
 import com.isae.drpool.drpool.entity.Agrupacion;
 import com.isae.drpool.drpool.entity.Alberca;
+import com.isae.drpool.drpool.entity.Asignacionproyecto;
 import com.isae.drpool.drpool.entity.Camposproyecto;
 import com.isae.drpool.drpool.entity.Equipobomba;
 import com.isae.drpool.drpool.entity.Equipocalentamiento;
@@ -37,6 +39,7 @@ import com.isae.drpool.drpool.entity.ProyectoAlberca;
 import com.isae.drpool.drpool.entity.ProyectoSede;
 import com.isae.drpool.drpool.entity.Sede;
 import com.isae.drpool.drpool.entity.Tipoproyecto;
+import com.isae.drpool.drpool.entity.Usuario;
 
 @RestController
 public class ProyectoAlbercaRestController {
@@ -70,6 +73,9 @@ public class ProyectoAlbercaRestController {
 	
 	@Autowired
 	private IAgrupacionesDAO agrupacion;
+	
+	@Autowired
+	private IAsignacionProyectoDAO asignacionProyecto;
 
 	@CrossOrigin(origins = "*")
 	@GetMapping("/obtener/proyectosalberca")
@@ -92,7 +98,10 @@ public class ProyectoAlbercaRestController {
 		List<String> albercaSinEquipo = new ArrayList<>();
 		List<String> sedeSinAlberca = new ArrayList<>();
 		Map<String, Object> albercaEquipos = new HashMap<String, Object>();
-		List<Proyecto> listaProyectosAGenerar = new ArrayList<Proyecto>();
+		Map<String,Usuario> proyectoCoordinador = new HashMap<String,Usuario>();
+		Map<String,Usuario> proyectoOperador = new HashMap<String,Usuario>();
+		List<Proyecto> listaProyectosAGenerarBitacora = new ArrayList<Proyecto>();
+		List<Proyecto> listaProyectosAGenerarSemanal = new ArrayList<Proyecto>();
 
 		List<ProyectoSede> lista = new ArrayList<>();
 		for (int i = 0; i < proyectoAlberca.getProyectoSedes().size(); i++) {
@@ -138,18 +147,33 @@ public class ProyectoAlbercaRestController {
 					listaEquipos.add(equipo);
 					albercaEquipos.put(alberca.getNombrealberca(), listaEquipos);
 				}
-				listaProyectosAGenerar.add(new Proyecto(0,new Date(),"BITACORA DIARIA "+ alberca.getNombrealberca(),"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
+				String nombreProyectoBitacora = "BITACORA DIARIA "+ alberca.getSede().getNombre();
+				String nombreProyectoSemanal = "REPORTE SEMANAL "+ alberca.getSede().getNombre();
+				listaProyectosAGenerarBitacora.add(new Proyecto(0,new Date(),nombreProyectoBitacora,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
+				listaProyectosAGenerarSemanal.add(new Proyecto(0,new Date(),nombreProyectoSemanal,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
+				proyectoCoordinador.put(nombreProyectoBitacora, alberca.getSede().getCoordinador());
+				proyectoCoordinador.put(nombreProyectoSemanal, alberca.getSede().getCoordinador());
+				proyectoOperador.put(nombreProyectoBitacora, alberca.getSede().getOperador());
 			}
 
 			if (equipoCompleto) {
 
 				// Crear formularios para cada una de las albercas
 				
-				for (Proyecto proyectoNuevo : listaProyectosAGenerar) {
+				for (Proyecto proyectoNuevo : listaProyectosAGenerarBitacora) {
 					List<Camposproyecto> camposBitacoraDiaria = new ArrayList<Camposproyecto>();
 					Proyecto proyecto = this.proyecto.save(proyectoNuevo);
+					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoOperador.get(proyecto.getProyecto()), proyecto));
+					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoCoordinador.get(proyecto.getProyecto()), proyecto));
 					camposBitacoraDiaria = bitacoraDiaria(proyecto, listaEquiposCalentamiento, listaEquiposControlador, listaEquiposDosificador, listaEquiposBomba, listaEquiposFiltrado);
-					System.out.println(camposBitacoraDiaria.size());
+					this.camposproyecto.saveAll(camposBitacoraDiaria);
+				}
+				
+				for (Proyecto proyectoNuevo : listaProyectosAGenerarSemanal) {
+					List<Camposproyecto> camposBitacoraDiaria = new ArrayList<Camposproyecto>();
+					Proyecto proyecto = this.proyecto.save(proyectoNuevo);
+					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoCoordinador.get(proyecto.getProyecto()), proyecto));
+					camposBitacoraDiaria = reporteSemanal(proyecto);
 					this.camposproyecto.saveAll(camposBitacoraDiaria);
 				}
 				
@@ -163,6 +187,30 @@ public class ProyectoAlbercaRestController {
 			}
 
 		}
+		return respuesta;
+	}
+	
+	private List<Camposproyecto> reporteSemanal(Proyecto proyecto){
+		
+		List<Camposproyecto> camposBitacora = new ArrayList<>(this.camposproyecto.obtenerCatalogoCampoPorProyecto(232));
+		List<Camposproyecto> respuesta = new ArrayList<Camposproyecto>();
+		
+		for (Camposproyecto camposproyecto : camposBitacora) {
+			Camposproyecto campoAux = new Camposproyecto();
+			campoAux.setIdcamposproyecto(0);
+			campoAux.setAgrupacion(camposproyecto.getAgrupacion());
+			campoAux.setAlerta(camposproyecto.getAlerta());
+			campoAux.setCampo(camposproyecto.getCampo());
+			campoAux.setEditable(camposproyecto.getEditable());
+			campoAux.setLongitud(camposproyecto.getLongitud());
+			campoAux.setPattern(camposproyecto.getPattern());
+			campoAux.setPordefecto(camposproyecto.getPordefecto());
+			campoAux.setProyecto(proyecto);
+			campoAux.setTipocampo(camposproyecto.getTipocampo());
+			campoAux.setValidarduplicidad(camposproyecto.getValidarduplicidad());
+			respuesta.add(campoAux);
+		}
+		
 		return respuesta;
 	}
 
@@ -212,7 +260,6 @@ public class ProyectoAlbercaRestController {
 			campoAux.setTipocampo(camposproyecto.getTipocampo());
 			campoAux.setValidarduplicidad(camposproyecto.getValidarduplicidad());
 			respuesta.add(campoAux);
-			System.out.println(campoAux.getIdcamposproyecto() + ": " + campoAux.getCampo());
 		}
 
 		return respuesta;
