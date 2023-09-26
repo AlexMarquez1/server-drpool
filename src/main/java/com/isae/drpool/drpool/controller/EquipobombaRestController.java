@@ -27,12 +27,8 @@ public class EquipobombaRestController {
 	@CrossOrigin(origins ="*")
 	@PostMapping("/nuevo/equipobomba")
 	public String nuevoEquipobomba(@RequestBody Equipobomba equipobomba) {
-		try{
 			this.equipobomba.save(equipobomba);
 			return "Se guardo"; 
-		}catch(Exception e) {
-			return "insertar bomba" + e.toString(); 
-		}
 	}
 
 }
