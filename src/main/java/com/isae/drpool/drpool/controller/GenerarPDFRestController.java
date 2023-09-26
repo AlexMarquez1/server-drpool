@@ -444,7 +444,7 @@ public class GenerarPDFRestController {
 		
 		try (FileOutputStream pos = new FileOutputStream(pdfFile)) {
 			System.out.println("Nombre Proyecto: "+ nombreProyecto);
-			final JasperReport report = loadTemplate(nombreProyecto);
+			final JasperReport report = loadTemplate("BITACORA DIARIA");
 //			final Map<String, Object> parameters = parameters(listaAgrupaciones, firmas, nombreProyecto, idInventario);
 
 			final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
@@ -1029,7 +1029,7 @@ public class GenerarPDFRestController {
 		URL url = new URL(
 				"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
 		FileInputStream serviceAccount = new FileInputStream(descargarConector(url, "google-service-descarga.json"));
-		String file_format = downloadTemplate(serviceAccount, nombreProyecto);
+		String file_format = downloadTemplate(serviceAccount, nombreProyecto.contains("REPORTE SEMANAL") ? "REPORTE SEMANAL" : nombreProyecto);
 		System.out.println("Plantilla proyecto: " + file_format);
 		InputStream reportInputStream = null;
 		InputStream employeeReportStream = null;
