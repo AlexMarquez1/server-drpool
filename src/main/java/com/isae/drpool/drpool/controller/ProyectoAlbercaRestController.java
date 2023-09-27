@@ -147,8 +147,8 @@ public class ProyectoAlbercaRestController {
 					listaEquipos.add(equipo);
 					albercaEquipos.put(alberca.getNombrealberca(), listaEquipos);
 				}
-				String nombreProyectoBitacora = "BITACORA DIARIA "+ alberca.getSede().getNombre();
-				String nombreProyectoSemanal = "REPORTE SEMANAL "+ alberca.getSede().getNombre();
+				String nombreProyectoBitacora = "BITACORA DIARIA "+ alberca.getSede().getNombre() + "-" + alberca.getNombrealberca();
+				String nombreProyectoSemanal = "REPORTE SEMANAL "+ alberca.getSede().getNombre() + "-" + alberca.getNombrealberca();
 				listaProyectosAGenerarBitacora.add(new Proyecto(0,new Date(),nombreProyectoBitacora,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
 				listaProyectosAGenerarSemanal.add(new Proyecto(0,new Date(),nombreProyectoSemanal,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
 				proyectoCoordinador.put(nombreProyectoBitacora, alberca.getSede().getCoordinador());
@@ -272,24 +272,25 @@ public class ProyectoAlbercaRestController {
 		Agrupacion agrupacion = this.agrupacion.findById(idAgrupacion).get();
 		int i =1;
 		for (Equipofiltrado filtro : listaEquiposFiltrado) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra +" FILTRO "+ i++ +" (PSI)","FALSE","TRUE",10,"CHECKBOX","[N/A]", agrupacion,proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra +" FILTRO "+ i++ +" (PSI)","FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipocalentamiento caldera : listaEquiposCalentamiento) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra +" CALDERA "+ i++ +" (°C)","FALSE","TRUE",10,"CHECKBOX","[N/A]",agrupacion,proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra +" CALDERA "+ i++ +" (°C)","FALSE","TRUE",10,"[N/A]","CHECKBOX",agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipobomba bomba : listaEquiposBomba) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " MOTOBOMBA "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", agrupacion,proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " MOTOBOMBA "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipocontrolador controlador : listaEquiposControlador) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra + " CONTROLADOR "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", agrupacion,proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra + " CONTROLADOR "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipodosificador dosificador : listaEquiposDosificador) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " DOSIFICADOR "+ i++,"FALSE","TRUE",10,"CHECKBOX","[N/A]", agrupacion,proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " DOSIFICADOR "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		return campos;
+		
 	}
 }

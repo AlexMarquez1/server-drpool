@@ -23,8 +23,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.imageio.ImageIO;
 
@@ -254,9 +256,13 @@ public class GenerarPDFRestController {
 						inventario.getProyecto().getProyecto(), inventario);
 			}
 			
-			System.out.println("Despues de obtener el documento, GenerarNuevo Documento ");
+			 System.out.println("Despues de obtener el documento, GenerarNuevo Documento ");
+			 
+			 System.out.println("Object pdf: " + pdf);
 
 			File invoicePdf = (File) pdf.get("archivo");
+			
+			System.out.println("Se obtuvo el archivo");
 			String nombreEvidencia = pdf.get("nombre").toString();
 
 			System.out.println("Nombre del documento: " + nombreEvidencia);
@@ -294,13 +300,13 @@ public class GenerarPDFRestController {
 		
 		List<Map<String, Object>> listEquipos = new ArrayList<Map<String, Object>>();
 		
-		List<Map<String, Object>> nameEquipos = new ArrayList<Map<String,Object>>();
-		Map<String, Object> list_contenedora_equipos = new HashMap<String, Object>();
-		List<Map<String, Object>> listCheckbox1 = new ArrayList<Map<String,Object>>();
-		List<Map<String, Object>> listCheckbox2= new ArrayList<Map<String,Object>>();
-		List<Map<String, Object>> listCheckbox3 = new ArrayList<Map<String,Object>>();
-		List<Map<String, Object>> listCheckbox4 = new ArrayList<Map<String,Object>>();
-		List<Map<String, Object>> listCheckbox5 = new ArrayList<Map<String,Object>>();
+		List<ConcurrentHashMap<String, Object>> nameEquipos = new ArrayList<ConcurrentHashMap<String,Object>>();
+		ConcurrentHashMap<String, Object> list_contenedora_equipos = new ConcurrentHashMap<String, Object>();
+		List<ConcurrentHashMap<String, Object>> listCheckbox1 = new ArrayList<ConcurrentHashMap<String,Object>>();
+		List<ConcurrentHashMap<String, Object>> listCheckbox2= new ArrayList<ConcurrentHashMap<String,Object>>();
+		List<ConcurrentHashMap<String, Object>> listCheckbox3 = new ArrayList<ConcurrentHashMap<String,Object>>();
+		List<ConcurrentHashMap<String, Object>> listCheckbox4 = new ArrayList<ConcurrentHashMap<String,Object>>();
+		List<ConcurrentHashMap<String, Object>> listCheckbox5 = new ArrayList<ConcurrentHashMap<String,Object>>();
 		
 		
 		File pdfFile;
@@ -313,13 +319,14 @@ public class GenerarPDFRestController {
 		
 		int contador = 1;
 		
-		 
-		for (Agrupaciones agrupacion : listaAgrupaciones) {
-			
-			
-			for (Campos campo : agrupacion.getCampos()) {
-				
-				
+		//List<Agrupaciones> listaAgrupacionesC = new ArrayList<>(listaAgrupaciones);
+		//Iterator<Agrupaciones> itagrupacion = listaAgrupacionesC.iterator();
+		
+		/*while(itagrupacion.hasNext()) {
+			Agrupaciones agrupacion = itagrupacion.next();
+			Iterator<Campos> campoIterator = agrupacion.getCampos().iterator();
+			while(campoIterator.hasNext()) {
+				Campos campo = campoIterator.next();
 				if(agrupacion.getAgrupacion().contains("PARAMETROS MUESTRA")) {
 					if(campo.getNombreCampo().contains("HORA")) {
 						System.out.println("Se mando la hora a checklist");
@@ -397,11 +404,129 @@ public class GenerarPDFRestController {
 							
 						}
 				}
+			}
+			
+			if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
+				listEquipos.add(list_contenedora_equipos);
+				nameEquipos = new ArrayList<Map<String,Object>>();
+				
+				listCheckbox1 = new ArrayList<Map<String,Object>>();
+				listCheckbox2= new ArrayList<Map<String,Object>>();
+				listCheckbox3 = new ArrayList<Map<String,Object>>();
+				listCheckbox4 = new ArrayList<Map<String,Object>>();
+				listCheckbox5 = new ArrayList<Map<String,Object>>();
+			}
+		}
+		*/
+		
+		List<Agrupaciones> listaAgrupacionesC = new ArrayList<>(listaAgrupaciones);
+		System.out.println("--------------------------");
+		System.out.println(listaAgrupaciones);
+		System.out.println("--------------------------");
+		Boolean iterar = false; 
+		 
+		for (Agrupaciones agrupacion : listaAgrupacionesC) {
+			
+			
+			for (Campos campo : agrupacion.getCampos()) {
+				
+				
+				if(agrupacion.getAgrupacion().contains("PARAMETROS MUESTRA")) {
+					if(campo.getNombreCampo().contains("HORA")) {
+						System.out.println("Se mando la hora a checklist");
+						list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
+					}
+				}
+				
+				if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
+					 
+					parametros.put(campo.getNombreCampo(), campo.getValor());
+					
+					if(campo.getNombreCampo().equalsIgnoreCase("FECHA REGISTRO")) {
+						list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
+						System.out.println("Se mando la fecha a checklist");
+						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
+					}
+					//else if(campo.getNombreCampo().contains("PARAMETROS MUESTRA")) {}
+				}else {
+						if(!campo.getTipoCampo().equalsIgnoreCase("FIRMA")) {
+							if(campo.getAgrupacion().contains("REVISION DE EQUIPOS MUESTRA")) {
+								contador++;
+								
+								
+								System.out.println("Contador es: " + contador);
+								ConcurrentHashMap<String,Object> mapTemp = new ConcurrentHashMap<String,Object>();
+								
+								if(campo.getNombreCampo().contains("TOMA DE MUESTRA 1")) {
+									mapTemp.put("NOMBRE_EQUIPO", campo.getNombreCampo());
+									nameEquipos.add(mapTemp);
+									mapTemp = new ConcurrentHashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_1", campo.getValor());
+									listCheckbox1.add(mapTemp);
+								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 2")) {
+									mapTemp = new ConcurrentHashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_2", campo.getValor());
+									listCheckbox2.add(mapTemp);
+								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 3")) {
+									mapTemp = new ConcurrentHashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_3", campo.getValor());
+									listCheckbox3.add(mapTemp);
+								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 4")) {
+									mapTemp = new ConcurrentHashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_4", campo.getValor());
+									listCheckbox4.add(mapTemp);
+								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 5")) {
+									mapTemp = new ConcurrentHashMap<String,Object>();
+									mapTemp.put("CHECKBOX_HORA_5", campo.getValor());
+									listCheckbox5.add(mapTemp);
+									iterar = true;
+								}
+								
+								if(iterar) {								
+									JRBeanCollectionDataSource listNames = new JRBeanCollectionDataSource(nameEquipos);
+									JRBeanCollectionDataSource listHr1 = new JRBeanCollectionDataSource(listCheckbox1);
+									JRBeanCollectionDataSource listHr2 = new JRBeanCollectionDataSource(listCheckbox2);
+									JRBeanCollectionDataSource listHr3 = new JRBeanCollectionDataSource(listCheckbox3);
+									JRBeanCollectionDataSource listHr4 = new JRBeanCollectionDataSource(listCheckbox4);
+									JRBeanCollectionDataSource listHr5 = new JRBeanCollectionDataSource(listCheckbox5);
+									System.out.println("Creacion de JRC de los nombres de los equipos y hrs");
+									list_contenedora_equipos.put("LIST_NAME_EQUIPOS", listNames);
+									list_contenedora_equipos.put("LIST_HORA_1_CHECKBOX", listHr1);
+									list_contenedora_equipos.put("LIST_HORA_2_CHECKBOX", listHr2);
+									list_contenedora_equipos.put("LIST_HORA_3_CHECKBOX", listHr3);
+									list_contenedora_equipos.put("LIST_HORA_4_CHECKBOX", listHr4);
+									list_contenedora_equipos.put("LIST_HORA_5_CHECKBOX", listHr5);
+									System.out.println("Se agregan los equipos a listEquipos");
+
+										
+
+									contador = 1;
+									iterar = false; 
+									
+								}
+							}
+							String campoPlantilla = campo.getNombreCampo().replaceAll("[()]", "");
+							System.out.println(campoPlantilla+":"+ campo.getValor());
+							tablaBitacora.put(campoPlantilla, campo.getValor());
+							
+						}
+				}
 			}	
 			
 			if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
 				listEquipos.add(list_contenedora_equipos);
+				//nameEquipos = new ArrayList<ConcurrentHashMap<String,Object>>();
+				
+				//listCheckbox1 = new ArrayList<ConcurrentHashMap<String,Object>>();
+				//listCheckbox2= new ArrayList<ConcurrentHashMap<String,Object>>();
+				//listCheckbox3 = new ArrayList<ConcurrentHashMap<String,Object>>();
+				//listCheckbox4 = new ArrayList<ConcurrentHashMap<String,Object>>();
+				//listCheckbox5 = new ArrayList<ConcurrentHashMap<String,Object>>();
+				
+			
+
 			}
+			
 					
 			
 		}
@@ -446,10 +571,17 @@ public class GenerarPDFRestController {
 			System.out.println("Nombre Proyecto: "+ nombreProyecto);
 			final JasperReport report = loadTemplate("BITACORA DIARIA");
 //			final Map<String, Object> parameters = parameters(listaAgrupaciones, firmas, nombreProyecto, idInventario);
+			System.out.println("Se cargo la plantilla correctamente");
 
 			final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
 					Collections.singletonList("Invoice"));
+			System.out.println("JRB data source");
+			try {
 			JasperReportsUtils.renderAsPdf(report, parametros, dataSource, pos);
+			}catch(Exception e) {
+				System.out.println("Error en render as pdf: " + e);
+			}
+			System.out.println("Render de pdf");
 			respuesta = new HashMap<String, Object>();
 			respuesta.put("archivo", pdfFile);
 			respuesta.put("nombre", nombrePdf);
@@ -920,8 +1052,13 @@ public class GenerarPDFRestController {
 		
 		parameters.put("CODIGOLABEL", "*" + codigoDeBarras + "*");
 		System.out.println("CODIGO DE BARRAS: *" +codigoDeBarras + "*");
+		
+		Inventario inventario = this.inventario.findById(idInventario).get();
+		
 
-		proyecto = this.proyecto.obtenerProyectoPorNombre(nombreProyecto);
+		//proyecto = this.proyecto.obtenerProyectoPorNombre(nombreProyecto);
+		
+		proyecto = inventario.getProyecto();
 		
 		if(proyecto.getProyecto().equalsIgnoreCase("ANAM LAPTOP") || proyecto.getProyecto().equalsIgnoreCase("ANAM EQUIPO LIGERO")) {
 			
