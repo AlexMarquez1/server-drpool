@@ -112,15 +112,14 @@ public String guardarEvidencia(Cliente cliente, File file) {
 		try {
 
 			URL url = new URL(
-					"https://firebasestorage.googleapis.com/v0/b/drpool-45023.appspot.com/o/service%2Fgoogle-services.json?alt=media&token=c11fbea5-2b37-4807-a113-32603256c4fd");
+					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
 			FileInputStream serviceAccount = new FileInputStream(descargarArchivo(url, "google-service-descarga.json"));
-			String bucketName = "drpool-45023.appspot.com";
+			String bucketName = "dr-pool-eca1c.appspot.com";
 			boolean bandera = true;
 			Storage storage = (Storage) getStrogaeOptions(serviceAccount).getService();
 
 			if (file != null) {
-				String objectName = "Clientes/" + cliente.getIdcliente() + "-"
-						+ cliente.getCliente().toUpperCase() + "/" + cliente.getCliente() + ".png";
+				String objectName = "Clientes/" + cliente.getCliente().toUpperCase() + "/" + cliente.getCliente() + ".png";
 
 				Map<String, String> map = new HashMap<>();
 				map.put("firebaseStorageDownloadTokens", cliente.getCliente().replace(" ", "") + ".png");
@@ -156,7 +155,7 @@ public String guardarEvidencia(Cliente cliente, File file) {
 	
 	private StorageOptions getStrogaeOptions(FileInputStream serviceAccount) throws IOException{
 		StorageOptions storageOptions = ((StorageOptions.Builder) ((StorageOptions.Builder) StorageOptions.newBuilder()
-				.setProjectId("drpool-45023")).setCredentials((Credentials) GoogleCredentials.fromStream(serviceAccount)))
+				.setProjectId("dr-pool-eca1c.appspot.com")).setCredentials((Credentials) GoogleCredentials.fromStream(serviceAccount)))
 						.build();
 		return storageOptions;
 	}
@@ -199,7 +198,7 @@ public String guardarEvidencia(Cliente cliente, File file) {
     }
 
 	private String generarUrl(String[] direccionTemporal, String token) {
-		String url = "https://firebasestorage.googleapis.com/v0/b/drpool-45023.appspot.com/o/";
+		String url = "https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/";
 
 		return url + direccionTemporal[8] + "?alt=media&token=" + token;
 	}
