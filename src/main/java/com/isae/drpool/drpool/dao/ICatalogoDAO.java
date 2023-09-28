@@ -38,6 +38,9 @@ public interface ICatalogoDAO extends JpaRepository<Catalogo,Integer>{
 	@Query(value = "SELECT * FROM catalogo INNER JOIN tipocatalogo ON tipocatalogo.idtipo = catalogo.idtipo WHERE tipocatalogo.tipo = :tipo AND idproyecto = :idproyecto AND idusuario=:idusuario", nativeQuery = true)
 	List<Catalogo> obtenerDatosCatalogoProyectoUsuario(@Param("tipo") String tipo, @Param("idproyecto") int idproyecto, @Param("idusuario") int idusuario );
 	
+	@Query(value = "SELECT * FROM catalogo INNER JOIN tipocatalogo ON tipocatalogo.idtipo = catalogo.idtipo WHERE tipocatalogo.tipo = :tipo AND idproyecto = :idproyecto", nativeQuery = true)
+	List<Catalogo> obtenerDatosCatalogoProyectoUsuario(@Param("tipo") String tipo, @Param("idproyecto") int idproyecto);
+	
 	@Query(value = "SELECT * FROM catalogo INNER JOIN tipocatalogo ON tipocatalogo.idtipo = catalogo.idtipo WHERE tipocatalogo.tipo = :tipo AND idproyecto = :idproyecto AND idusuario IS NULL", nativeQuery = true)
 	List<Catalogo> obtenerDatosCatalogoProyectoUsuarioNulo(@Param("tipo") String tipo, @Param("idproyecto") int idproyecto );
 	

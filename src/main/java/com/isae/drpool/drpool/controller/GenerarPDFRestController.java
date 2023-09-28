@@ -317,6 +317,7 @@ public class GenerarPDFRestController {
 		
 		
 		
+		
 		int contador = 1;
 		
 		//List<Agrupaciones> listaAgrupacionesC = new ArrayList<>(listaAgrupaciones);
@@ -553,9 +554,22 @@ public class GenerarPDFRestController {
 		JRBeanCollectionDataSource jrcEquiposFinal = new JRBeanCollectionDataSource(listEquipos);
 		System.out.println("Creacion y asignacion de los equipos");
 		
-		System.out.println("List equipos: ----- " + listEquipos);
+		System.out.println("List equipos: ----- " + listEquipos);	
+		
+		
+		
+
 		
 		URL logoCliente = new URL (sede.getCliente().getUrllogo());
+		System.out.println("URL TEXT: " + sede.getCliente().getUrllogo());
+		System.out.println("URL: " + logoCliente);
+		System.out.println("NOMBRE ALBERCA" +  alberca.getNombrealberca());
+		
+		parametros.put("ALBERCA", alberca.getNombrealberca());
+		
+		parametros.put("VOLUMEN", alberca.getCapacidad());
+		
+		parametros.put("OBSERVACIONES", alberca.getObservaciones());
 		
 		parametros.put("LOGO CLIENTE", logoCliente);
 		

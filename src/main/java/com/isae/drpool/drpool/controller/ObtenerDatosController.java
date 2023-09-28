@@ -18,6 +18,7 @@ import com.isae.drpool.drpool.dao.ICamposProyectoDAO;
 import com.isae.drpool.drpool.dao.ICatalogoDAO;
 import com.isae.drpool.drpool.dao.IFirmaDocumentosDAO;
 import com.isae.drpool.drpool.dao.IFotoEvidenciaDAO;
+import com.isae.drpool.drpool.dao.IProyectoDAO;
 import com.isae.drpool.drpool.dao.IValoresDAO;
 import com.isae.drpool.drpool.entity.Agrupacion;
 import com.isae.drpool.drpool.entity.CamposBusqueda;
@@ -52,6 +53,9 @@ public class ObtenerDatosController {
 	
 	@Autowired
 	private ICamposBusquedaDAO camposBusqueda;
+	
+	@Autowired
+	private IProyectoDAO proyecto;
 
 	@CrossOrigin(origins = "*")
 	@GetMapping("/obtener/datoscompletos/registro/{idRegistro}/{idProyecto}/{idUsuario}")
@@ -60,11 +64,24 @@ public class ObtenerDatosController {
 			@PathVariable(value = "idUsuario") String idUsuario) {
 		Map<String, Object> respuesta = new HashMap<String, Object>();
 		Map<String, CatalogoAux> catalogos = new HashMap<String, CatalogoAux>();
-		List<String> listaCatalogos = getCatalogosProyecto(idProyecto);
+		
+		Proyecto pro = this.proyecto.findById(Integer.parseInt(idProyecto)).get();
+		
+		String idPro = idProyecto;
+
+		if(pro.getProyecto().contains("BITACORA DIARIA")) {
+			idPro = "231";
+
+		}else if(pro.getProyecto().contains("REPORTE SEMANAL")) {
+			idPro = "232";
+		}
+		
+		List<String> listaCatalogos = getCatalogosProyecto(idPro);
+		
 		List<CamposBusqueda> listaCamposBusqueda = new ArrayList<CamposBusqueda>();
 		listaCamposBusqueda = this.camposBusqueda.obtenerCamposBusquedaPorProyecto(Integer.parseInt(idProyecto));
 		for (String item : listaCatalogos) {
-			catalogos.put(item, getDatosCatalogoProyecto(idProyecto, item, idUsuario));
+			catalogos.put(item, getDatosCatalogoProyecto(idPro, item, idUsuario));
 		}
 		ObtenerDatos obtenerDatos = new ObtenerDatos();
 		
@@ -245,9 +262,24 @@ public class ObtenerDatosController {
 	public CatalogoAux getDatosCatalogoProyecto(String idProyecto, String tipoCatalogo, String idUsuario) {
 		List<Catalogo> listaCatalogos = this.catalogo.obtenerDatosCatalogoProyectoSinUsuario(tipoCatalogo,
 				Integer.parseInt(idProyecto));
-		List<Catalogo> ListaCatalogo = this.catalogo.obtenerDatosCatalogoProyectoUsuarioNulo(tipoCatalogo, Integer.parseInt(idProyecto));
-		List<Catalogo> listaCatalogosUsuario = this.catalogo.obtenerDatosCatalogoProyectoUsuario(tipoCatalogo,
-				Integer.parseInt(idProyecto), Integer.parseInt(idUsuario));
+		List<Catalogo> ListaCatalogo = new ArrayList<Catalogo>();
+		
+		List<Catalogo> listaCatalogosUsuario = new ArrayList<Catalogo>();
+		
+		System.out.println("IDP: " + idProyecto);
+		if(idProyecto.equals("231")) {
+			System.out.println("TIPO DE CATALOGO: " + tipoCatalogo);
+			listaCatalogosUsuario = this.catalogo.obtenerDatosCatalogoProyectoUsuario(tipoCatalogo,
+					Integer.parseInt(idProyecto));
+		}else if(idProyecto.equals("232")) {
+			listaCatalogosUsuario = this.catalogo.obtenerDatosCatalogoProyectoUsuario(tipoCatalogo,
+					Integer.parseInt(idProyecto));
+		}else {
+			listaCatalogosUsuario = this.catalogo.obtenerDatosCatalogoProyectoUsuario(tipoCatalogo,
+					Integer.parseInt(idProyecto), Integer.parseInt(idUsuario));
+			ListaCatalogo = this.catalogo.obtenerDatosCatalogoProyectoUsuarioNulo(tipoCatalogo, Integer.parseInt(idProyecto));
+		}
+		
 		listaCatalogosUsuario.addAll(ListaCatalogo);
 		if (!listaCatalogosUsuario.isEmpty()) {
 			listaCatalogos.addAll(listaCatalogosUsuario);

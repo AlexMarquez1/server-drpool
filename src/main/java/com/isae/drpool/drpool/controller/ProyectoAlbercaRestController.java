@@ -147,8 +147,8 @@ public class ProyectoAlbercaRestController {
 					listaEquipos.add(equipo);
 					albercaEquipos.put(alberca.getNombrealberca(), listaEquipos);
 				}
-				String nombreProyectoBitacora = "BITACORA DIARIA "+ alberca.getSede().getNombre() + "-" + alberca.getNombrealberca();
-				String nombreProyectoSemanal = "REPORTE SEMANAL "+ alberca.getSede().getNombre() + "-" + alberca.getNombrealberca();
+				String nombreProyectoBitacora = "BITACORA DIARIA "+ alberca.getSede().getNombre(); //+ "-" + alberca.getNombrealberca()
+				String nombreProyectoSemanal = "REPORTE SEMANAL "+ alberca.getSede().getNombre();
 				listaProyectosAGenerarBitacora.add(new Proyecto(0,new Date(),nombreProyectoBitacora,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
 				listaProyectosAGenerarSemanal.add(new Proyecto(0,new Date(),nombreProyectoSemanal,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
 				proyectoCoordinador.put(nombreProyectoBitacora, alberca.getSede().getCoordinador());
@@ -223,28 +223,28 @@ public class ProyectoAlbercaRestController {
 		
 
 		List<Camposproyecto> camposBitacoraGenerada = new ArrayList<Camposproyecto>();
-		camposBitacoraGenerada.addAll(camposBitacora.subList(0, 15));
+		camposBitacoraGenerada.addAll(camposBitacora.subList(0, 16));
 		
 		camposBitacoraGenerada.addAll(agregarEquipos(1,152,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
 				 listaEquiposFiltrado, proyecto));
-		camposBitacoraGenerada.addAll(camposBitacora.subList(23, 38));
+		camposBitacoraGenerada.addAll(camposBitacora.subList(23, 39));
 		camposBitacoraGenerada.addAll(agregarEquipos(2,135,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
 				 listaEquiposFiltrado, proyecto));
-		camposBitacoraGenerada.addAll(camposBitacora.subList(46, 61));
+		camposBitacoraGenerada.addAll(camposBitacora.subList(46, 62));
 		camposBitacoraGenerada.addAll(agregarEquipos(3,139,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
 				 listaEquiposFiltrado, proyecto));
-		camposBitacoraGenerada.addAll(camposBitacora.subList(69, 84));
+		camposBitacoraGenerada.addAll(camposBitacora.subList(69, 85));
 		camposBitacoraGenerada.addAll(agregarEquipos(4,143,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
 				 listaEquiposFiltrado, proyecto));
-		camposBitacoraGenerada.addAll(camposBitacora.subList(92, 107));
+		camposBitacoraGenerada.addAll(camposBitacora.subList(92, 108));
 		camposBitacoraGenerada.addAll(agregarEquipos(5,147,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
 				 listaEquiposFiltrado, proyecto));
-		camposBitacoraGenerada.addAll(camposBitacora.subList(114, 122));
+		camposBitacoraGenerada.addAll(camposBitacora.subList(114, 121));
 		
 		for (Camposproyecto camposproyecto : camposBitacoraGenerada) {
 			Camposproyecto campoAux = new Camposproyecto();

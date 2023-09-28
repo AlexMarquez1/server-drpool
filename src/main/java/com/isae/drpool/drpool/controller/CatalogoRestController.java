@@ -125,8 +125,7 @@ public class CatalogoRestController {
 	@PostMapping("/obtener/catalogo/datos/proyecto/{tipoCatalogo}")
 	public CatalogoAux getDatosCatalogoProyecto(@RequestBody Proyecto proyecto,
 			@PathVariable(value = "tipoCatalogo") String tipoCatalogo) {
-		//List<Catalogo> listaCatalogos = this.catalogo.obtenerDatosCatalogoProyecto(tipoCatalogo, proyecto.getIdproyecto());
-		List<Catalogo> listaCatalogos = this.catalogo.obtenerDatosCatalogoProyecto(tipoCatalogo, proyecto.getProyecto().contains("BITACORA DIARIA") ? 231 : proyecto.getIdproyecto());
+		List<Catalogo> listaCatalogos = this.catalogo.obtenerDatosCatalogoProyecto(tipoCatalogo, proyecto.getIdproyecto());
 		CatalogoAux catalogo = new CatalogoAux();
 		List<String> lista = new ArrayList<String>();
 		if(!listaCatalogos.isEmpty()) {
@@ -147,16 +146,9 @@ public class CatalogoRestController {
 			@PathVariable(value = "tipoCatalogo") String tipoCatalogo,
 			@PathVariable(value = "idUsuario") String idUsuario
 			) {
-		System.out.println();
-		/*
 		List<Catalogo> listaCatalogos = this.catalogo.obtenerDatosCatalogoProyectoSinUsuario(tipoCatalogo, proyecto.getIdproyecto());
 		List<Catalogo> listaCatalogosUsuario = this.catalogo.obtenerDatosCatalogoProyectoUsuario(tipoCatalogo, proyecto.getIdproyecto(), Integer.parseInt(idUsuario));
 		List<Catalogo> ListaCatalogoSinUsuario = this.catalogo.obtenerDatosCatalogoProyectoUsuarioNulo(tipoCatalogo, proyecto.getIdproyecto());
-		*/
-		
-		List<Catalogo> listaCatalogos = this.catalogo.obtenerDatosCatalogoProyectoSinUsuario(tipoCatalogo, proyecto.getProyecto().contains("BITACORA DIARIA") ? 231 : proyecto.getIdproyecto());
-		List<Catalogo> listaCatalogosUsuario = this.catalogo.obtenerDatosCatalogoProyectoUsuario(tipoCatalogo, proyecto.getProyecto().contains("BITACORA DIARIA") ? 231 : proyecto.getIdproyecto(), Integer.parseInt(idUsuario));
-		List<Catalogo> ListaCatalogoSinUsuario = this.catalogo.obtenerDatosCatalogoProyectoUsuarioNulo(tipoCatalogo, proyecto.getProyecto().contains("BITACORA DIARIA") ? 231 : proyecto.getIdproyecto());
 		if(!listaCatalogosUsuario.isEmpty()) {
 			listaCatalogos.addAll(listaCatalogosUsuario);
 			if(ListaCatalogoSinUsuario.isEmpty()){
@@ -243,7 +235,7 @@ public class CatalogoRestController {
 			@PathVariable(value = "tipoCatalogoPadre") String tipoCatalogoPadre,
 			@PathVariable(value = "catalogoPadre") String catalogoPadre
 			) {
-		List<VistaCatalogoRelacionado> lista = this.catalogoRelacionado.obtenerCatalogosRelacionados(tipoCatalogoPadre, catalogoPadre, proyecto.getProyecto().contains("BITACORA DIARIA") ? 231 : proyecto.getIdproyecto());
+		List<VistaCatalogoRelacionado> lista = this.catalogoRelacionado.obtenerCatalogosRelacionados(tipoCatalogoPadre, catalogoPadre, proyecto.getIdproyecto());
 		List<String> listaCatalogo = new ArrayList<String>();
 		CatalogoAux catalogo = new CatalogoAux();
 		for(VistaCatalogoRelacionado item : lista) {
