@@ -27,6 +27,7 @@ public class EquipobombaRestController {
 	@CrossOrigin(origins ="*")
 	@PostMapping("/nuevo/equipobomba")
 	public String nuevoEquipobomba(@RequestBody Equipobomba equipobomba) {
+		System.out.println(equipobomba);
 			this.equipobomba.save(equipobomba);
 			return "Se guardo"; 
 	}
