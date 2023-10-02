@@ -202,6 +202,13 @@ public class InventarioRestController {
 	}
 
 	@CrossOrigin(origins = "*")
+	@GetMapping("/obtener/registrosalberca/{idalberca}")
+	public List<Inventario> getRegistrosAlberca(@PathVariable(value = "idalberca") String idalberca) {
+		List<Inventario> lista = this.inventario.obtenerIdInventario(Integer.parseInt(idalberca));
+		return lista;
+	}
+	
+	@CrossOrigin(origins = "*")
 	@GetMapping("/obtener/registros/busqueda/{idProyecto}/{busqueda}")
 	public List<Inventario> getRegistrosBusqueda(@PathVariable(value = "idProyecto") String idProyecto,
 			@PathVariable(value = "busqueda") String busqueda) {
