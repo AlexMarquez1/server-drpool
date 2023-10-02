@@ -72,6 +72,35 @@ public class Equipofiltrado {
 	private String observaciones; 
 	
 	private String fecha_ultimo_mantenimiento;
+	
+	//Camopos agregados por las observaciones de DRPool 
+	
+	private String estatus_arena;
+	
+	private String estatus_zeolita;
+	
+	private String estatus_cartucho; 
+	
+	private String estatus_esponja; 
+	
+	private String fecha_ultimo_mantenimiento_arena;
+	
+	private String fecha_ultimo_mantenimiento_zeolita;
+	
+	private String fecha_ultimo_mantenimiento_cartucho;
+	
+	private String fecha_ultimo_mantenimiento_esponja;
+	
+	private String observaciones_arena;
+	
+	private String observaciones_zeolita;
+	
+	private String observaciones_cartucho; 
+	
+	private String observaciones_esponja; 
+	
+
+	
 
 	public int getIdfiltro() {
 		return idfiltro;
@@ -288,6 +317,102 @@ public class Equipofiltrado {
 	public void setFecha_ultimo_mantenimiento(String fecha_ultimo_mantenimiento) {
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
 	}
+	
+	public String getEstatus_arena() {
+		return estatus_arena;
+	}
+
+	public void setEstatus_arena(String estatus_arena) {
+		this.estatus_arena = estatus_arena;
+	}
+
+	public String getEstatus_zeolita() {
+		return estatus_zeolita;
+	}
+
+	public void setEstatus_zeolita(String estatus_zeolita) {
+		this.estatus_zeolita = estatus_zeolita;
+	}
+
+	public String getEstatus_cartucho() {
+		return estatus_cartucho;
+	}
+
+	public void setEstatus_cartucho(String estatus_cartucho) {
+		this.estatus_cartucho = estatus_cartucho;
+	}
+
+	public String getEstatus_esponja() {
+		return estatus_esponja;
+	}
+
+	public void setEstatus_esponja(String estatus_esponja) {
+		this.estatus_esponja = estatus_esponja;
+	}
+
+	public String getFecha_ultimo_mantenimiento_arena() {
+		return fecha_ultimo_mantenimiento_arena;
+	}
+
+	public void setFecha_ultimo_mantenimiento_arena(String fecha_ultimo_mantenimiento_arena) {
+		this.fecha_ultimo_mantenimiento_arena = fecha_ultimo_mantenimiento_arena;
+	}
+
+	public String getFecha_ultimo_mantenimiento_zeolita() {
+		return fecha_ultimo_mantenimiento_zeolita;
+	}
+
+	public void setFecha_ultimo_mantenimiento_zeolita(String fecha_ultimo_mantenimiento_zeolita) {
+		this.fecha_ultimo_mantenimiento_zeolita = fecha_ultimo_mantenimiento_zeolita;
+	}
+
+	public String getFecha_ultimo_mantenimiento_cartucho() {
+		return fecha_ultimo_mantenimiento_cartucho;
+	}
+
+	public void setFecha_ultimo_mantenimiento_cartucho(String fecha_ultimo_mantenimiento_cartucho) {
+		this.fecha_ultimo_mantenimiento_cartucho = fecha_ultimo_mantenimiento_cartucho;
+	}
+
+	public String getFecha_ultimo_mantenimiento_esponja() {
+		return fecha_ultimo_mantenimiento_esponja;
+	}
+
+	public void setFecha_ultimo_mantenimiento_esponja(String fecha_ultimo_mantenimiento_esponja) {
+		this.fecha_ultimo_mantenimiento_esponja = fecha_ultimo_mantenimiento_esponja;
+	}
+
+	public String getObservaciones_arena() {
+		return observaciones_arena;
+	}
+
+	public void setObservaciones_arena(String observaciones_arena) {
+		this.observaciones_arena = observaciones_arena;
+	}
+
+	public String getObservaciones_zeolita() {
+		return observaciones_zeolita;
+	}
+
+	public void setObservaciones_zeolita(String observaciones_zeolita) {
+		this.observaciones_zeolita = observaciones_zeolita;
+	}
+
+	public String getObservaciones_cartucho() {
+		return observaciones_cartucho;
+	}
+
+	public void setObservaciones_cartucho(String observaciones_cartucho) {
+		this.observaciones_cartucho = observaciones_cartucho;
+	}
+
+	public String getObservaciones_esponja() {
+		return observaciones_esponja;
+	}
+
+	public void setObservaciones_esponja(String observaciones_esponja) {
+		this.observaciones_esponja = observaciones_esponja;
+	}
 
 	public Equipofiltrado() {
 		super();
@@ -299,7 +424,11 @@ public class Equipofiltrado {
 			String cantidadmaxzeolita, String marcacartucho, String modelocartucho, String cantidadcartucho,
 			String cantidadgravacartucho, String cantidadmaxcartucho, String marcaesponja, String modeloesponja,
 			String cantidadesponja, String cantidadgravaesponja, String cantidadmaxesponja, String estatus,
-			String observaciones, String fecha_ultimo_mantenimiento) {
+			String observaciones, String fecha_ultimo_mantenimiento, String estatus_arena, String estatus_zeolita,
+			String estatus_cartucho, String estatus_esponja, String fecha_ultimo_mantenimiento_arena,
+			String fecha_ultimo_mantenimiento_zeolita, String fecha_ultimo_mantenimiento_cartucho,
+			String fecha_ultimo_mantenimiento_esponja, String observaciones_arena, String observaciones_zeolita,
+			String observaciones_cartucho, String observaciones_esponja) {
 		super();
 		this.idfiltro = idfiltro;
 		this.alberca = alberca;
@@ -328,6 +457,18 @@ public class Equipofiltrado {
 		this.estatus = estatus;
 		this.observaciones = observaciones;
 		this.fecha_ultimo_mantenimiento = fecha_ultimo_mantenimiento;
+		this.estatus_arena = estatus_arena;
+		this.estatus_zeolita = estatus_zeolita;
+		this.estatus_cartucho = estatus_cartucho;
+		this.estatus_esponja = estatus_esponja;
+		this.fecha_ultimo_mantenimiento_arena = fecha_ultimo_mantenimiento_arena;
+		this.fecha_ultimo_mantenimiento_zeolita = fecha_ultimo_mantenimiento_zeolita;
+		this.fecha_ultimo_mantenimiento_cartucho = fecha_ultimo_mantenimiento_cartucho;
+		this.fecha_ultimo_mantenimiento_esponja = fecha_ultimo_mantenimiento_esponja;
+		this.observaciones_arena = observaciones_arena;
+		this.observaciones_zeolita = observaciones_zeolita;
+		this.observaciones_cartucho = observaciones_cartucho;
+		this.observaciones_esponja = observaciones_esponja;
 	}
 
 	@Override
@@ -343,7 +484,16 @@ public class Equipofiltrado {
 				+ ", marcaesponja=" + marcaesponja + ", modeloesponja=" + modeloesponja + ", cantidadesponja="
 				+ cantidadesponja + ", cantidadgravaesponja=" + cantidadgravaesponja + ", cantidadmaxesponja="
 				+ cantidadmaxesponja + ", estatus=" + estatus + ", observaciones=" + observaciones
-				+ ", fecha_ultimo_mantenimiento=" + fecha_ultimo_mantenimiento + "]";
+				+ ", fecha_ultimo_mantenimiento=" + fecha_ultimo_mantenimiento + ", estatus_arena=" + estatus_arena
+				+ ", estatus_zeolita=" + estatus_zeolita + ", estatus_cartucho=" + estatus_cartucho
+				+ ", estatus_esponja=" + estatus_esponja + ", fecha_ultimo_mantenimiento_arena="
+				+ fecha_ultimo_mantenimiento_arena + ", fecha_ultimo_mantenimiento_zeolita="
+				+ fecha_ultimo_mantenimiento_zeolita + ", fecha_ultimo_mantenimiento_cartucho="
+				+ fecha_ultimo_mantenimiento_cartucho + ", fecha_ultimo_mantenimiento_esponja="
+				+ fecha_ultimo_mantenimiento_esponja + ", observaciones_arena=" + observaciones_arena
+				+ ", observaciones_zeolita=" + observaciones_zeolita + ", observaciones_cartucho="
+				+ observaciones_cartucho + ", observaciones_esponja=" + observaciones_esponja + "]";
 	}
 
+	
 }

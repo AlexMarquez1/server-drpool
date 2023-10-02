@@ -871,6 +871,16 @@ public class GenerarPDFRestController {
 	private Map<String, Object> parameters(List<Agrupaciones> listaAgrupaciones, List<firmasdocumento> firmas,
 			String nombreProyecto, int idInventario) throws IOException {
 		final Map<String, Object> parameters = new HashMap<>();
+		
+		
+		System.out.println("Idinventario:  " + idInventario);
+		
+		//Proyecto pro = this.proyecto.getById(idInventario);
+		
+		//System.out.println("Proyecto:  " + pro);
+		//Alberca alberca = this.alberca.getById(pro.getAlberca().getIdalberca());
+		
+		//parameters.put("ALBERCA", alberca.getNombrealberca());
 
 		int indFirma = 0;
 		List<Fotoevidencia> evidencias;
@@ -880,6 +890,9 @@ public class GenerarPDFRestController {
 		String candado = "-";
 		String ups = "-";
 		String dvd = "-";
+		
+		System.out.println("Lista de agrupaciones reporte semanal;  " + listaAgrupaciones);
+		
 
 		for (Agrupaciones agrupacion : listaAgrupaciones) {
 			for (Campos campo : agrupacion.getCampos()) {
@@ -934,7 +947,8 @@ public class GenerarPDFRestController {
 //        			
 //        			break;
 				default:
-//        			System.out.println("Valor: " + campo.getValor());
+    			System.out.println("Valor: " + campo.getValor());
+    			 
 					parameters.put(campo.getNombreCampo(), campo.getValor());
 					break;
 
@@ -958,10 +972,19 @@ public class GenerarPDFRestController {
 		
 		Inventario inventario = this.inventario.findById(idInventario).get();
 		
+		
+		
+		
 
 		//proyecto = this.proyecto.obtenerProyectoPorNombre(nombreProyecto);
 		
 		proyecto = inventario.getProyecto();
+		
+		Alberca alberca = proyecto.getAlberca();
+		
+		parameters.put("ALBERCA", alberca.getNombrealberca());
+		
+		parameters.put("VOLUMEN", alberca.getCapacidad());
 		
 		if(proyecto.getProyecto().equalsIgnoreCase("ANAM LAPTOP") || proyecto.getProyecto().equalsIgnoreCase("ANAM EQUIPO LIGERO")) {
 			
