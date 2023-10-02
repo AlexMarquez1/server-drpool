@@ -315,111 +315,6 @@ public class GenerarPDFRestController {
 		Alberca alberca = this.alberca.getById(proyecto.getAlberca().getIdalberca());
 		Sede sede = this.sede.getById(alberca.getSede().getIdsede());
 		
-		
-		
-		
-		int contador = 1;
-		
-		//List<Agrupaciones> listaAgrupacionesC = new ArrayList<>(listaAgrupaciones);
-		//Iterator<Agrupaciones> itagrupacion = listaAgrupacionesC.iterator();
-		
-		/*while(itagrupacion.hasNext()) {
-			Agrupaciones agrupacion = itagrupacion.next();
-			Iterator<Campos> campoIterator = agrupacion.getCampos().iterator();
-			while(campoIterator.hasNext()) {
-				Campos campo = campoIterator.next();
-				if(agrupacion.getAgrupacion().contains("PARAMETROS MUESTRA")) {
-					if(campo.getNombreCampo().contains("HORA")) {
-						System.out.println("Se mando la hora a checklist");
-						list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
-					}
-				}
-				
-				if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
-					 
-					parametros.put(campo.getNombreCampo(), campo.getValor());
-					
-					if(campo.getNombreCampo().equalsIgnoreCase("FECHA REGISTRO")) {
-						list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
-						System.out.println("Se mando la fecha a checklist");
-						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
-					}
-					//else if(campo.getNombreCampo().contains("PARAMETROS MUESTRA")) {}
-				}else {
-						if(!campo.getTipoCampo().equalsIgnoreCase("FIRMA")) {
-							if(campo.getAgrupacion().contains("REVISION DE EQUIPOS MUESTRA")) {
-								contador++;
-								
-								
-								System.out.println("Contador es: " + contador);
-								Map<String,Object> mapTemp = new HashMap<String,Object>();
-								
-								if(campo.getNombreCampo().contains("TOMA DE MUESTRA 1")) {
-									mapTemp.put("NOMBRE_EQUIPO", campo.getNombreCampo());
-									nameEquipos.add(mapTemp);
-									mapTemp = new HashMap<String,Object>();
-									mapTemp.put("CHECKBOX_HORA_1", campo.getValor());
-									listCheckbox1.add(mapTemp);
-								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 2")) {
-									mapTemp = new HashMap<String,Object>();
-									mapTemp.put("CHECKBOX_HORA_2", campo.getValor());
-									listCheckbox2.add(mapTemp);
-								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 3")) {
-									mapTemp = new HashMap<String,Object>();
-									mapTemp.put("CHECKBOX_HORA_3", campo.getValor());
-									listCheckbox3.add(mapTemp);
-								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 4")) {
-									mapTemp = new HashMap<String,Object>();
-									mapTemp.put("CHECKBOX_HORA_4", campo.getValor());
-									listCheckbox4.add(mapTemp);
-								}else if(campo.getNombreCampo().contains("TOMA DE MUESTRA 5")) {
-									mapTemp = new HashMap<String,Object>();
-									mapTemp.put("CHECKBOX_HORA_5", campo.getValor());
-									listCheckbox5.add(mapTemp);
-								}
-								
-								if(contador == 6) {								
-									JRBeanCollectionDataSource listNames = new JRBeanCollectionDataSource(nameEquipos);
-									JRBeanCollectionDataSource listHr1 = new JRBeanCollectionDataSource(listCheckbox1);
-									JRBeanCollectionDataSource listHr2 = new JRBeanCollectionDataSource(listCheckbox2);
-									JRBeanCollectionDataSource listHr3 = new JRBeanCollectionDataSource(listCheckbox3);
-									JRBeanCollectionDataSource listHr4 = new JRBeanCollectionDataSource(listCheckbox4);
-									JRBeanCollectionDataSource listHr5 = new JRBeanCollectionDataSource(listCheckbox5);
-									System.out.println("Creacion de JRC de los nombres de los equipos y hrs");
-									list_contenedora_equipos.put("LIST_NAME_EQUIPOS", listNames);
-									list_contenedora_equipos.put("LIST_HORA_1_CHECKBOX", listHr1);
-									list_contenedora_equipos.put("LIST_HORA_2_CHECKBOX", listHr2);
-									list_contenedora_equipos.put("LIST_HORA_3_CHECKBOX", listHr3);
-									list_contenedora_equipos.put("LIST_HORA_4_CHECKBOX", listHr4);
-									list_contenedora_equipos.put("LIST_HORA_5_CHECKBOX", listHr5);
-									System.out.println("Se agregan los equipos a listEquipos");
-
-										
-
-									contador = 1;
-								}
-							}
-							String campoPlantilla = campo.getNombreCampo().replaceAll("[()]", "");
-							System.out.println(campoPlantilla+":"+ campo.getValor());
-							tablaBitacora.put(campoPlantilla, campo.getValor());
-							
-						}
-				}
-			}
-			
-			if(agrupacion.getAgrupacion().equalsIgnoreCase("DATOS DEL REGISTRO")) {
-				listEquipos.add(list_contenedora_equipos);
-				nameEquipos = new ArrayList<Map<String,Object>>();
-				
-				listCheckbox1 = new ArrayList<Map<String,Object>>();
-				listCheckbox2= new ArrayList<Map<String,Object>>();
-				listCheckbox3 = new ArrayList<Map<String,Object>>();
-				listCheckbox4 = new ArrayList<Map<String,Object>>();
-				listCheckbox5 = new ArrayList<Map<String,Object>>();
-			}
-		}
-		*/
-		
 		List<Agrupaciones> listaAgrupacionesC = new ArrayList<>(listaAgrupaciones);
 		System.out.println("--------------------------");
 		System.out.println(listaAgrupaciones);
@@ -452,10 +347,7 @@ public class GenerarPDFRestController {
 				}else {
 						if(!campo.getTipoCampo().equalsIgnoreCase("FIRMA")) {
 							if(campo.getAgrupacion().contains("REVISION DE EQUIPOS MUESTRA")) {
-								contador++;
 								
-								
-								System.out.println("Contador es: " + contador);
 								ConcurrentHashMap<String,Object> mapTemp = new ConcurrentHashMap<String,Object>();
 								
 								if(campo.getNombreCampo().contains("TOMA DE MUESTRA 1")) {
@@ -499,9 +391,6 @@ public class GenerarPDFRestController {
 									list_contenedora_equipos.put("LIST_HORA_5_CHECKBOX", listHr5);
 									System.out.println("Se agregan los equipos a listEquipos");
 
-										
-
-									contador = 1;
 									iterar = false; 
 									
 								}
@@ -982,6 +871,16 @@ public class GenerarPDFRestController {
 	private Map<String, Object> parameters(List<Agrupaciones> listaAgrupaciones, List<firmasdocumento> firmas,
 			String nombreProyecto, int idInventario) throws IOException {
 		final Map<String, Object> parameters = new HashMap<>();
+		
+		
+		System.out.println("Idinventario:  " + idInventario);
+		
+		//Proyecto pro = this.proyecto.getById(idInventario);
+		
+		//System.out.println("Proyecto:  " + pro);
+		//Alberca alberca = this.alberca.getById(pro.getAlberca().getIdalberca());
+		
+		//parameters.put("ALBERCA", alberca.getNombrealberca());
 
 		int indFirma = 0;
 		List<Fotoevidencia> evidencias;
@@ -991,6 +890,9 @@ public class GenerarPDFRestController {
 		String candado = "-";
 		String ups = "-";
 		String dvd = "-";
+		
+		System.out.println("Lista de agrupaciones reporte semanal;  " + listaAgrupaciones);
+		
 
 		for (Agrupaciones agrupacion : listaAgrupaciones) {
 			for (Campos campo : agrupacion.getCampos()) {
@@ -1045,7 +947,8 @@ public class GenerarPDFRestController {
 //        			
 //        			break;
 				default:
-//        			System.out.println("Valor: " + campo.getValor());
+    			System.out.println("Valor: " + campo.getValor());
+    			 
 					parameters.put(campo.getNombreCampo(), campo.getValor());
 					break;
 
@@ -1069,10 +972,19 @@ public class GenerarPDFRestController {
 		
 		Inventario inventario = this.inventario.findById(idInventario).get();
 		
+		
+		
+		
 
 		//proyecto = this.proyecto.obtenerProyectoPorNombre(nombreProyecto);
 		
 		proyecto = inventario.getProyecto();
+		
+		Alberca alberca = proyecto.getAlberca();
+		
+		parameters.put("ALBERCA", alberca.getNombrealberca());
+		
+		parameters.put("VOLUMEN", alberca.getCapacidad());
 		
 		if(proyecto.getProyecto().equalsIgnoreCase("ANAM LAPTOP") || proyecto.getProyecto().equalsIgnoreCase("ANAM EQUIPO LIGERO")) {
 			

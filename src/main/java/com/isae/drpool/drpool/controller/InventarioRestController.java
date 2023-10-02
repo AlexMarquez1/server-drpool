@@ -458,8 +458,19 @@ public class InventarioRestController {
 	}
 
 	private CatalogoAux getDatosCatalogoProyecto(Proyecto proyecto, String tipoCatalogo) {
-		List<Catalogo> listaCatalogos = this.catalogo.obtenerDatosCatalogoProyecto(tipoCatalogo,
-				proyecto.getIdproyecto());
+		Proyecto pro = this.proyecto.findById(proyecto.getIdproyecto()).get();
+		List<Catalogo> listaCatalogos = new ArrayList<Catalogo>();
+		if(pro.getProyecto().contains("BITACORA DIARIA")) {
+			listaCatalogos = this.catalogo.obtenerDatosCatalogoProyecto(tipoCatalogo,
+					231);
+		}else if(pro.getProyecto().contains("REPORTE SEMANAL")) {
+			listaCatalogos = this.catalogo.obtenerDatosCatalogoProyecto(tipoCatalogo,
+					232);
+		}else {
+			listaCatalogos = this.catalogo.obtenerDatosCatalogoProyecto(tipoCatalogo,
+					proyecto.getIdproyecto());
+		}
+		
 		CatalogoAux catalogo = new CatalogoAux();
 		List<String> lista = new ArrayList<String>();
 		if (!listaCatalogos.isEmpty()) {
