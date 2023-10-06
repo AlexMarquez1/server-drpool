@@ -25,6 +25,8 @@ import com.isae.drpool.drpool.dao.IEquipodosificadorDAO;
 import com.isae.drpool.drpool.dao.IEquipofiltradoDAO;
 import com.isae.drpool.drpool.dao.IProyectoAlbercaDAO;
 import com.isae.drpool.drpool.dao.IProyectoDAO;
+import com.isae.drpool.drpool.dao.IProyectoSedeDAO;
+import com.isae.drpool.drpool.dao.ISedeDAO;
 import com.isae.drpool.drpool.entity.Agrupacion;
 import com.isae.drpool.drpool.entity.Alberca;
 import com.isae.drpool.drpool.entity.Asignacionproyecto;
@@ -76,7 +78,13 @@ public class ProyectoAlbercaRestController {
 	
 	@Autowired
 	private IAsignacionProyectoDAO asignacionProyecto;
-
+	
+	@Autowired
+	private IProyectoSedeDAO proyectoSede;
+	
+	@Autowired
+	private ISedeDAO sede; 
+	
 	@CrossOrigin(origins = "*")
 	@GetMapping("/obtener/proyectosalberca")
 	public List<ProyectoAlberca> obtenerAlberca() {
@@ -147,14 +155,34 @@ public class ProyectoAlbercaRestController {
 					listaEquipos.add(equipo);
 					albercaEquipos.put(alberca.getNombrealberca(), listaEquipos);
 				}
-				String nombreProyectoBitacora = "BITACORA DIARIA "+ alberca.getSede().getNombre(); //+ "-" + alberca.getNombrealberca()
-				String nombreProyectoSemanal = "REPORTE SEMANAL "+ alberca.getSede().getNombre();
+				
+				//Se cambia el nombre del proyecto de la bitacora diaria y reporte semanal a sus respectivos nombres con el nombre del proyecto alberca generado
+				
+				//Sede se = this.sede.getById(alberca.getSede().getIdsede());
+				
+				//ProyectoSede prosede = prosede.
+						
+				//System.out.println("Proyecto Sede: " + prosede);
+				
+				//royectoAlberca proyectoalberca; //= this.proyectoalberca.getById();
+				
+				//proyectoalberca.getProyectoSedes();
+				
+				
+				//System.out.println("Nombre del proyecto alberca: " + proyectoalberca.getNombreproyectoalberca());
+				String nombreProyectoBitacora = "BITACORA DIARIA-"+ proyectoAlberca.getNombreproyectoalberca() + "-" + alberca.getNombrealberca(); //+ "-" + alberca.getNombrealberca()
+				System.out.println("Nombre del proyecto alberca: " + proyectoAlberca.getNombreproyectoalberca());
+				String nombreProyectoSemanal = "REPORTE SEMANAL-"+ proyectoAlberca.getNombreproyectoalberca() + "-" + alberca.getNombrealberca();
 				listaProyectosAGenerarBitacora.add(new Proyecto(0,new Date(),nombreProyectoBitacora,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
 				listaProyectosAGenerarSemanal.add(new Proyecto(0,new Date(),nombreProyectoSemanal,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
 				proyectoCoordinador.put(nombreProyectoBitacora, alberca.getSede().getCoordinador());
 				proyectoCoordinador.put(nombreProyectoSemanal, alberca.getSede().getCoordinador());
 				proyectoOperador.put(nombreProyectoBitacora, alberca.getSede().getOperador());
 			}
+			
+			System.out.println("Alberca a crear: " + alberca);
+			
+			System.out.println("Equipo filtrado: " + listaEquiposFiltrado);
 
 			if (equipoCompleto) {
 
@@ -165,7 +193,8 @@ public class ProyectoAlbercaRestController {
 					Proyecto proyecto = this.proyecto.save(proyectoNuevo);
 					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoOperador.get(proyecto.getProyecto()), proyecto));
 					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoCoordinador.get(proyecto.getProyecto()), proyecto));
-					camposBitacoraDiaria = bitacoraDiaria(proyecto, listaEquiposCalentamiento, listaEquiposControlador, listaEquiposDosificador, listaEquiposBomba, listaEquiposFiltrado);
+					camposBitacoraDiaria = bitacoraDiaria(proyecto, listaEquiposCalentamiento, listaEquiposControlador, listaEquiposDosificador, listaEquiposBomba, listaEquiposFiltrado, proyectoNuevo.getAlberca().getIdalberca());
+					//System.out.println("Campos de bitacora diaria: " + camposBitacoraDiaria);
 					this.camposproyecto.saveAll(camposBitacoraDiaria);
 				}
 				
@@ -174,12 +203,14 @@ public class ProyectoAlbercaRestController {
 					Proyecto proyecto = this.proyecto.save(proyectoNuevo);
 					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoCoordinador.get(proyecto.getProyecto()), proyecto));
 					camposBitacoraDiaria = reporteSemanal(proyecto);
+					//System.out.println("Campos de bitacora diaria: " + camposBitacoraDiaria);
 					this.camposproyecto.saveAll(camposBitacoraDiaria);
 				}
 				
 
 				// Elimina las sedes relacionadas al proyecto y vuelve a guardar para actualizar
 				// el proyecto
+				
 				this.proyectoalberca.eliminarSedePorProyecto(proyectoAlberca.getIdproyectoalberca());
 				this.proyectoalberca.save(proyectoAlberca);
 			} else {
@@ -216,7 +247,7 @@ public class ProyectoAlbercaRestController {
 
 	private List<Camposproyecto> bitacoraDiaria(Proyecto proyecto, List<Equipocalentamiento> listaEquiposCalentamiento,
 			List<Equipocontrolador> listaEquiposControlador, List<Equipodosificador> listaEquiposDosificador,List<Equipobomba> listaEquiposBomba,
-			List<Equipofiltrado> listaEquiposFiltrado) {
+			List<Equipofiltrado> listaEquiposFiltrado, int idAlberca) {
 
 		List<Camposproyecto> camposBitacora = new ArrayList<>(this.camposproyecto.obtenerCatalogoCampoPorProyecto(231));
 		List<Camposproyecto> respuesta = new ArrayList<Camposproyecto>();
@@ -227,23 +258,23 @@ public class ProyectoAlbercaRestController {
 		
 		camposBitacoraGenerada.addAll(agregarEquipos(1,152,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
-				 listaEquiposFiltrado, proyecto));
+				 listaEquiposFiltrado, proyecto, idAlberca));
 		camposBitacoraGenerada.addAll(camposBitacora.subList(23, 39));
 		camposBitacoraGenerada.addAll(agregarEquipos(2,135,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
-				 listaEquiposFiltrado, proyecto));
+				 listaEquiposFiltrado, proyecto, idAlberca));
 		camposBitacoraGenerada.addAll(camposBitacora.subList(46, 62));
 		camposBitacoraGenerada.addAll(agregarEquipos(3,139,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
-				 listaEquiposFiltrado, proyecto));
+				 listaEquiposFiltrado, proyecto, idAlberca));
 		camposBitacoraGenerada.addAll(camposBitacora.subList(69, 85));
 		camposBitacoraGenerada.addAll(agregarEquipos(4,143,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
-				 listaEquiposFiltrado, proyecto));
+				 listaEquiposFiltrado, proyecto, idAlberca));
 		camposBitacoraGenerada.addAll(camposBitacora.subList(92, 108));
 		camposBitacoraGenerada.addAll(agregarEquipos(5,147,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
-				 listaEquiposFiltrado, proyecto));
+				 listaEquiposFiltrado, proyecto, idAlberca));
 		camposBitacoraGenerada.addAll(camposBitacora.subList(114, 121));
 		
 		for (Camposproyecto camposproyecto : camposBitacoraGenerada) {
@@ -267,28 +298,31 @@ public class ProyectoAlbercaRestController {
 	
 	private List<Camposproyecto> agregarEquipos(int numMuestra, int idAgrupacion, List<Equipocalentamiento> listaEquiposCalentamiento,
 			List<Equipocontrolador> listaEquiposControlador, List<Equipodosificador> listaEquiposDosificador,List<Equipobomba> listaEquiposBomba,
-			List<Equipofiltrado> listaEquiposFiltrado, Proyecto proyecto) {
+			List<Equipofiltrado> listaEquiposFiltrado, Proyecto proyecto, int idAlberca) {
 		List<Camposproyecto> campos = new ArrayList<Camposproyecto>();
 		Agrupacion agrupacion = this.agrupacion.findById(idAgrupacion).get();
 		int i =1;
 		for (Equipofiltrado filtro : listaEquiposFiltrado) {
+			if(filtro.getAlberca().getIdalberca() == idAlberca) { 
 			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra +" FILTRO "+ i++ +" (PSI)","FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
+			System.out.println("Campo de filtro: " + idAlberca + "filtros" + filtro);
+			}
 		}
 		i=1;
 		for (Equipocalentamiento caldera : listaEquiposCalentamiento) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra +" CALDERA "+ i++ +" (°C)","FALSE","TRUE",10,"[N/A]","CHECKBOX",agrupacion,proyecto,""));
+			if(caldera.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra +" CALDERA "+ i++ +" (°C)","FALSE","TRUE",10,"[N/A]","CHECKBOX",agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipobomba bomba : listaEquiposBomba) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " MOTOBOMBA "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
+			if(bomba.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " MOTOBOMBA "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipocontrolador controlador : listaEquiposControlador) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra + " CONTROLADOR "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
+			if(controlador.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra + " CONTROLADOR "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipodosificador dosificador : listaEquiposDosificador) {
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " DOSIFICADOR "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
+			if(dosificador.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " DOSIFICADOR "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		return campos;
 		

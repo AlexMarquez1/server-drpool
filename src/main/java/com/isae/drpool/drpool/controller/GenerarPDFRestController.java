@@ -973,8 +973,6 @@ public class GenerarPDFRestController {
 		Inventario inventario = this.inventario.findById(idInventario).get();
 		
 		
-		
-		
 
 		//proyecto = this.proyecto.obtenerProyectoPorNombre(nombreProyecto);
 		
