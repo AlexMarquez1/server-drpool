@@ -170,9 +170,9 @@ public class ProyectoAlbercaRestController {
 				
 				
 				//System.out.println("Nombre del proyecto alberca: " + proyectoalberca.getNombreproyectoalberca());
-				String nombreProyectoBitacora = "BITACORA DIARIA-"+ proyectoAlberca.getNombreproyectoalberca() + "-" + alberca.getNombrealberca(); //+ "-" + alberca.getNombrealberca()
+				String nombreProyectoBitacora = "BITACORA DIARIA,"+ proyectoAlberca.getNombreproyectoalberca() + "," + alberca.getNombrealberca(); //+ "-" + alberca.getNombrealberca()
 				System.out.println("Nombre del proyecto alberca: " + proyectoAlberca.getNombreproyectoalberca());
-				String nombreProyectoSemanal = "REPORTE SEMANAL-"+ proyectoAlberca.getNombreproyectoalberca() + "-" + alberca.getNombrealberca();
+				String nombreProyectoSemanal = "REPORTE SEMANAL,"+ proyectoAlberca.getNombreproyectoalberca() + "," + alberca.getNombrealberca();
 				listaProyectosAGenerarBitacora.add(new Proyecto(0,new Date(),nombreProyectoBitacora,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
 				listaProyectosAGenerarSemanal.add(new Proyecto(0,new Date(),nombreProyectoSemanal,"0",new Tipoproyecto(8, ""),alberca, "TRUE"));
 				proyectoCoordinador.put(nombreProyectoBitacora, alberca.getSede().getCoordinador());
@@ -213,6 +213,7 @@ public class ProyectoAlbercaRestController {
 				
 				this.proyectoalberca.eliminarSedePorProyecto(proyectoAlberca.getIdproyectoalberca());
 				this.proyectoalberca.save(proyectoAlberca);
+				//System.out.println("proyecto alberca: " + proyectoAlberca);
 			} else {
 				respuesta = "No hay algun equipo relacionado con la alberca:" + albercaSinEquipo.toString();
 			}
@@ -275,7 +276,7 @@ public class ProyectoAlbercaRestController {
 		camposBitacoraGenerada.addAll(agregarEquipos(5,147,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
 				 listaEquiposFiltrado, proyecto, idAlberca));
-		camposBitacoraGenerada.addAll(camposBitacora.subList(114, 121));
+		camposBitacoraGenerada.addAll(camposBitacora.subList(114, 123));
 		
 		for (Camposproyecto camposproyecto : camposBitacoraGenerada) {
 			Camposproyecto campoAux = new Camposproyecto();

@@ -325,6 +325,8 @@ public class GenerarPDFRestController {
 			
 			
 			for (Campos campo : agrupacion.getCampos()) {
+
+				if(campo.getNombreCampo().contains("OBSERVACIONES")) parametros.put(campo.getNombreCampo(), campo.getValor());
 				
 				
 				if(agrupacion.getAgrupacion().contains("PARAMETROS MUESTRA")) {
@@ -342,6 +344,7 @@ public class GenerarPDFRestController {
 						list_contenedora_equipos.put(campo.getNombreCampo(), campo.getValor());
 						System.out.println("Se mando la fecha a checklist");
 						tablaBitacora.put(campo.getNombreCampo(), campo.getValor());
+						parametros.put("FECHA", campo.getValor());
 					}
 					//else if(campo.getNombreCampo().contains("PARAMETROS MUESTRA")) {}
 				}else {
@@ -458,7 +461,7 @@ public class GenerarPDFRestController {
 		
 		parametros.put("VOLUMEN", alberca.getCapacidad());
 		
-		parametros.put("OBSERVACIONES", alberca.getObservaciones());
+		//parametros.put("OBSERVACIONES", alberca.getObservaciones());
 		
 		parametros.put("LOGO CLIENTE", logoCliente);
 		
