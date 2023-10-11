@@ -158,17 +158,6 @@ public class ProyectoAlbercaRestController {
 				
 				//Se cambia el nombre del proyecto de la bitacora diaria y reporte semanal a sus respectivos nombres con el nombre del proyecto alberca generado
 				
-				//Sede se = this.sede.getById(alberca.getSede().getIdsede());
-				
-				//ProyectoSede prosede = prosede.
-						
-				//System.out.println("Proyecto Sede: " + prosede);
-				
-				//royectoAlberca proyectoalberca; //= this.proyectoalberca.getById();
-				
-				//proyectoalberca.getProyectoSedes();
-				
-				
 				//System.out.println("Nombre del proyecto alberca: " + proyectoalberca.getNombreproyectoalberca());
 				String nombreProyectoBitacora = "BITACORA DIARIA,"+ proyectoAlberca.getNombreproyectoalberca() + "," + alberca.getNombrealberca(); //+ "-" + alberca.getNombrealberca()
 				System.out.println("Nombre del proyecto alberca: " + proyectoAlberca.getNombreproyectoalberca());
@@ -305,25 +294,25 @@ public class ProyectoAlbercaRestController {
 		int i =1;
 		for (Equipofiltrado filtro : listaEquiposFiltrado) {
 			if(filtro.getAlberca().getIdalberca() == idAlberca) { 
-			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra +" FILTRO "+ i++ +" (PSI)","FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
+			campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra +" FILTRO "+ i++ +" (PSI)" + " (" + filtro.getNumero() + ")" ,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 			System.out.println("Campo de filtro: " + idAlberca + "filtros" + filtro);
 			}
 		}
 		i=1;
 		for (Equipocalentamiento caldera : listaEquiposCalentamiento) {
-			if(caldera.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra +" CALDERA "+ i++ +" (°C)","FALSE","TRUE",10,"[N/A]","CHECKBOX",agrupacion,proyecto,""));
+			if(caldera.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra +" CALDERA "+ i++ +" (°C)" + " (" + caldera.getNumero() + ")","FALSE","TRUE",50,"[.]","ALFANUMERICO",agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipobomba bomba : listaEquiposBomba) {
-			if(bomba.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " MOTOBOMBA "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
+			if(bomba.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " MOTOBOMBA "+ i++ + " (" + bomba.getNumero() + ")","FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipocontrolador controlador : listaEquiposControlador) {
-			if(controlador.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra + " CONTROLADOR "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
+			if(controlador.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA "+ numMuestra + " CONTROLADOR "+ i++ + " (" + controlador.getNumero() + ")","FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		i=1;
 		for (Equipodosificador dosificador : listaEquiposDosificador) {
-			if(dosificador.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " DOSIFICADOR "+ i++,"FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
+			if(dosificador.getAlberca().getIdalberca() == idAlberca) campos.add(new Camposproyecto(0,"INSERTA LOS DATOS SOLICITADOS EN EL CAMPO","TOMA DE MUESTRA " + numMuestra + " DOSIFICADOR "+ i++ + " (" + dosificador.getNumero() + ")","FALSE","TRUE",10,"[N/A]","CHECKBOX", agrupacion,proyecto,""));
 		}
 		return campos;
 		
