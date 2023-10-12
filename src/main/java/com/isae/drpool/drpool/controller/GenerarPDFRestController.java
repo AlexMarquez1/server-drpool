@@ -987,6 +987,10 @@ public class GenerarPDFRestController {
 		
 		parameters.put("VOLUMEN", alberca.getCapacidad());
 		
+		URL urlCli = new URL(alberca.getSede().getCliente().getUrllogo());
+
+		parameters.put("LOGO CLIENTE", urlCli);
+		
 		if(proyecto.getProyecto().equalsIgnoreCase("ANAM LAPTOP") || proyecto.getProyecto().equalsIgnoreCase("ANAM EQUIPO LIGERO")) {
 			
 			int idCampo = listaAgrupaciones.get(0).getCampos().get(0).getIdCampo();
