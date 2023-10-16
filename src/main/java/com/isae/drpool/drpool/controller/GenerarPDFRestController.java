@@ -57,6 +57,8 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.gson.Gson;
 import com.google.protobuf.Struct;
+import com.isae.drpool.drpool.dao.IActividadesDAO;
+import com.isae.drpool.drpool.dao.IActividadimagenesDAO;
 import com.isae.drpool.drpool.dao.IAlbercaDAO;
 import com.isae.drpool.drpool.dao.ICamposProyectoDAO;
 import com.isae.drpool.drpool.dao.IDocumentoGenerado;
@@ -64,8 +66,11 @@ import com.isae.drpool.drpool.dao.IFirmaDocumentosDAO;
 import com.isae.drpool.drpool.dao.IFotoEvidenciaDAO;
 import com.isae.drpool.drpool.dao.IInventarioDAO;
 import com.isae.drpool.drpool.dao.IProyectoDAO;
+import com.isae.drpool.drpool.dao.IReportemensualDAO;
 import com.isae.drpool.drpool.dao.ISedeDAO;
 import com.isae.drpool.drpool.dao.IValoresDAO;
+import com.isae.drpool.drpool.entity.Actividades;
+import com.isae.drpool.drpool.entity.Actividadimagenes;
 import com.isae.drpool.drpool.entity.Agrupaciones;
 import com.isae.drpool.drpool.entity.Alberca;
 import com.isae.drpool.drpool.entity.Campos;
@@ -76,6 +81,7 @@ import com.isae.drpool.drpool.entity.EvidenciaCheckList;
 import com.isae.drpool.drpool.entity.Fotoevidencia;
 import com.isae.drpool.drpool.entity.Inventario;
 import com.isae.drpool.drpool.entity.Proyecto;
+import com.isae.drpool.drpool.entity.Reportemensual;
 import com.isae.drpool.drpool.entity.Sede;
 import com.isae.drpool.drpool.entity.Tipoproyecto;
 import com.isae.drpool.drpool.entity.Usuario;
@@ -128,6 +134,15 @@ public class GenerarPDFRestController {
 	
 	@Autowired
 	private ISedeDAO sede; 
+	
+	@Autowired
+	private IReportemensualDAO reportemensual;
+	
+	@Autowired
+	private IActividadesDAO actividades; 
+	
+	@Autowired
+	private IActividadimagenesDAO actividadimagenes;
 
 	private String firestorage_auth = "google-service-descarga.json";
 
@@ -894,9 +909,6 @@ public class GenerarPDFRestController {
 		String ups = "-";
 		String dvd = "-";
 		
-		System.out.println("Lista de agrupaciones reporte semanal;  " + listaAgrupaciones);
-		
-
 		for (Agrupaciones agrupacion : listaAgrupaciones) {
 			for (Campos campo : agrupacion.getCampos()) {
 				
@@ -1225,6 +1237,18 @@ public class GenerarPDFRestController {
 	@PostMapping("/generar/reporte/mensual")
 	private void generarReporteMensualDRpool(@RequestBody Map<String, Object> listReport) {
 		
+		Alberca alberca = (Alberca) listReport.get("ALBERCA");
+		
+		Sede sede = (Sede) listReport.get("SEDE");
+		
+		Reportemensual rm = new Reportemensual(sede, alberca, listReport.get("FECHA").toString(), listReport.get("FIRSTDATE").toString(), listReport.get("LASTDATE").toString(), listReport.get("ALCALDIA").toString(), listReport.get("TIPOALBERCA").toString(),
+				listReport.get("CARACTERISTICA").toString(), listReport.get("REALIZO").toString(),listReport.get("REVISO").toString(), listReport.get("URL").toString());
+		
+		
+		this.reportemensual.save(rm);
+		
+		int idrm = rm.getIdreportemensual();
+		
 		try {
 			FileInputStream serviceAccount = new FileInputStream("google-services.json");
 			String file_format = downloadTemplate(serviceAccount, "REPORTEMENSUAL");
@@ -1250,7 +1274,8 @@ public class GenerarPDFRestController {
 				final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
 						Collections.singletonList("Invoice"));
 				
-				File reportFile = File.createTempFile("reporte", ".pdf", new File("/Users/isae_1/Desktop/"));
+				//File reportFile = File.createTempFile("reporte", ".pdf", new File("/Users/isae_1/Desktop/"));
+				File reportFile = File.createTempFile("reporte", ".pdf");
 
 				
 				//Creando el map a enviar para el reporte 
@@ -1296,6 +1321,17 @@ public class GenerarPDFRestController {
 					
 					//Obtenemos el nombre de la actvidad de cada hoja
 					mapTemp.put("ACTIVITY",  ((Map<String,Object>) rpt.get(0)).get("ACTIVITY"));
+										
+					
+					String act = mapTemp.get("ACTIVITY").toString();
+					
+					Actividades acti = new Actividades(rm, mapTemp.get("ACTIVITY").toString(), mapTemp.get("TEXT_IMAGES").toString(), mapTemp.get("OBSERVACIONES").toString());
+					
+					this.actividades.save(acti);
+					
+					Actividadimagenes ai;
+					
+					
 					
 					//Obtemos una lista de imagenes 
 					List<String> images = (List<String>) ((Map<String, Object>) rpt.get(1)).get("IMAGES");
@@ -1309,9 +1345,13 @@ public class GenerarPDFRestController {
 						if(cont % 2 != 0) {
 							imgTemp.put("IMG1", img);
 							images_1.add(imgTemp);
+							ai = new Actividadimagenes(acti, url);
+							this.actividadimagenes.save(ai); 
 						}else {
 							imgTemp.put("IMG2", img);
 							images_2.add(imgTemp);
+							ai = new Actividadimagenes(acti, url);
+							this.actividadimagenes.save(ai);
 						}
 						cont++;
 					}
@@ -1328,6 +1368,9 @@ public class GenerarPDFRestController {
 					//Agregamos en mapTemp a la lista, cada uno es una hoja
 					list_page_images.add(mapTemp);
 					
+					
+
+					
 				}
 				
 				JRBeanCollectionDataSource jrc = new JRBeanCollectionDataSource(listActivities);
@@ -1343,7 +1386,68 @@ public class GenerarPDFRestController {
 				try(FileOutputStream fos = new FileOutputStream(reportFile)){
 					JasperReportsUtils.renderAsPdf(report, parameters, dataSource, fos);
 					System.out.println("Se creo el pdf");
-				}	
+					
+				}
+				Map<String, Object> respuesta = new HashMap<String,Object>();
+				//String nombrePdf = inventario.getFolio();
+				respuesta = new HashMap<String, Object>();
+				respuesta.put("archivo", reportFile);
+				//respuesta.put("nombre", );
+				/*modificaciones
+				respuesta = guardarEvidencia(inventario, invoicePdf, nombreEvidencia);
+				List<Documentogenerado> lista = this.documentoGenerado.obtenerDocumento(Integer.parseInt(idInventario));
+				Documentogenerado documento = new Documentogenerado(0, nombreEvidencia, respuesta, inventario);
+				if (lista.isEmpty()) {
+					this.documentoGenerado.save(documento);
+				} else {
+					documento.setIddocumento(lista.get(0).getIddocumento());
+					this.documentoGenerado.save(documento);
+				}
+				*/
+				
+				try {
+
+					URL url = new URL(
+							"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
+					FileInputStream serviceAccountt = new FileInputStream(descargarRecurso(url, "google-service-descarga.json"));
+					String bucketName = "isae-de6da.appspot.com";
+					boolean bandera = true;
+					Storage storage = (Storage) getStrogaeOptions(serviceAccountt).getService();
+
+					if (file != null) {
+						String nombre = "REPORTEMENSUAL" + "-" +sede.getNombre();
+						String objectName = "Proyectos/" + sede.getNombre() + "-"
+								+ alberca.getNombrealberca().toUpperCase() + "/Evidencias/" + nombre;
+
+						Map<String, String> map = new HashMap<>();
+						map.put("firebaseStorageDownloadTokens", "REPORTE MENSUAL PRUEBA".replace(" ", "") + ".pdf");
+
+						BlobId blobId = BlobId.of(bucketName, objectName);
+						BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("application/pdf").setMetadata(map)
+								.build();
+
+						Blob b = storage.create(blobInfo, new FileInputStream(file.getAbsolutePath()),
+								new Storage.BlobWriteOption[0]);
+
+						System.out.println("File format uploaded to bucket " + bucketName + " as " + objectName);
+
+		// Sirve para crear un link temporal para la descarga del archivo almacenado en Firebase
+//						URL urlFirma = storage.signUrl(blobInfo, 15, TimeUnit.MINUTES, Storage.SignUrlOption.withV4Signature());
+
+						String[] direccionTemporal = b.getSelfLink().split("/");
+
+						String urlFirma = generarUrl(direccionTemporal, b.getMetadata().get("firebaseStorageDownloadTokens"));
+						
+						System.out.println("URL del documento: " + urlFirma);
+
+					}
+
+				} catch (IOException e) {
+
+					System.out.println("Exception " + e.getMessage());
+				
+				}
+
 			}
 			
 		} catch (Exception e) {
