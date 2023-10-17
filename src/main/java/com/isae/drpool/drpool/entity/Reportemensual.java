@@ -10,8 +10,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="reportenmensual")
-@NamedQuery(name="Reportemensual.finAll", query="SELECT r FROM Reportemensual r")
+@Table(name="reportemensual")
+@NamedQuery(name="Reportemensual.findAll", query="SELECT r FROM Reportemensual r")
 public class Reportemensual {
 
 	

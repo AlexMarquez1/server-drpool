@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.imageio.ImageIO;
@@ -46,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.ui.jasperreports.JasperReportsUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.gax.paging.Page;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -134,18 +136,13 @@ public class GenerarPDFRestController {
 	
 	@Autowired
 	private ISedeDAO sede; 
-	
+
 	@Autowired
 	private IReportemensualDAO reportemensual;
 	
-	@Autowired
-	private IActividadesDAO actividades; 
-	
-	@Autowired
-	private IActividadimagenesDAO actividadimagenes;
 
 	private String firestorage_auth = "google-service-descarga.json";
-
+	
 	@CrossOrigin(origins = "*")
 	@PostMapping("/obtener/documento/pdf/{idInventario}")
 	public List<Integer> generarDocumento(@PathVariable(value = "idInventario") String idInventario,
@@ -1231,23 +1228,80 @@ public class GenerarPDFRestController {
 
 		return listaDatosFirmas;
 	}
+	
+	
+	
+
+	@CrossOrigin(origins = "*")
+	@PostMapping("/generar/reporte/mensual")
+	public void generarReporteMensualDRpool(@RequestBody Map<String, Object> listReport) throws IOException{
+		
+		Alberca alberca = new ObjectMapper().convertValue(listReport.get("ALBERCA"), Alberca.class);
+		
+		Sede sede = alberca.getSede();
+		
+		System.out.println("Albercaaaa: " + alberca);
+		
+		System.out.println("Sedeeee: " + sede);
+		
+		Reportemensual reportM = new Reportemensual();
+		
+		reportM = new Reportemensual(sede, alberca, listReport.get("FECHA").toString(), listReport.get("FIRSTDATE").toString(), listReport.get("LASTDATE").toString(), listReport.get("ALCALDIA").toString(), listReport.get("TIPOALBERCA").toString(),
+				listReport.get("CARACTERISTICA").toString(), listReport.get("REALIZO").toString(),listReport.get("REVISO").toString(), "prueba url");
+		
+		System.out.println("Datos del reportM: " + reportM);
+		
+		try {
+		    this.reportemensual.save(reportM);
+		} catch (Exception e) {
+		    e.printStackTrace(); // O loggea el mensaje de error
+		}
+		
+		int idrm = reportM.getIdreportemensual();
+		
+		System.out.println("ID despues de guardar el reporte mensual: " + idrm);
+		
+
+		
+		
+	}
+
+	
+	
+	
 
 
+/*
 	@CrossOrigin("*")
 	@PostMapping("/generar/reporte/mensual")
 	private void generarReporteMensualDRpool(@RequestBody Map<String, Object> listReport) {
 		
-		Alberca alberca = (Alberca) listReport.get("ALBERCA");
+		System.out.println("Lista reporte mensual: "+ ((Map<String, Object>) listReport.get("SEDE")).get("idsede"));
+		Sede sede = new Sede();
+		Alberca alberca = new Alberca();
+		Reportemensual rm = new Reportemensual();
+		try {
 		
-		Sede sede = (Sede) listReport.get("SEDE");
+		 sede = this.sede.getById((Integer) ((Map<String, Object>) listReport.get("SEDE")).get("idsede"));
+		 
+		 System.out.println("Se esta verificando que cargue la sede: " + sede);
 		
-		Reportemensual rm = new Reportemensual(sede, alberca, listReport.get("FECHA").toString(), listReport.get("FIRSTDATE").toString(), listReport.get("LASTDATE").toString(), listReport.get("ALCALDIA").toString(), listReport.get("TIPOALBERCA").toString(),
-				listReport.get("CARACTERISTICA").toString(), listReport.get("REALIZO").toString(),listReport.get("REVISO").toString(), listReport.get("URL").toString());
+		 alberca = this.alberca.getById((Integer) ((Map<String, Object>) listReport.get("ALBERCA")).get("idalberca"));
+		 
+		 System.out.println("Se esta verificando que cargue la alberca: " + alberca);
+
+		
+		rm = new Reportemensual(sede, alberca, listReport.get("FECHA").toString(), listReport.get("FIRSTDATE").toString(), listReport.get("LASTDATE").toString(), listReport.get("ALCALDIA").toString(), listReport.get("TIPOALBERCA").toString(),
+				listReport.get("CARACTERISTICA").toString(), listReport.get("REALIZO").toString(),listReport.get("REVISO").toString(), "prueba url");
 		
 		
 		this.reportemensual.save(rm);
 		
 		int idrm = rm.getIdreportemensual();
+		}catch (Exception e) {
+			// 
+			System.out.println("Algo salio mal aqui: " + e);
+		}
 		
 		try {
 			FileInputStream serviceAccount = new FileInputStream("google-services.json");
@@ -1282,7 +1336,7 @@ public class GenerarPDFRestController {
 				
 				Map<String, Object> parameters = new HashMap<>();
 				
-				URL urlCliente = new URL((String) listReport.get("LOGO CLIENTE"));
+				//URL urlCliente = new URL((String) listReport.get("LOGO CLIENTE"));
 				
 				parameters.put("FECHA", listReport.get("FECHA"));
 				parameters.put("FIRSTDATE", listReport.get("FIRSTDATE"));
@@ -1294,7 +1348,7 @@ public class GenerarPDFRestController {
 				parameters.put("REALIZO", listReport.get("REALIZO"));
 				parameters.put("REVISO", listReport.get("REVISO"));
 				parameters.put("CARACTERISTICA", listReport.get("CARACTERISTICA"));
-				parameters.put("LOGO CLIENTE", urlCliente);
+				//parameters.put("LOGO CLIENTE", urlCliente);
 			
 				
 				//List de actividades
@@ -1323,9 +1377,11 @@ public class GenerarPDFRestController {
 					mapTemp.put("ACTIVITY",  ((Map<String,Object>) rpt.get(0)).get("ACTIVITY"));
 										
 					
-					String act = mapTemp.get("ACTIVITY").toString();
+					String act = ((Map<String, Object>) rpt.get(0)).get("ACTIVITY").toString();
+					String timg = ((Map<String,Object>) rpt.get(2)).get("TEXT_IMAGES").toString();
+					String obs = ((Map<String,Object>) rpt.get(3)).get("OBSERVACIONES").toString();
 					
-					Actividades acti = new Actividades(rm, mapTemp.get("ACTIVITY").toString(), mapTemp.get("TEXT_IMAGES").toString(), mapTemp.get("OBSERVACIONES").toString());
+					Actividades acti = new Actividades(rm, act , timg, obs);
 					
 					this.actividades.save(acti);
 					
@@ -1388,10 +1444,7 @@ public class GenerarPDFRestController {
 					System.out.println("Se creo el pdf");
 					
 				}
-				Map<String, Object> respuesta = new HashMap<String,Object>();
-				//String nombrePdf = inventario.getFolio();
-				respuesta = new HashMap<String, Object>();
-				respuesta.put("archivo", reportFile);
+			*/
 				//respuesta.put("nombre", );
 				/*modificaciones
 				respuesta = guardarEvidencia(inventario, invoicePdf, nombreEvidencia);
@@ -1404,7 +1457,7 @@ public class GenerarPDFRestController {
 					this.documentoGenerado.save(documento);
 				}
 				*/
-				
+				/*
 				try {
 
 					URL url = new URL(
@@ -1455,5 +1508,6 @@ public class GenerarPDFRestController {
 			e.printStackTrace();
 		};
 		
-	}
+	} */
 }
+
