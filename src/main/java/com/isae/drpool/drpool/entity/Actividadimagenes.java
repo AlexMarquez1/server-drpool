@@ -10,13 +10,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="actividadimaganes")
-@NamedQuery(name = "Actividadeimaganes.findAll", query = "SELECT a FROM Actividadimagenes a")
+@Table(name="actividadimagenes")
+@NamedQuery(name = "Actividadeimagenes.findAll", query = "SELECT a FROM Actividadimagenes a")
 public class Actividadimagenes {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idactividadimaganes;
+	private int idactividadimagenes;
 	
 	@OneToOne
 	@JoinColumn(name = "idactividades")
@@ -24,12 +24,12 @@ public class Actividadimagenes {
 	
 	private String url;
 
-	public int getIdactividadimaganes() {
-		return idactividadimaganes;
+	public int getIdactividadimagenes() {
+		return idactividadimagenes;
 	}
 
 	public void setIdactividadimaganes(int idactividadimaganes) {
-		this.idactividadimaganes = idactividadimaganes;
+		this.idactividadimagenes = idactividadimaganes;
 	}
 
 	
@@ -52,9 +52,9 @@ public class Actividadimagenes {
 
 	
 
-	public Actividadimagenes(int idactividadimaganes, Actividades actividades, String url) {
+	public Actividadimagenes(int idactividadimagenes, Actividades actividades, String url) {
 		super();
-		this.idactividadimaganes = idactividadimaganes;
+		this.idactividadimagenes = idactividadimagenes;
 		this.actividades = actividades;
 		this.url = url;
 	}
@@ -73,7 +73,7 @@ public class Actividadimagenes {
 
 	@Override
 	public String toString() {
-		return "Actividadimagenes [idactividadimaganes=" + idactividadimaganes + ", actividades=" + actividades
+		return "Actividadimagenes [idactividadimagenes=" + idactividadimagenes + ", actividades=" + actividades
 				+ ", url=" + url + "]";
 	}
 

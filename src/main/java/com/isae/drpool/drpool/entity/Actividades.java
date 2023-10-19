@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "activdiades")
+@Table(name = "actividades")
 @NamedQuery(name="Actividades.finAll", query= "SELECT a FROM Actividades a")
 public class Actividades {
 	
@@ -25,7 +25,7 @@ public class Actividades {
 	
 	private String tipoactividad; 
 	
-	private String textoimaganes; 
+	private String textoimagenes; 
 	
 	private String observaciones;
 
@@ -53,12 +53,12 @@ public class Actividades {
 		this.tipoactividad = tipoactividad;
 	}
 
-	public String getTextoimaganes() {
-		return textoimaganes;
+	public String getTextoimagenes() {
+		return textoimagenes;
 	}
 
-	public void setTextoimaganes(String textoimaganes) {
-		this.textoimaganes = textoimaganes;
+	public void setTextoimagenes(String textoimaganes) {
+		this.textoimagenes = textoimaganes;
 	}
 
 	public String getObservaciones() {
@@ -75,16 +75,16 @@ public class Actividades {
 		this.idactividades = idactividades;
 		this.reportemensual = reportemensual;
 		this.tipoactividad = tipoactividad;
-		this.textoimaganes = textoimaganes;
+		this.textoimagenes = textoimaganes;
 		this.observaciones = observaciones;
 	}
 
-	public Actividades(Reportemensual reportemensual, String tipoactividad, String textoimaganes,
+	public Actividades(Reportemensual reportemensual, String tipoactividad, String textoimagenes,
 			String observaciones) {
 		super();
 		this.reportemensual = reportemensual;
 		this.tipoactividad = tipoactividad;
-		this.textoimaganes = textoimaganes;
+		this.textoimagenes = textoimagenes;
 		this.observaciones = observaciones;
 	}
 
@@ -95,7 +95,7 @@ public class Actividades {
 	@Override
 	public String toString() {
 		return "Actividades [idactividades=" + idactividades + ", reportemensual=" + reportemensual + ", tipoactividad="
-				+ tipoactividad + ", textoimaganes=" + textoimaganes + ", observaciones=" + observaciones + "]";
+				+ tipoactividad + ", textoimagenes=" + textoimagenes + ", observaciones=" + observaciones + "]";
 	} 
 	
 	

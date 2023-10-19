@@ -140,6 +140,12 @@ public class GenerarPDFRestController {
 	@Autowired
 	private IReportemensualDAO reportemensual;
 	
+	@Autowired
+	private IActividadesDAO actividades; 
+	
+	@Autowired
+	private IActividadimagenesDAO actividadimagenes;
+	
 
 	private String firestorage_auth = "google-service-descarga.json";
 	
@@ -1240,27 +1246,217 @@ public class GenerarPDFRestController {
 		
 		Sede sede = alberca.getSede();
 		
-		System.out.println("Albercaaaa: " + alberca);
-		
-		System.out.println("Sedeeee: " + sede);
-		
 		Reportemensual reportM = new Reportemensual();
 		
 		reportM = new Reportemensual(sede, alberca, listReport.get("FECHA").toString(), listReport.get("FIRSTDATE").toString(), listReport.get("LASTDATE").toString(), listReport.get("ALCALDIA").toString(), listReport.get("TIPOALBERCA").toString(),
-				listReport.get("CARACTERISTICA").toString(), listReport.get("REALIZO").toString(),listReport.get("REVISO").toString(), "prueba url");
+				listReport.get("CARACTERISTICA").toString(), listReport.get("REALIZO").toString(),listReport.get("REVISO").toString(), "");
 		
 		System.out.println("Datos del reportM: " + reportM);
 		
 		try {
+			// Se guardan los datos del reporte mensual en su respectiva tabla, aun no se asigna el url del documento.
 		    this.reportemensual.save(reportM);
 		} catch (Exception e) {
 		    e.printStackTrace(); // O loggea el mensaje de error
 		}
-		
-		int idrm = reportM.getIdreportemensual();
-		
-		System.out.println("ID despues de guardar el reporte mensual: " + idrm);
-		
+		//Se descarga la plantilla de jasper
+		try {
+			FileInputStream serviceAccount = new FileInputStream("google-services.json");
+			String file_format = downloadTemplate(serviceAccount, "REPORTEMENSUAL");
+			
+			System.out.print("Se leyo el archivo");
+			
+			InputStream reportInputStream = null; 
+			InputStream employeeReportStream = null; 
+			
+			if(file_format != null) {
+				System.out.println("String.format(\"Inventario Proyect Template path : %s\", new Object[] { file_format })");
+				
+				File file = new File(file_format);
+				employeeReportStream = new FileInputStream(file);
+				reportInputStream = employeeReportStream;
+				
+				JasperDesign jasperDesign = JRXmlLoader.load(reportInputStream);
+				System.out.println("Se leyo el jasper design");
+				
+				JasperReport report = JasperCompileManager.compileReport(jasperDesign);
+				System.out.println("Se creo el informe jasper");
+				
+				final JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
+						Collections.singletonList("Invoice"));
+				
+				//File reportFile = File.createTempFile("reporte", ".pdf", new File("/Users/isae_1/Desktop/"));
+				//Se crea el documento
+				File reportFile = File.createTempFile("reporte", ".pdf");
+
+				
+				//Creando el map a enviar para el reporte 
+				
+				Map<String, Object> parameters = new HashMap<>();
+				
+				//URL urlCliente = new URL((String) listReport.get("LOGO CLIENTE"));
+				
+				parameters.put("FECHA", listReport.get("FECHA"));
+				parameters.put("FIRSTDATE", listReport.get("FIRSTDATE"));
+				parameters.put("LASTDATE", listReport.get("LASTDATE"));
+				//parameters.put("SEDE", listReport.get("SEDE"));
+				parameters.put("ALCALDIA", listReport.get("ALCALDIA"));
+				parameters.put("TIPOALBERCA", listReport.get("TIPOALBERCA"));
+				//parameters.put("ALBERCA", listReport.get("ALBERCA"));
+				parameters.put("REALIZO", listReport.get("REALIZO"));
+				parameters.put("REVISO", listReport.get("REVISO"));
+				parameters.put("CARACTERISTICA", listReport.get("CARACTERISTICA"));
+				//parameters.put("LOGO CLIENTE", sede.getCliente().getUrllogo());
+				
+				URL urlLog = new URL(sede.getCliente().getUrllogo()); 
+				parameters.put("LOGO CLIENTE", urlLog);
+				
+				parameters.put("SEDE", sede.getNombre());
+				parameters.put("ALBERCA", alberca.getNombrealberca());
+			
+				
+				//List de actividades
+				
+				List<Map<String,String>> listActivities = new ArrayList<Map<String,String>>();
+				
+				//Segunda hoja -------------------
+				
+				List<Map<String, Object>> list_page_images = new ArrayList<Map<String, Object>>();
+				
+				List<List<Object>> reportImages = (List<List<Object>>) listReport.get("REPORT_LIST_IMAGES");
+				
+				
+				
+				for(List<Object> rpt:reportImages) {
+					//Creamos MAP temporales
+					Map<String, Object> mapTemp = new HashMap<>();
+					Map<String, String> mapTempActivities = new HashMap<>();
+					List<Map<String, Object>> images_1 = new ArrayList<Map<String, Object>>();
+					List<Map<String, Object>> images_2 = new ArrayList<Map<String, Object>>();
+					
+					
+					// LLenamos la lista de actividades de acuerdo a solicitado en el reporte 
+					mapTempActivities.put("LIST",  ((Map<String,String>) rpt.get(0)).get("ACTIVITY"));
+					listActivities.add(mapTempActivities);
+					
+					//Obtenemos el nombre de la actvidad de cada hoja
+					mapTemp.put("ACTIVITY",  ((Map<String,Object>) rpt.get(0)).get("ACTIVITY"));
+										
+					
+					String act = ((Map<String, Object>) rpt.get(0)).get("ACTIVITY").toString();
+					String timg = ((Map<String,Object>) rpt.get(2)).get("TEXT_IMAGES").toString();
+					String obs = ((Map<String,Object>) rpt.get(3)).get("OBSERVACIONES").toString();
+					
+					Actividades acti = new Actividades(reportM, act , timg, obs);
+					//Guardamos en la base de datos la actividad
+					this.actividades.save(acti);
+					
+					Actividadimagenes ai;
+
+					//Obtemos una lista de imagenes 
+					List<String> images = (List<String>) ((Map<String, Object>) rpt.get(1)).get("IMAGES");
+					
+					System.out.println("Report list images" + images);
+					int cont = 1;
+					//Convertimos cada String de url a un objecto Tipo URL
+					for(String url : images) {
+						URL img = new URL(url);
+						//Mapa temporal de imagenes
+						Map<String, Object> imgTemp = new HashMap<>();
+						//Agregamos la imagen dependiendo de si es par o impar a una lista diferente, una por cada columna
+						if(cont % 2 != 0) {
+							imgTemp.put("IMG1", img);
+							images_1.add(imgTemp);
+							//Guardos en la base de datos las imagenes de la activdiad
+							ai = new Actividadimagenes(acti, url);
+							this.actividadimagenes.save(ai); 
+						}else {
+							imgTemp.put("IMG2", img);
+							images_2.add(imgTemp);
+							//Guardos en la base de datos las imagenes de la activdiad
+							ai = new Actividadimagenes(acti, url);
+							this.actividadimagenes.save(ai);
+						}
+						cont++;
+					}
+					
+					//Creamos la coleccion de imagenes por cada columna para jasper report
+					JRBeanCollectionDataSource jrcImages1 = new JRBeanCollectionDataSource(images_1);
+					JRBeanCollectionDataSource jrcImages2 = new JRBeanCollectionDataSource(images_2);
+					
+					mapTemp.put("IMAGES_1", jrcImages1);
+					mapTemp.put("IMAGES_2", jrcImages2);
+					
+					mapTemp.put("TEXT_IMAGES",  ((Map<String,Object>) rpt.get(2)).get("TEXT_IMAGES"));
+					mapTemp.put("OBSERVACIONES",  ((Map<String,Object>) rpt.get(3)).get("OBSERVACIONES"));
+					//Agregamos en mapTemp a la lista, cada uno es una hoja
+					list_page_images.add(mapTemp);
+					
+				}
+				
+				JRBeanCollectionDataSource jrc = new JRBeanCollectionDataSource(listActivities);
+				
+				JRBeanCollectionDataSource jrcImages = new JRBeanCollectionDataSource(list_page_images);
+				
+				parameters.put("CollectionBeanParam", jrc);
+				
+				parameters.put("REPORT_LIST_IMAGES", jrcImages);
+			
+				System.out.println(parameters);
+				//Generamos el pdf en la ubicacion  de reportFile
+				try(FileOutputStream fos = new FileOutputStream(reportFile)){
+					JasperReportsUtils.renderAsPdf(report, parameters, dataSource, fos);
+					System.out.println("Se creo el pdf");
+					
+				}
+				
+				String urlFirma = "";
+				//Guardamos en firebase storage el pdf
+				try {
+
+					URL url = new URL(
+							"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
+					FileInputStream serviceAccountt = new FileInputStream(descargarRecurso(url, "google-service-descarga.json"));
+					String bucketName = "isae-de6da.appspot.com";
+					boolean bandera = true;
+					Storage storage = (Storage) getStrogaeOptions(serviceAccountt).getService();
+
+					if (reportFile != null) {
+						String nombre = "REPORTEMENSUAL";
+						String objectName = "Proyectos/" + sede.getNombre() + "-" + alberca.getNombrealberca()  + "/Evidencias/" + nombre;
+
+						Map<String, String> map = new HashMap<>();
+						map.put("firebaseStorageDownloadTokens", nombre.replace(" ", "") + ".pdf");
+
+						BlobId blobId = BlobId.of(bucketName, objectName);
+						BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("application/pdf").setMetadata(map)
+								.build();
+						//El file se debe cambiar por el nombre del documento generado
+						Blob b = storage.create(blobInfo, new FileInputStream(reportFile.getAbsolutePath()),
+								new Storage.BlobWriteOption[0]);
+
+						System.out.println("File format uploaded to bucket " + bucketName + " as " + objectName);
+
+						String[] direccionTemporal = b.getSelfLink().split("/");
+
+						urlFirma = generarUrl(direccionTemporal, b.getMetadata().get("firebaseStorageDownloadTokens"));
+
+						System.out.println("URL del documento" + urlFirma);
+						
+						reportM.setUrl(urlFirma);
+						//Se guarda la url en el mismo registro creado al principio 
+						this.reportemensual.save(reportM);
+					}
+
+				} catch (IOException e) {
+					System.out.println("Exception " + e.getMessage());
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
 
 		
 		
