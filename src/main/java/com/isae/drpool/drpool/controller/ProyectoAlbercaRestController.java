@@ -265,7 +265,7 @@ public class ProyectoAlbercaRestController {
 		camposBitacoraGenerada.addAll(agregarEquipos(5,147,listaEquiposCalentamiento,
 				listaEquiposControlador, listaEquiposDosificador,listaEquiposBomba,
 				 listaEquiposFiltrado, proyecto, idAlberca));
-		camposBitacoraGenerada.addAll(camposBitacora.subList(114, 123));
+		camposBitacoraGenerada.addAll(camposBitacora.subList(114, 138));
 		
 		for (Camposproyecto camposproyecto : camposBitacoraGenerada) {
 			Camposproyecto campoAux = new Camposproyecto();

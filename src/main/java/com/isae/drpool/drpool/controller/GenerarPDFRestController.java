@@ -1253,7 +1253,7 @@ public class GenerarPDFRestController {
 		
 		System.out.println("Datos del reportM: " + reportM);
 		
-		int idreportemensual = (int) listReport.get("IDREPORTEMENSUAL");
+		int idreportemensual = (int) listReport.get("idreportemensual");
 		
 		System.out.println("ID reporte mensual recibido: " + idreportemensual);
 		
