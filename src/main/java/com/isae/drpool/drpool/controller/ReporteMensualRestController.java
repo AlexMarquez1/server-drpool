@@ -40,15 +40,17 @@ public class ReporteMensualRestController {
 		
 		Map<String, Object> rm;
 		
-		List<Map<String, Object>> actividadesList;		
+		List<Map<String, Object>> actividadesList;
+		List<List<Map<String, Object>>> actividadesListFinal;
 		Map<String, Object> actividadesRM;
 		
 		List<Reportemensual> listReportMensual = this.reportemensual.findAll();
 		
-		for(Reportemensual reportemensual : listReportMensual) {
+		/*for(Reportemensual reportemensual : listReportMensual) {
 			
 			rm = new HashMap<>();
-			actividadesList = new ArrayList<Map<String,Object>>();
+			actividadesListFinal = new ArrayList<Map<String,Object>>();
+			
 			
 			int idreportemensual = reportemensual.getIdreportemensual();
 			
@@ -70,11 +72,8 @@ public class ReporteMensualRestController {
 				
 				actividadesRM = new HashMap<String, Object>();
 				
-				int idactividad = acti.getIdactividades();
 				
-				actividadesRM.put("ACTIVIDAD", acti.getTipoactividad());
-				actividadesRM.put("TEXT_IMAGES", acti.getTextoimagenes());
-				actividadesRM.put("OBSERVACIONES", acti.getObservaciones());
+				int idactividad = acti.getIdactividades();				
 				
 				List<Actividadimagenes> actividadimg = this.actividadimagenes.getActividadImagenesID(idactividad);
 				
@@ -84,18 +83,94 @@ public class ReporteMensualRestController {
 					imgs.add(img.getUrl());
 				}
 				
-				actividadesRM.put("IMAGES", imgs);
+				actividadesList = new ArrayList<Map<String,Object>>();
 				
+				actividadesRM.put("ACTIVITY", acti.getTipoactividad());
 				actividadesList.add(actividadesRM);
+				actividadesRM = new HashMap<String, Object>();
+				actividadesRM.put("IMAGES", imgs);
+				actividadesList.add(actividadesRM);
+				actividadesRM = new HashMap<String, Object>();
+				actividadesRM.put("TEXT_IMAGES", acti.getTextoimagenes());
+				actividadesList.add(actividadesRM);
+				actividadesRM = new HashMap<String, Object>();
+				actividadesRM.put("OBSERVACIONES", acti.getObservaciones());
+				actividadesList.add(actividadesRM);
+				actividadesRM = new HashMap<String, Object>();
+				
+				
+				actividadesListFinal.add(actividadesList);
+				
+				
 	
 			}
+
 			
-			rm.put("REPORT_LIST_IMAGES", actividadesList);
+			rm.put("REPORT_LIST_IMAGES", actividadesListFinal);
 			
 			rmList.add(rm);
 			
 			
+		}*/
+		
+		for (Reportemensual reportemensual : listReportMensual) {
+		    rm = new HashMap<>();
+		    actividadesListFinal = new ArrayList<List<Map<String, Object>>>(); // Usar List<List> en lugar de List
+
+		    int idreportemensual = reportemensual.getIdreportemensual();
+
+		    rm.put("IDREPORTEMENSUAL", reportemensual.getIdreportemensual());
+		    rm.put("FECHA", reportemensual.getFecha());
+		    rm.put("FIRSTDATE", reportemensual.getPeriodoinicial());
+		    rm.put("LASTDATE", reportemensual.getPeriodofinal());
+		    rm.put("SEDE", reportemensual.getSede());
+		    rm.put("ALCALDIA", reportemensual.getAlcaldia());
+		    rm.put("ALBERCA", reportemensual.getAlberca());
+		    rm.put("TIPOALBERCA", reportemensual.getTipoalberca());
+		    rm.put("CARACTERISTICA", reportemensual.getCaracteristicaalberca());
+		    rm.put("REALIZO", reportemensual.getRealizo());
+		    rm.put("REVISO", reportemensual.getReviso());
+
+		    List<Actividades> actividades = this.actividades.getActividadesID(idreportemensual);
+
+		    for (Actividades acti : actividades) {
+		        actividadesRM = new HashMap<String, Object>();
+
+		        int idactividad = acti.getIdactividades();
+
+		        List<Actividadimagenes> actividadimg = this.actividadimagenes.getActividadImagenesID(idactividad);
+
+		        List<String> imgs = new ArrayList<String>();
+
+		        for (Actividadimagenes img : actividadimg) {
+		            imgs.add(img.getUrl());
+		        }
+		        List<Map<String, Object>> actividadSubLista = new ArrayList<Map<String, Object>>();
+
+		        actividadesRM.put("ACTIVITY", acti.getTipoactividad());
+		        actividadSubLista.add(actividadesRM);
+		        actividadesRM = new HashMap<String, Object>();
+		        actividadesRM.put("IMAGES", imgs);
+		        actividadSubLista.add(actividadesRM);
+		        actividadesRM = new HashMap<String, Object>();
+		        actividadesRM.put("TEXT_IMAGES", acti.getTextoimagenes());
+		        actividadSubLista.add(actividadesRM);
+		        actividadesRM = new HashMap<String, Object>();
+		        actividadesRM.put("OBSERVACIONES", acti.getObservaciones());
+		        actividadSubLista.add(actividadesRM);
+		        actividadesRM = new HashMap<String, Object>();
+		        
+//		        actividadSubLista.add(actividadesRM);
+
+		        // Agrega la sub-lista a actividadesListFinal
+		        actividadesListFinal.add(actividadSubLista);
+		    }
+
+		    // Envuelve todas las sub-listas en un conjunto de corchetes [] y colócalas en "REPORT_LIST_IMAGES"
+		    rm.put("REPORT_LIST_IMAGES", actividadesListFinal);
+		    rmList.add(rm);
 		}
+
 		
 		
 		return rmList; 

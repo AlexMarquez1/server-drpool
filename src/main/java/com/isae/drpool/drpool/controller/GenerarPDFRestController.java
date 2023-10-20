@@ -1253,8 +1253,25 @@ public class GenerarPDFRestController {
 		
 		System.out.println("Datos del reportM: " + reportM);
 		
-		if((int) listReport.get("idreportemensual")!= 0) {
-			reportM.setIdreportemensual((int) listReport.get("idreportemensual"));
+		int idreportemensual = (int) listReport.get("IDREPORTEMENSUAL");
+		
+		System.out.println("ID reporte mensual recibido: " + idreportemensual);
+		
+		if(idreportemensual!=0) {
+			reportM.setIdreportemensual(idreportemensual);
+			
+			List<Actividades> acti = this.actividades.getActividadesID(reportM.getIdreportemensual());
+			
+			for(Actividades ac : acti) {
+				List<Actividadimagenes> actimg = this.actividadimagenes.getActividadImagenesID(ac.getIdactividades());
+				
+				for(Actividadimagenes aimg : actimg) {
+					this.actividadimagenes.delete(aimg);
+				}
+				
+				this.actividades.delete(ac);
+			
+			}
 			
 		}
 		
