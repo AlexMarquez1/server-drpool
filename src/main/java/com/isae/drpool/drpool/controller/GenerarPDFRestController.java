@@ -1253,6 +1253,11 @@ public class GenerarPDFRestController {
 		
 		System.out.println("Datos del reportM: " + reportM);
 		
+		if((int) listReport.get("idreportemensual")!= 0) {
+			reportM.setIdreportemensual((int) listReport.get("idreportemensual"));
+			
+		}
+		
 		try {
 			// Se guardan los datos del reporte mensual en su respectiva tabla, aun no se asigna el url del documento.
 		    this.reportemensual.save(reportM);
