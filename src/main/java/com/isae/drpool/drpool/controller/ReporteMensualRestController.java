@@ -130,6 +130,7 @@ public class ReporteMensualRestController {
 		    rm.put("CARACTERISTICA", reportemensual.getCaracteristicaalberca());
 		    rm.put("REALIZO", reportemensual.getRealizo());
 		    rm.put("REVISO", reportemensual.getReviso());
+		    rm.put("URLPDF", reportemensual.getUrl());
 
 		    List<Actividades> actividades = this.actividades.getActividadesID(idreportemensual);
 
