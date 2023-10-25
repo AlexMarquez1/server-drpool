@@ -1248,7 +1248,7 @@ public class GenerarPDFRestController {
 		
 		Reportemensual reportM = new Reportemensual();
 		
-		reportM = new Reportemensual(sede, alberca, listReport.get("FECHA").toString(), listReport.get("FIRSTDATE").toString(), listReport.get("LASTDATE").toString(), listReport.get("ALCALDIA").toString(), listReport.get("TIPOALBERCA").toString(),
+		reportM = new Reportemensual(listReport.get("FOLIO").toString(), sede, alberca,listReport.get("FECHA").toString(), listReport.get("FIRSTDATE").toString(), listReport.get("LASTDATE").toString(), listReport.get("ALCALDIA").toString(), listReport.get("TIPOALBERCA").toString(),
 				listReport.get("CARACTERISTICA").toString(), listReport.get("REALIZO").toString(),listReport.get("REVISO").toString(), "");
 		
 		System.out.println("Datos del reportM: " + reportM);

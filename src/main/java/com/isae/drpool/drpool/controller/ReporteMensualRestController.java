@@ -119,7 +119,7 @@ public class ReporteMensualRestController {
 
 		    int idreportemensual = reportemensual.getIdreportemensual();
 
-		    rm.put("IDREPORTEMENSUAL", reportemensual.getIdreportemensual());
+		    rm.put("idreportemensual", reportemensual.getIdreportemensual());
 		    rm.put("FECHA", reportemensual.getFecha());
 		    rm.put("FIRSTDATE", reportemensual.getPeriodoinicial());
 		    rm.put("LASTDATE", reportemensual.getPeriodofinal());

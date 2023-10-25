@@ -19,6 +19,8 @@ public class Reportemensual {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idreportemensual;
 	
+	private String folio; 
+	
 	@OneToOne
 	@JoinColumn(name="idsede")
 	private Sede sede;
@@ -51,6 +53,14 @@ public class Reportemensual {
 
 	public void setIdreportemensual(int idreportemensual) {
 		this.idreportemensual = idreportemensual;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
 	}
 
 	public Sede getSede() {
@@ -141,11 +151,14 @@ public class Reportemensual {
 		this.url = url;
 	}
 
-	public Reportemensual(int idreportemensual, Sede sede, Alberca alberca, String fecha, String periodoinicial,
-			String periodofinal, String alcaldia, String tipoalberca, String caracteristicaalberca, String realizo,
-			String reviso, String url) {
+	
+
+	public Reportemensual(int idreportemensual, String folio, Sede sede, Alberca alberca, String fecha,
+			String periodoinicial, String periodofinal, String alcaldia, String tipoalberca,
+			String caracteristicaalberca, String realizo, String reviso, String url) {
 		super();
 		this.idreportemensual = idreportemensual;
+		this.folio = folio;
 		this.sede = sede;
 		this.alberca = alberca;
 		this.fecha = fecha;
@@ -158,13 +171,12 @@ public class Reportemensual {
 		this.reviso = reviso;
 		this.url = url;
 	}
-	
-	
 
-	public Reportemensual(Sede sede, Alberca alberca, String fecha, String periodoinicial, String periodofinal,
-			String alcaldia, String tipoalberca, String caracteristicaalberca, String realizo, String reviso,
-			String url) {
+	public Reportemensual(String folio, Sede sede, Alberca alberca, String fecha, String periodoinicial,
+			String periodofinal, String alcaldia, String tipoalberca, String caracteristicaalberca, String realizo,
+			String reviso, String url) {
 		super();
+		this.folio = folio;
 		this.sede = sede;
 		this.alberca = alberca;
 		this.fecha = fecha;
@@ -184,11 +196,12 @@ public class Reportemensual {
 
 	@Override
 	public String toString() {
-		return "Reportemensual [idreportemensual=" + idreportemensual + ", sede=" + sede + ", alberca=" + alberca
-				+ ", fecha=" + fecha + ", periodoinicial=" + periodoinicial + ", periodofinal=" + periodofinal
-				+ ", alcaldia=" + alcaldia + ", tipoalberca=" + tipoalberca + ", caracteristicaalberca="
+		return "Reportemensual [idreportemensual=" + idreportemensual + ", folio=" + folio + ", sede=" + sede
+				+ ", alberca=" + alberca + ", fecha=" + fecha + ", periodoinicial=" + periodoinicial + ", periodofinal="
+				+ periodofinal + ", alcaldia=" + alcaldia + ", tipoalberca=" + tipoalberca + ", caracteristicaalberca="
 				+ caracteristicaalberca + ", realizo=" + realizo + ", reviso=" + reviso + ", url=" + url + "]";
 	}
+
 	
 	
 	
