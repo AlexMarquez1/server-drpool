@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isae.drpool.drpool.dao.IAsignarRegistroDAO;
 import com.isae.drpool.drpool.dao.IEstatusProyecto;
 import com.isae.drpool.drpool.dao.IInventarioDAO;
+import com.isae.drpool.drpool.dao.IUsuarioDAO;
 import com.isae.drpool.drpool.entity.Asignacionregistro;
 import com.isae.drpool.drpool.entity.EstatusProyecto;
 import com.isae.drpool.drpool.entity.Inventario;
@@ -37,6 +38,9 @@ public class AsignacionRegistroRestController {
 	
 	@Autowired
 	private IEstatusProyecto estatusProyecto;
+	
+	@Autowired
+	private IUsuarioDAO usuario;
 	
 	@CrossOrigin(origins = "*")
 	@PostMapping("/asignar/registro/{idUsuario}")
@@ -94,6 +98,10 @@ public class AsignacionRegistroRestController {
 //		for(Asignacionregistro item : lista) {
 //			respuesta.add(item.getInventario());
 //		}
+		
+		Usuario usuario = this.usuario.getById(Integer.parseInt(idUsuario));
+		
+		System.out.println("Perfil del usuario que consulta los registros: " + usuario.getPerfile()); 
 
 		return lista;
 	}
@@ -108,14 +116,32 @@ public class AsignacionRegistroRestController {
 		
 //		List<Inventario> listaInventarios = new ArrayList<Inventario>();
 		
-		List<EstatusProyecto> estatus = this.estatusProyecto.obtenerEstatusPorProyecto(Integer.parseInt(idProyecto));
-		List<Inventario> listaInventarios = this.asignarRegistro.obtenerRegistrosAsignadosUsuarioProyecto(new Usuario(Integer.parseInt(idUsuario)),new Proyecto( Integer.parseInt(idProyecto)));
+		Usuario user = this.usuario.findById(Integer.parseInt(idUsuario)).get();
 		
-//		for(Asignacionregistro item : lista) {
-//			listaInventarios.add(item.getInventario());
-//		}
+		System.out.println("USER: " + user.getPerfile().getPerfil());
+		
+
+		//Usuario usuario = this.usuario.getById(Integer.parseInt(idUsuario));
+		
+		//System.out.println("Perfil del usuario que consulta los registros desde status: " + usuario.getPerfile().getPerfil());
+		
+		List<EstatusProyecto> estatus = this.estatusProyecto.obtenerEstatusPorProyecto(Integer.parseInt(idProyecto));
+		
+		if(user.getPerfile().getPerfil().contains("COORD")){
+			List<Inventario> listaInventarios = this.asignarRegistro.obtenerRegistrosAsignadosProyecto(new Proyecto( Integer.parseInt(idProyecto)));
+			respuesta.put("inventario", listaInventarios);
+		}else {
+			List<Inventario> listaInventarios = this.asignarRegistro.obtenerRegistrosAsignadosUsuarioProyecto(new Usuario(Integer.parseInt(idUsuario)),new Proyecto( Integer.parseInt(idProyecto)));
+			respuesta.put("inventario", listaInventarios);
+		}
+		
+	
 		respuesta.put("Estatus", estatus);
-		respuesta.put("inventario", listaInventarios);
+		
+		 
+
+		
+		
 
 		return respuesta;
 	}

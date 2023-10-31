@@ -1,5 +1,8 @@
 package com.isae.drpool.drpool.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -25,6 +30,8 @@ public class Fotoevidencia {
 	
 	private String coordenadas;
 	
+	private String fechacreacion;
+	
 //	@ManyToOne(cascade = CascadeType.ALL)
 	@ManyToOne()
 	@JoinColumn(name="idusuario")
@@ -38,8 +45,9 @@ public class Fotoevidencia {
 	@JoinColumn(name="idcampo")
 	private Camposproyecto campoProyecto;
 
-	public Fotoevidencia(int idfoto, String nombrefoto, String url, String coordenadas, Usuario usuario,
-			Inventario inventario, Camposproyecto campoProyecto) {
+	public Fotoevidencia(int idfoto, String nombrefoto, String url, String coordenadas,
+			Usuario usuario, Inventario inventario, Camposproyecto campoProyecto) {
+		super();
 		this.idfoto = idfoto;
 		this.nombrefoto = nombrefoto;
 		this.url = url;
@@ -108,11 +116,33 @@ public class Fotoevidencia {
 		this.campoProyecto = campoProyecto;
 	}
 
+	public String getFechacreacion() {
+		return fechacreacion;
+	}
+
+	public void setFechacreacion(String fechacreacion) {
+		this.fechacreacion = fechacreacion;
+	}
+
 	@Override
 	public String toString() {
 		return "Fotoevidencia [idfoto=" + idfoto + ", nombrefoto=" + nombrefoto + ", url=" + url + ", coordenadas="
-				+ coordenadas + ", usuario=" + usuario + ", inventario=" + inventario + ", campoProyecto="
-				+ campoProyecto + "]";
+				+ coordenadas + ", fechacreacion=" + fechacreacion + ", usuario=" + usuario + ", inventario="
+				+ inventario + ", campoProyecto=" + campoProyecto + "]";
+	}
+
+	
+	@PrePersist
+	public void setFechaInsert() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		setFechacreacion((dateFormat.format(new Date())).toString());
+	}
+	
+	
+	@PreUpdate
+	public void setFechaUpdate() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		setFechacreacion((dateFormat.format(new Date())).toString());
 	}
 
 }

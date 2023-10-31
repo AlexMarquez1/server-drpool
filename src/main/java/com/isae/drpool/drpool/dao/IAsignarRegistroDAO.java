@@ -32,6 +32,9 @@ public interface IAsignarRegistroDAO extends JpaRepository<Asignacionregistro,In
 	@Query(value= "SELECT i FROM Asignacionregistro a INNER JOIN a.inventario i WHERE a.usuario=:usuario AND i.proyecto=:proyecto ORDER BY i.folio, i.idinventario")
 	List<Inventario> obtenerRegistrosAsignadosUsuarioProyecto(@Param("usuario") Usuario usaurio, @Param("proyecto") Proyecto proyecto);
 	
+	@Query(value= "SELECT i FROM Asignacionregistro a INNER JOIN a.inventario i WHERE i.proyecto=:proyecto ORDER BY i.folio, i.idinventario")
+	List<Inventario> obtenerRegistrosAsignadosProyecto(@Param("proyecto") Proyecto proyecto);
+	
 	@Query(value= "SELECT i FROM Asignacionregistro a INNER JOIN a.inventario i WHERE a.usuario IN :usuario AND i.proyecto IN :proyecto ORDER BY i.folio, i.idinventario")
 	List<Inventario> obtenerRegistrosAsignadosUsuarioProyecto(@Param("usuario")List<Usuario> usaurio, @Param("proyecto") List<Proyecto> proyecto);
 	
