@@ -116,9 +116,9 @@ public class AsignacionRegistroRestController {
 		
 //		List<Inventario> listaInventarios = new ArrayList<Inventario>();
 		
-		Usuario user = this.usuario.findById(Integer.parseInt(idUsuario)).get();
+		//Usuario user = this.usuario.findById(Integer.parseInt(idUsuario)).get();
 		
-		System.out.println("USER: " + user.getPerfile().getPerfil());
+		//System.out.println("USER: " + user.getPerfile().getPerfil());
 		
 
 		//Usuario usuario = this.usuario.getById(Integer.parseInt(idUsuario));
@@ -126,21 +126,19 @@ public class AsignacionRegistroRestController {
 		//System.out.println("Perfil del usuario que consulta los registros desde status: " + usuario.getPerfile().getPerfil());
 		
 		List<EstatusProyecto> estatus = this.estatusProyecto.obtenerEstatusPorProyecto(Integer.parseInt(idProyecto));
+		List<Inventario> listaInventarios = this.asignarRegistro.obtenerRegistrosAsignadosUsuarioProyecto(new Usuario(Integer.parseInt(idUsuario)),new Proyecto( Integer.parseInt(idProyecto)));
+		respuesta.put("Estatus", estatus);
+		respuesta.put("inventario", listaInventarios);
 		
-		if(user.getPerfile().getPerfil().contains("COORD")){
+		/*if(user.getPerfile().getPerfil().contains("COORD")){
 			List<Inventario> listaInventarios = this.asignarRegistro.obtenerRegistrosAsignadosProyecto(new Proyecto( Integer.parseInt(idProyecto)));
 			respuesta.put("inventario", listaInventarios);
 		}else {
 			List<Inventario> listaInventarios = this.asignarRegistro.obtenerRegistrosAsignadosUsuarioProyecto(new Usuario(Integer.parseInt(idUsuario)),new Proyecto( Integer.parseInt(idProyecto)));
 			respuesta.put("inventario", listaInventarios);
-		}
+		}*/
 		
 	
-		respuesta.put("Estatus", estatus);
-		
-		 
-
-		
 		
 
 		return respuesta;

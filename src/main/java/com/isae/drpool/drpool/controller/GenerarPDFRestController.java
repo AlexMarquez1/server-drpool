@@ -1283,7 +1283,10 @@ public class GenerarPDFRestController {
 		}
 		//Se descarga la plantilla de jasper
 		try {
-			FileInputStream serviceAccount = new FileInputStream("google-services.json");
+			URL urlJSON = new URL(
+					"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
+			FileInputStream serviceAccount = new FileInputStream(descargarRecurso(urlJSON, "google-service-descarga.json"));
+			//FileInputStream serviceAccount = new FileInputStream("google-services.json");
 			String file_format = downloadTemplate(serviceAccount, "REPORTEMENSUAL");
 			
 			System.out.print("Se leyo el archivo");
