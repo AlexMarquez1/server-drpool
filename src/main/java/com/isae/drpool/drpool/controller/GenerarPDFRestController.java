@@ -650,10 +650,12 @@ public class GenerarPDFRestController {
 	public String guardarEvidencia(Inventario inventario, File file, String nombrePdf) {
 		try {
 
+			//URL url = new URL("https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
 			URL url = new URL(
-					"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
+					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
 			FileInputStream serviceAccount = new FileInputStream(descargarRecurso(url, "google-service-descarga.json"));
-			String bucketName = "isae-de6da.appspot.com";
+			//String bucketName = "isae-de6da.appspot.com";
+			String bucketName = "dr-pool-eca1c.appspot.com";
 			boolean bandera = true;
 			Storage storage = (Storage) getStrogaeOptions(serviceAccount).getService();
 
@@ -695,7 +697,8 @@ public class GenerarPDFRestController {
 	}
 
 	private String generarUrl(String[] direccionTemporal, String token) {
-		String url = "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/";
+		//String url = "https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/";
+		String url = "https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/";
 
 		return url + direccionTemporal[8] + "?alt=media&token=" + token;
 	}
@@ -749,7 +752,9 @@ public class GenerarPDFRestController {
 	private void descargarRecursos() {
 		System.out.println("Dentro del metodo de descarga del recurso :)");
 		try (BufferedInputStream inputStream = new BufferedInputStream(new URL(
-				"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc")
+				//"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc"
+				"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA."
+				)
 						.openStream());
 				FileOutputStream fileOS = new FileOutputStream("google-service-descarga.json")) {
 			byte data[] = new byte[1024];
@@ -1109,8 +1114,9 @@ public class GenerarPDFRestController {
 	private JasperReport loadTemplate(String nombreProyecto) throws JRException, Exception {
 		System.out.println(String.format("Inventario load template!", new Object[0]));
 
+		//URL url = new URL("https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
 		URL url = new URL(
-				"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
+					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
 		FileInputStream serviceAccount = new FileInputStream(descargarConector(url, "google-service-descarga.json"));
 		String file_format = downloadTemplate(serviceAccount, nombreProyecto.contains("REPORTE SEMANAL") ? "REPORTE SEMANAL" : nombreProyecto);
 		System.out.println("Plantilla proyecto: " + file_format);
@@ -1283,8 +1289,9 @@ public class GenerarPDFRestController {
 		}
 		//Se descarga la plantilla de jasper
 		try {
+			//URL urlJSON = new URL("https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
 			URL urlJSON = new URL(
-					"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
+					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
 			FileInputStream serviceAccount = new FileInputStream(descargarRecurso(urlJSON, "google-service-descarga.json"));
 			//FileInputStream serviceAccount = new FileInputStream("google-services.json");
 			String file_format = downloadTemplate(serviceAccount, "REPORTEMENSUAL");
@@ -1439,10 +1446,12 @@ public class GenerarPDFRestController {
 				//Guardamos en firebase storage el pdf
 				try {
 
+					//URL url = new URL("https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
 					URL url = new URL(
-							"https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
+					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
 					FileInputStream serviceAccountt = new FileInputStream(descargarRecurso(url, "google-service-descarga.json"));
-					String bucketName = "isae-de6da.appspot.com";
+					//String bucketName = "isae-de6da.appspot.com";
+					String bucketName = "dr-pool-eca1c.appspot.com";
 					boolean bandera = true;
 					Storage storage = (Storage) getStrogaeOptions(serviceAccountt).getService();
 

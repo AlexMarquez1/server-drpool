@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isae.drpool.drpool.dao.IDireccionSedeDAO;
 import com.isae.drpool.drpool.dao.ISedeDAO;
+import com.isae.drpool.drpool.dao.IUsuarioDAO;
 import com.isae.drpool.drpool.entity.Sede;
+import com.isae.drpool.drpool.entity.Usuario;
 
 @RestController
 public class SedeRestController {
@@ -21,6 +23,8 @@ public class SedeRestController {
 	private ISedeDAO sede;
 	@Autowired
 	private IDireccionSedeDAO direccion; 
+	@Autowired
+	private IUsuarioDAO usuario; 
 	
 	
 	
@@ -35,6 +39,16 @@ public class SedeRestController {
 	public String nuevaSede(@RequestBody Sede sede) {
 		String respuesta = "se guardo correctamente";
 		System.out.println(sede);
+		
+		Usuario coordinador = sede.getCoordinador();
+		Usuario operador = sede.getOperador();
+		
+		coordinador.setAsignacion("ASIGNADO");
+		operador.setAsignacion("ASIGNADO");
+		
+		this.usuario.save(coordinador);
+		this.usuario.save(operador);
+		
 		
 		if(sede.getDireccion().getIddireccion() != 0) {
 			this.direccion.save(sede.getDireccion());

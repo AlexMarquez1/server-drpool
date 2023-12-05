@@ -36,7 +36,9 @@ public class Usuario implements Serializable {
 	
 	private String fechanacimiento; 
 	
-	private String fechaingreso; 
+	private String fechaingreso;
+	
+	private String asignacion; 
 
 	//bi-directional many-to-one association to Perfile
 	@OneToOne
@@ -80,7 +82,7 @@ public class Usuario implements Serializable {
 	
 	//Metodo con fecha de nacimiento e ingreso de perfile y clienteAplicacion
 	
-	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+	/*public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
 			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento, String fechaingreso,Perfile perfile,
 			ClienteAplicacion clienteAplicacion) {
 		super();
@@ -97,6 +99,30 @@ public class Usuario implements Serializable {
 		this.token = token;
 		this.fechanacimiento = fechanacimiento; 
 		this.fechaingreso = fechaingreso; 
+		this.perfile = perfile;
+		this.clienteAplicacion = clienteAplicacion;
+	}*/
+	
+	//Sustituto del anterior
+
+	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento,
+			String fechaingreso, String asignacion, Perfile perfile, ClienteAplicacion clienteAplicacion) {
+		super();
+		this.idusuario = idusuario;
+		this.correo = correo;
+		this.jefeinmediato = jefeinmediato;
+		this.nombre = nombre;
+		this.pass = pass;
+		this.passtemp = passtemp;
+		this.telefono = telefono;
+		this.ubicacion = ubicacion;
+		this.usuario = usuario;
+		this.status = status;
+		this.token = token;
+		this.fechanacimiento = fechanacimiento;
+		this.fechaingreso = fechaingreso;
+		this.asignacion = asignacion;
 		this.perfile = perfile;
 		this.clienteAplicacion = clienteAplicacion;
 	}
@@ -120,7 +146,7 @@ public class Usuario implements Serializable {
 	
 	//Metodo con fecha de nacimiento e ingreso de perfile 
 	
-	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+	/*public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
 			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento, String fechaingreso, Perfile perfile) {
 		super();
 		this.idusuario = idusuario;
@@ -136,6 +162,29 @@ public class Usuario implements Serializable {
 		this.token = token;
 		this.fechanacimiento = fechanacimiento; 
 		this.fechaingreso = fechaingreso; 
+		this.perfile = perfile;
+	}*/
+	
+	//sustituto del método anterior
+
+	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento,
+			String fechaingreso, String asignacion, Perfile perfile) {
+		super();
+		this.idusuario = idusuario;
+		this.correo = correo;
+		this.jefeinmediato = jefeinmediato;
+		this.nombre = nombre;
+		this.pass = pass;
+		this.passtemp = passtemp;
+		this.telefono = telefono;
+		this.ubicacion = ubicacion;
+		this.usuario = usuario;
+		this.status = status;
+		this.token = token;
+		this.fechanacimiento = fechanacimiento;
+		this.fechaingreso = fechaingreso;
+		this.asignacion = asignacion;
 		this.perfile = perfile;
 	}
 
@@ -161,7 +210,7 @@ public class Usuario implements Serializable {
 	
 	//Metodo con fecha de nacimiento e ingreso de perfile, cliente aplicacion e VistaCliente
 	
-	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+	/*public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
 			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento, String fechaingreso, Perfile perfile,
 			ClienteAplicacion clienteAplicacion, Cliente vistaCliente) {
 		super();
@@ -178,6 +227,32 @@ public class Usuario implements Serializable {
 		this.token = token;
 		this.fechanacimiento = fechanacimiento; 
 		this.fechaingreso = fechaingreso; 
+		this.perfile = perfile;
+		this.clienteAplicacion = clienteAplicacion;
+		this.vistaCliente = vistaCliente;
+	}*/
+	
+	//sustituto del método anterior
+
+	public Usuario(int idusuario, String correo, String jefeinmediato, String nombre, String pass, int passtemp,
+			String telefono, String ubicacion, String usuario, String status, String token, String fechanacimiento,
+			String fechaingreso, String asignacion, Perfile perfile, ClienteAplicacion clienteAplicacion,
+			Cliente vistaCliente) {
+		super();
+		this.idusuario = idusuario;
+		this.correo = correo;
+		this.jefeinmediato = jefeinmediato;
+		this.nombre = nombre;
+		this.pass = pass;
+		this.passtemp = passtemp;
+		this.telefono = telefono;
+		this.ubicacion = ubicacion;
+		this.usuario = usuario;
+		this.status = status;
+		this.token = token;
+		this.fechanacimiento = fechanacimiento;
+		this.fechaingreso = fechaingreso;
+		this.asignacion = asignacion;
 		this.perfile = perfile;
 		this.clienteAplicacion = clienteAplicacion;
 		this.vistaCliente = vistaCliente;
@@ -310,14 +385,26 @@ public class Usuario implements Serializable {
 	public void setFechaingreso(String fechaingreso) {
 		this.fechaingreso = fechaingreso;
 	}
+	
+
+	public String getAsignacion() {
+		return asignacion;
+	}
+
+	public void setAsignacion(String asignacion) {
+		this.asignacion = asignacion;
+	}
 
 	@Override
 	public String toString() {
 		return "Usuario [idusuario=" + idusuario + ", correo=" + correo + ", jefeinmediato=" + jefeinmediato
 				+ ", nombre=" + nombre + ", pass=" + pass + ", passtemp=" + passtemp + ", telefono=" + telefono
 				+ ", ubicacion=" + ubicacion + ", usuario=" + usuario + ", status=" + status + ", token=" + token
-				+ ", fechanacimiento=" + fechanacimiento + ", fechaingreso=" + fechaingreso + ", perfile=" + perfile
-				+ ", clienteAplicacion=" + clienteAplicacion + ", vistaCliente=" + vistaCliente + "]";
-	}	
+				+ ", fechanacimiento=" + fechanacimiento + ", fechaingreso=" + fechaingreso + ", asignacion="
+				+ asignacion + ", perfile=" + perfile + ", clienteAplicacion=" + clienteAplicacion + ", vistaCliente="
+				+ vistaCliente + "]";
+	}
+
+	
 
 }
