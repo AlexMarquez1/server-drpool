@@ -37,24 +37,30 @@ public class SedeRestController {
 	@CrossOrigin(origins="*")
 	@PostMapping("/nueva/sede")
 	public String nuevaSede(@RequestBody Sede sede) {
-		String respuesta = "se guardo correctamente";
-		System.out.println(sede);
-		
-		Usuario coordinador = sede.getCoordinador();
-		Usuario operador = sede.getOperador();
-		
-		coordinador.setAsignacion("ASIGNADO");
-		operador.setAsignacion("ASIGNADO");
-		
-		this.usuario.save(coordinador);
-		this.usuario.save(operador);
-		
-		
-		if(sede.getDireccion().getIddireccion() != 0) {
-			this.direccion.save(sede.getDireccion());
+		String respuesta;
+		if(!this.sede.existsByNombre(sede.getNombre())) {
+			respuesta = "se guardo correctamente";
+			System.out.println(sede);
+			
+			Usuario coordinador = sede.getCoordinador();
+			Usuario operador = sede.getOperador();
+			
+			coordinador.setAsignacion("ASIGNADO");
+			operador.setAsignacion("ASIGNADO");
+			
+			this.usuario.save(coordinador);
+			this.usuario.save(operador);
+			
+			
+			if(sede.getDireccion().getIddireccion() != 0) {
+				this.direccion.save(sede.getDireccion());
+			}
+			
+			this.sede.save(sede);
+		}else {
+			respuesta = "El nombre de la Sede ya se encuentra registrado";	
 		}
 		
-		this.sede.save(sede);
 		return respuesta;
 	}
 }

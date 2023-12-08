@@ -15,4 +15,6 @@ public interface IClienteDAO extends JpaRepository<Cliente, Integer> {
 	
 	@Query(value= "SELECT * FROM cliente WHERE idclienteaplicacion=:clienteapp", nativeQuery = true)
 	List<Cliente> obtenerClientesPorUsuario(@Param("clienteapp") int clienteapp);
+	
+	boolean existsByCliente(String cliente);
 }

@@ -756,7 +756,7 @@ public class GenerarPDFRestController {
 				"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA."
 				)
 						.openStream());
-				FileOutputStream fileOS = new FileOutputStream("google-service-descarga.json")) {
+				FileOutputStream fileOS = new FileOutputStream("dr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json")) {
 			byte data[] = new byte[1024];
 			int byteContent;
 			while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
@@ -1117,7 +1117,7 @@ public class GenerarPDFRestController {
 		//URL url = new URL("https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
 		URL url = new URL(
 					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
-		FileInputStream serviceAccount = new FileInputStream(descargarConector(url, "google-service-descarga.json"));
+		FileInputStream serviceAccount = new FileInputStream(descargarConector(url, "dr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json"));
 		String file_format = downloadTemplate(serviceAccount, nombreProyecto.contains("REPORTE SEMANAL") ? "REPORTE SEMANAL" : nombreProyecto);
 		System.out.println("Plantilla proyecto: " + file_format);
 		InputStream reportInputStream = null;
@@ -1145,7 +1145,7 @@ public class GenerarPDFRestController {
 			Storage storage = (Storage) getStrogaeOptions(serviceAccount).getService();
 			File plantilla = File.createTempFile(nombreProyecto, ".jrxml");
 
-			Blob blob1 = storage.get(BlobId.of("isae-de6da.appspot.com", objectNameDef));
+			Blob blob1 = storage.get(BlobId.of("dr-pool-eca1c.appspot.com", objectNameDef));
 
 			if (blob1 != null) {
 				blob1.downloadTo(plantilla.toPath());
@@ -1161,7 +1161,7 @@ public class GenerarPDFRestController {
 
 	private StorageOptions getStrogaeOptions(FileInputStream serviceAccount) throws IOException {
 		StorageOptions storageOptions = ((StorageOptions.Builder) ((StorageOptions.Builder) StorageOptions.newBuilder()
-				.setProjectId("isae-de6da")).setCredentials((Credentials) GoogleCredentials.fromStream(serviceAccount)))
+				.setProjectId("dr-pool-eca1c")).setCredentials((Credentials) GoogleCredentials.fromStream(serviceAccount)))
 						.build();
 		return storageOptions;
 	}
@@ -1292,7 +1292,7 @@ public class GenerarPDFRestController {
 			//URL urlJSON = new URL("https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
 			URL urlJSON = new URL(
 					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
-			FileInputStream serviceAccount = new FileInputStream(descargarRecurso(urlJSON, "google-service-descarga.json"));
+			FileInputStream serviceAccount = new FileInputStream(descargarRecurso(urlJSON, "dr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json"));
 			//FileInputStream serviceAccount = new FileInputStream("google-services.json");
 			String file_format = downloadTemplate(serviceAccount, "REPORTEMENSUAL");
 			
@@ -1449,7 +1449,7 @@ public class GenerarPDFRestController {
 					//URL url = new URL("https://firebasestorage.googleapis.com/v0/b/isae-de6da.appspot.com/o/Services%2Fgoogle-services.json?alt=media&token=142d6393-2405-44d4-bc20-6de945e391bc");
 					URL url = new URL(
 					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
-					FileInputStream serviceAccountt = new FileInputStream(descargarRecurso(url, "google-service-descarga.json"));
+					FileInputStream serviceAccountt = new FileInputStream(descargarRecurso(url, "dr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json"));
 					//String bucketName = "isae-de6da.appspot.com";
 					String bucketName = "dr-pool-eca1c.appspot.com";
 					boolean bandera = true;

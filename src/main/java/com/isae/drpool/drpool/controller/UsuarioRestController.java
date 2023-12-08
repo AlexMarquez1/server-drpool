@@ -126,10 +126,10 @@ public class UsuarioRestController {
 				URL url = new URL(
 					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
 				FileInputStream serviceAccount = new FileInputStream(
-						descargarConector(url, "google-service-descarga.json"));
+						descargarConector(url, "dr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json"));
 				String direccionCarpeta = "Sesion/Usuarios/" + usuario.getUsuario();
 				System.out.println("Direccion a eliminar: " + direccionCarpeta);
-				respuesta = eliminarObjetoFirebase(serviceAccount, "isae-de6da.appspot.com", direccionCarpeta);
+				respuesta = eliminarObjetoFirebase(serviceAccount, "dr-pool-eca1c.appspot.com", direccionCarpeta);
 			} catch (IOException e) {
 				System.out.println("Error al eliminar los archivos");
 			}
@@ -188,7 +188,7 @@ public class UsuarioRestController {
 
 	private StorageOptions getStrogaeOptions(FileInputStream serviceAccount) throws IOException {
 		StorageOptions storageOptions = ((StorageOptions.Builder) ((StorageOptions.Builder) StorageOptions.newBuilder()
-				.setProjectId("isae-de6da")).setCredentials((Credentials) GoogleCredentials.fromStream(serviceAccount)))
+				.setProjectId("dr-pool-eca1c")).setCredentials((Credentials) GoogleCredentials.fromStream(serviceAccount)))
 				.build();
 		return storageOptions;
 	}
@@ -279,9 +279,9 @@ public class UsuarioRestController {
 	@PostMapping("/enviar/codigo/{codigo}")
 	public String enviarCodigo(@RequestBody Usuario usuario, @PathVariable(value = "codigo") String codigo) {
 		String respuesta = "correcto";
-
+		
 		SimpleMailMessage email = new SimpleMailMessage();
-
+		
 		email.setTo(usuario.getCorreo());
 		email.setSubject("Solicitud de cambio de contraseña");
 		email.setText(

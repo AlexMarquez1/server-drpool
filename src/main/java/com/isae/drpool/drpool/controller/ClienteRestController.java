@@ -72,36 +72,43 @@ public class ClienteRestController {
 		String json = gson.toJson(cliente.get("cliente"));
 		
 		Cliente nuevoCliente = gson.fromJson(json, new TypeToken<Cliente>() {}.getType());
-		json = gson.toJson(cliente.get("imagen"));
 		
-		List<Integer> listaBites = gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType());
-		
-		//nuevoCliente.setEstatus("ACTIVO");
-		try {
-			if ( !listaBites.isEmpty() ) {
-				byte[] imagenClienteByte = new byte[listaBites.size()];
-				int i = 0;
-				for(int element : listaBites ) {
-					imagenClienteByte[i] = (byte) element;
-					i++;
-				}
-				File archivoImagen = File.createTempFile(nuevoCliente.getCliente(), ".png");
-				FileUtils.writeByteArrayToFile(archivoImagen, imagenClienteByte);
-				String urlImagen = guardarEvidencia(nuevoCliente, archivoImagen);
-				nuevoCliente.setUrllogo(urlImagen);
-				System.out.println(nuevoCliente);
-				this.cliente.save(nuevoCliente);
-				respuesta = "Cliente Guardado";
-			}else {
-				nuevoCliente.setUrllogo("");
-				System.out.println(nuevoCliente);
-				this.cliente.save(nuevoCliente);
-				respuesta = "Cliente Guardado";
-			}
+		if(!this.cliente.existsByCliente(nuevoCliente.getCliente())) {
+			json = gson.toJson(cliente.get("imagen"));
 			
-		} catch (Exception e) {
-			System.out.println(e);
+			List<Integer> listaBites = gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType());
+			
+			//nuevoCliente.setEstatus("ACTIVO");
+			try {
+				if ( !listaBites.isEmpty() ) {
+					byte[] imagenClienteByte = new byte[listaBites.size()];
+					int i = 0;
+					for(int element : listaBites ) {
+						imagenClienteByte[i] = (byte) element;
+						i++;
+					}
+					File archivoImagen = File.createTempFile(nuevoCliente.getCliente(), ".png");
+					FileUtils.writeByteArrayToFile(archivoImagen, imagenClienteByte);
+					String urlImagen = guardarEvidencia(nuevoCliente, archivoImagen);
+					nuevoCliente.setUrllogo(urlImagen);
+					System.out.println(nuevoCliente);
+					this.cliente.save(nuevoCliente);
+					respuesta = "Cliente Guardado";
+				}else {
+					nuevoCliente.setUrllogo("");
+					System.out.println(nuevoCliente);
+					this.cliente.save(nuevoCliente);
+					respuesta = "Cliente Guardado";
+				}
+				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+		}else {
+			respuesta = "El nombre del Cliente ya se encuentra registrado";
 		}
+		
+		
 		
 		return respuesta;
 	}

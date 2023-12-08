@@ -29,8 +29,14 @@ public class AlbercaRestController {
 	@CrossOrigin(origins="*")
 	@PostMapping("/nueva/alberca")
 	public String nuevaAlberca(@RequestBody Alberca alberca) {
-		String respuesta = "se guardo correctamente la alberca";
-		this.alberca.save(alberca);
+		String respuesta;
+		if(!this.alberca.existsByNombrealberca(alberca.getNombrealberca())) {
+			respuesta = "se guardo correctamente la alberca";
+			this.alberca.save(alberca);
+		}else {
+			respuesta = "El nombre de la Alberca ya se encuentra registrado";
+		}
+		
 		return respuesta;
 	}
 }

@@ -15,5 +15,7 @@ public interface ISedeDAO extends JpaRepository<Sede, Integer>{
 	
 	@Query(value = "SELECT * FROM sede WHERE idsede = :idsede",nativeQuery = true)
 	List<Alberca> obtenerSedePorId (@Param("idsede") int idsede);
+	
+	boolean existsByNombre(String nombre);
 
 }

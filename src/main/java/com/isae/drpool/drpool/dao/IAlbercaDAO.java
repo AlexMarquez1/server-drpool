@@ -15,4 +15,5 @@ public interface IAlbercaDAO extends JpaRepository<Alberca, Integer> {
 	@Query(value = "SELECT * FROM alberca WHERE idsede = :idsede",nativeQuery = true)
 	List<Alberca> obtenerAlbercaPorSede (@Param("idsede") int idsede);
 	
+	boolean existsByNombrealberca(String nombrealberca);
 }
