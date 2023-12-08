@@ -32,5 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/resources/application.properties
+server-drpool/src/main/resources/application.properties
 
