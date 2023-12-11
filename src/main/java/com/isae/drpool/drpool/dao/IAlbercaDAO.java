@@ -16,4 +16,7 @@ public interface IAlbercaDAO extends JpaRepository<Alberca, Integer> {
 	List<Alberca> obtenerAlbercaPorSede (@Param("idsede") int idsede);
 	
 	boolean existsByNombrealberca(String nombrealberca);
+	
+	List<Alberca> findBySede_Idsede(int idsede);
+	
 }

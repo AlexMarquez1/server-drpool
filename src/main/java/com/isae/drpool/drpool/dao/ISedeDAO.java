@@ -17,5 +17,7 @@ public interface ISedeDAO extends JpaRepository<Sede, Integer>{
 	List<Alberca> obtenerSedePorId (@Param("idsede") int idsede);
 	
 	boolean existsByNombre(String nombre);
+	
+	Sede findByCliente_Idcliente(int idcliente);
 
 }

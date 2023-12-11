@@ -30,10 +30,14 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.isae.drpool.drpool.dao.IAlbercaDAO;
 import com.isae.drpool.drpool.dao.IAsignacionClienteDAO;
 import com.isae.drpool.drpool.dao.IClienteDAO;
+import com.isae.drpool.drpool.dao.ISedeDAO;
+import com.isae.drpool.drpool.entity.Alberca;
 import com.isae.drpool.drpool.entity.Cliente;
 import com.isae.drpool.drpool.entity.Proyecto;
+import com.isae.drpool.drpool.entity.Sede;
 
 @RestController
 public class ClienteRestController {
@@ -43,6 +47,12 @@ public class ClienteRestController {
 	
 	@Autowired
 	private IAsignacionClienteDAO asignacionCliente;
+	
+	@Autowired
+	private ISedeDAO sede;
+	
+	@Autowired
+	private IAlbercaDAO alberca; 
 	
 	@CrossOrigin(origins="*")
 	@GetMapping("/obtener/clientes")
@@ -73,12 +83,16 @@ public class ClienteRestController {
 		
 		Cliente nuevoCliente = gson.fromJson(json, new TypeToken<Cliente>() {}.getType());
 		
-		if(!this.cliente.existsByCliente(nuevoCliente.getCliente())) {
+		
+		if(!this.cliente.existsByCliente(nuevoCliente.getCliente()) || this.cliente.existsById(nuevoCliente.getIdcliente())) {
 			json = gson.toJson(cliente.get("imagen"));
 			
 			List<Integer> listaBites = gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType());
 			
 			//nuevoCliente.setEstatus("ACTIVO");
+			if(!this.cliente.existsById(nuevoCliente.getIdcliente())) {
+				
+			}
 			try {
 				if ( !listaBites.isEmpty() ) {
 					byte[] imagenClienteByte = new byte[listaBites.size()];
@@ -108,6 +122,19 @@ public class ClienteRestController {
 			respuesta = "El nombre del Cliente ya se encuentra registrado";
 		}
 		
+		System.out.println("Antes de modificar el estado del cliente");
+		if(nuevoCliente.getEstatus().equals("INACTIVO")){
+			Sede editarSede = this.sede.findByCliente_Idcliente(nuevoCliente.getIdcliente());
+			editarSede.setEstatus("INACTIVO");
+			List<Alberca> albercas = this.alberca.findBySede_Idsede(editarSede.getIdsede());
+			
+			for(Alberca alb : albercas) {
+				alb.setEstatus("INACTIVO");
+				this.alberca.save(alb);
+			}
+			
+		}
+		
 		
 		
 		return respuesta;
@@ -120,7 +147,7 @@ public String guardarEvidencia(Cliente cliente, File file) {
 
 			URL url = new URL(
 					"https://firebasestorage.googleapis.com/v0/b/dr-pool-eca1c.appspot.com/o/service%2Fdr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json?alt=media&token=e0caf9de-daa9-479d-904c-c1f323cd5012&_gl=1*1veermv*_ga*NTM3NzEyMjI5LjE2OTU5MzIzODU.*_ga_CW55HF8NVT*MTY5NTkzMjM4NS4xLjEuMTY5NTkzNDY0NS40NS4wLjA.");
-			FileInputStream serviceAccount = new FileInputStream(descargarArchivo(url, "google-service-descarga.json"));
+			FileInputStream serviceAccount = new FileInputStream(descargarArchivo(url, "dr-pool-eca1c-firebase-adminsdk-few7f-5b04f2906c.json"));
 			String bucketName = "dr-pool-eca1c.appspot.com";
 			boolean bandera = true;
 			Storage storage = (Storage) getStrogaeOptions(serviceAccount).getService();

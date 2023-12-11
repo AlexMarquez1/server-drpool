@@ -30,7 +30,7 @@ public class AlbercaRestController {
 	@PostMapping("/nueva/alberca")
 	public String nuevaAlberca(@RequestBody Alberca alberca) {
 		String respuesta;
-		if(!this.alberca.existsByNombrealberca(alberca.getNombrealberca())) {
+		if(!this.alberca.existsByNombrealberca(alberca.getNombrealberca()) || this.alberca.existsById(alberca.getIdalberca())) {
 			respuesta = "se guardo correctamente la alberca";
 			this.alberca.save(alberca);
 		}else {

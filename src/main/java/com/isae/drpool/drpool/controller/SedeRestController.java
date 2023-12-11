@@ -38,7 +38,7 @@ public class SedeRestController {
 	@PostMapping("/nueva/sede")
 	public String nuevaSede(@RequestBody Sede sede) {
 		String respuesta;
-		if(!this.sede.existsByNombre(sede.getNombre())) {
+		if(!this.sede.existsByNombre(sede.getNombre()) || this.sede.existsById(sede.getIdsede())) {
 			respuesta = "se guardo correctamente";
 			System.out.println(sede);
 			
