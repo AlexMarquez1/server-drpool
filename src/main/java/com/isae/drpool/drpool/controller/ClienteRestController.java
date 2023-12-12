@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Blob;
@@ -90,13 +91,15 @@ public class ClienteRestController {
 			try {
 				
 				json = gson.toJson(cliente.get("imagen"));
-				
-				if(gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType()) == null) {
-					
-				}
+				System.out.println("JSON");
+				System.out.println(json);
 				
 				List<Integer> listaBites = gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType());
 				
+				if(json.equals("[]")) {
+					System.out.println("No se envia imagen");
+					listaBites = new ArrayList<>();
+				}
 				
 				if ( !listaBites.isEmpty() ) {
 					byte[] imagenClienteByte = new byte[listaBites.size()];
@@ -113,7 +116,7 @@ public class ClienteRestController {
 					this.cliente.save(nuevoCliente);
 					respuesta = "Cliente Guardado";
 				}else {
-					nuevoCliente.setUrllogo("");
+					//nuevoCliente.setUrllogo("");
 					System.out.println(nuevoCliente);
 					this.cliente.save(nuevoCliente);
 					respuesta = "Cliente Guardado";
@@ -136,6 +139,8 @@ public class ClienteRestController {
 				alb.setEstatus("INACTIVO");
 				this.alberca.save(alb);
 			}
+			
+			this.cliente.save(nuevoCliente);
 			
 		}
 		
