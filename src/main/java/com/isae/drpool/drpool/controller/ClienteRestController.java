@@ -85,15 +85,19 @@ public class ClienteRestController {
 		
 		
 		if(!this.cliente.existsByCliente(nuevoCliente.getCliente()) || this.cliente.existsById(nuevoCliente.getIdcliente())) {
-			json = gson.toJson(cliente.get("imagen"));
-			
-			List<Integer> listaBites = gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType());
 			
 			//nuevoCliente.setEstatus("ACTIVO");
-			if(!this.cliente.existsById(nuevoCliente.getIdcliente())) {
-				
-			}
 			try {
+				
+				json = gson.toJson(cliente.get("imagen"));
+				
+				if(gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType()) == null) {
+					
+				}
+				
+				List<Integer> listaBites = gson.fromJson(json, new TypeToken<List<Integer>>() {}.getType());
+				
+				
 				if ( !listaBites.isEmpty() ) {
 					byte[] imagenClienteByte = new byte[listaBites.size()];
 					int i = 0;
