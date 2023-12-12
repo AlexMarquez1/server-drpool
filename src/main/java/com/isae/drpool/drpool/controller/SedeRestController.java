@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isae.drpool.drpool.dao.IAlbercaDAO;
 import com.isae.drpool.drpool.dao.IDireccionSedeDAO;
 import com.isae.drpool.drpool.dao.ISedeDAO;
 import com.isae.drpool.drpool.dao.IUsuarioDAO;
+import com.isae.drpool.drpool.entity.Alberca;
 import com.isae.drpool.drpool.entity.Sede;
 import com.isae.drpool.drpool.entity.Usuario;
 
@@ -24,7 +26,9 @@ public class SedeRestController {
 	@Autowired
 	private IDireccionSedeDAO direccion; 
 	@Autowired
-	private IUsuarioDAO usuario; 
+	private IUsuarioDAO usuario;
+	@Autowired
+	private IAlbercaDAO alberca;
 	
 	
 	
@@ -57,6 +61,15 @@ public class SedeRestController {
 			}
 			
 			this.sede.save(sede);
+			
+			if(sede.getEstatus().equals("INACTIVO")) {
+				List<Alberca> albercas = this.alberca.findBySede_Idsede(sede.getIdsede());
+				for(Alberca alb : albercas) {
+					alb.setEstatus("INACTIVO");
+					this.alberca.save(alb);
+				}
+					
+			}
 		}else {
 			respuesta = "El nombre de la Sede ya se encuentra registrado";	
 		}
