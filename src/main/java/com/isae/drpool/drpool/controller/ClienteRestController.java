@@ -129,8 +129,7 @@ public class ClienteRestController {
 			respuesta = "El nombre del Cliente ya se encuentra registrado";
 		}
 		
-		System.out.println("Antes de modificar el estado del cliente");
-		if(nuevoCliente.getEstatus().equals("INACTIVO")){
+		/*if(nuevoCliente.getEstatus().equals("INACTIVO")){
 			Sede editarSede = this.sede.findByCliente_Idcliente(nuevoCliente.getIdcliente());
 			editarSede.setEstatus("INACTIVO");
 			List<Alberca> albercas = this.alberca.findBySede_Idsede(editarSede.getIdsede());
@@ -139,10 +138,8 @@ public class ClienteRestController {
 				alb.setEstatus("INACTIVO");
 				this.alberca.save(alb);
 			}
-			
-			this.cliente.save(nuevoCliente);
-			
-		}
+						
+		}*/
 		
 		
 		

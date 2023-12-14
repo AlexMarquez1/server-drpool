@@ -62,14 +62,15 @@ public class SedeRestController {
 			
 			this.sede.save(sede);
 			
-			if(sede.getEstatus().equals("INACTIVO")) {
+			/*if(sede.getEstatus().equals("INACTIVO")) {
 				List<Alberca> albercas = this.alberca.findBySede_Idsede(sede.getIdsede());
 				for(Alberca alb : albercas) {
 					alb.setEstatus("INACTIVO");
 					this.alberca.save(alb);
 				}
 					
-			}
+			}*/
+			
 		}else {
 			respuesta = "El nombre de la Sede ya se encuentra registrado";	
 		}
