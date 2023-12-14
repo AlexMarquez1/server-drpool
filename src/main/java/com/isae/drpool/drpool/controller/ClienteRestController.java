@@ -129,17 +129,23 @@ public class ClienteRestController {
 			respuesta = "El nombre del Cliente ya se encuentra registrado";
 		}
 		
-		/*if(nuevoCliente.getEstatus().equals("INACTIVO")){
-			Sede editarSede = this.sede.findByCliente_Idcliente(nuevoCliente.getIdcliente());
-			editarSede.setEstatus("INACTIVO");
-			List<Alberca> albercas = this.alberca.findBySede_Idsede(editarSede.getIdsede());
+		if(nuevoCliente.getEstatus().equals("INACTIVO")){
+			List<Sede> sedes = this.sede.findByCliente_Idcliente(nuevoCliente.getIdcliente());
 			
-			for(Alberca alb : albercas) {
-				alb.setEstatus("INACTIVO");
-				this.alberca.save(alb);
+			for(Sede sed : sedes) {
+				sed.setEstatus("INACTIVO");
+				this.sede.save(sed);
+				
+				List<Alberca> albercas = this.alberca.findBySede_Idsede(sed.getIdsede());
+				for(Alberca alb : albercas) {
+					alb.setEstatus("INACTIVO");
+					this.alberca.save(alb);
+				}
+					
 			}
-						
-		}*/
+			
+					
+		}
 		
 		
 		

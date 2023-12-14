@@ -18,6 +18,6 @@ public interface ISedeDAO extends JpaRepository<Sede, Integer>{
 	
 	boolean existsByNombre(String nombre);
 	
-	Sede findByCliente_Idcliente(int idcliente);
+	List<Sede> findByCliente_Idcliente(int idcliente);
 
 }
