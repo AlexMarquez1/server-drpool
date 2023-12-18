@@ -18,4 +18,6 @@ public interface IProyectoAlbercaDAO extends JpaRepository<ProyectoAlberca, Inte
 	@Query(value = "DELETE FROM proyectosede WHERE idproyecto = :idproyecto", nativeQuery = true)
 	void eliminarSedePorProyecto(@Param("idproyecto") int idproyecto);
 
+	boolean existsByNombreproyectoalberca(String nombreproyectoalberca);
+
 }
