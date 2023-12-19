@@ -129,7 +129,7 @@ public class ClienteRestController {
 			respuesta = "El nombre del Cliente ya se encuentra registrado";
 		}
 		
-		if(nuevoCliente.getEstatus().equals("INACTIVO")){
+		/*if(nuevoCliente.getEstatus().equals("INACTIVO")){
 			List<Sede> sedes = this.sede.findByCliente_Idcliente(nuevoCliente.getIdcliente());
 			
 			for(Sede sed : sedes) {
@@ -142,10 +142,8 @@ public class ClienteRestController {
 					this.alberca.save(alb);
 				}
 					
-			}
-			
-					
-		}
+			}		
+		}*/
 		
 		
 		
