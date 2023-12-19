@@ -96,7 +96,8 @@ public class ProyectoAlbercaRestController {
 	public String nuevoProyectoAlberca(@RequestBody ProyectoAlberca proyectoAlberca) {
 		String respuesta = "se guardo correctamente el proyecto";
 
-		List<Alberca> listaAlbercas = new ArrayList<>();
+		if(!this.proyectoalberca.existsByNombreproyectoalberca(proyectoAlberca.getNombreproyectoalberca())){
+			List<Alberca> listaAlbercas = new ArrayList<>();
 		List<Equipobomba> listaEquiposBomba = new ArrayList<>();
 		List<Equipocalentamiento> listaEquiposCalentamiento = new ArrayList<>();
 		List<Equipocontrolador> listaEquiposControlador = new ArrayList<>();
@@ -180,7 +181,7 @@ public class ProyectoAlbercaRestController {
 				for (Proyecto proyectoNuevo : listaProyectosAGenerarBitacora) {
 					List<Camposproyecto> camposBitacoraDiaria = new ArrayList<Camposproyecto>();
 					Proyecto proyecto = this.proyecto.save(proyectoNuevo);
-					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoOperador.get(proyecto.getProyecto()), proyecto));
+					//this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoOperador.get(proyecto.getProyecto()), proyecto));
 					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoCoordinador.get(proyecto.getProyecto()), proyecto));
 					camposBitacoraDiaria = bitacoraDiaria(proyecto, listaEquiposCalentamiento, listaEquiposControlador, listaEquiposDosificador, listaEquiposBomba, listaEquiposFiltrado, proyectoNuevo.getAlberca().getIdalberca());
 					//System.out.println("Campos de bitacora diaria: " + camposBitacoraDiaria);
@@ -208,6 +209,11 @@ public class ProyectoAlbercaRestController {
 			}
 
 		}
+
+		}else{
+			respuesta = "El nombre de proyecto ya se encuentra registrado";
+		}
+		
 		return respuesta;
 	}
 	
