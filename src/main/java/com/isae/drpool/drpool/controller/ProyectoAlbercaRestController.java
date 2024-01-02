@@ -181,7 +181,7 @@ public class ProyectoAlbercaRestController {
 				for (Proyecto proyectoNuevo : listaProyectosAGenerarBitacora) {
 					List<Camposproyecto> camposBitacoraDiaria = new ArrayList<Camposproyecto>();
 					Proyecto proyecto = this.proyecto.save(proyectoNuevo);
-					//this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoOperador.get(proyecto.getProyecto()), proyecto));
+					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoOperador.get(proyecto.getProyecto()), proyecto));
 					this.asignacionProyecto.save(new Asignacionproyecto(0, proyectoCoordinador.get(proyecto.getProyecto()), proyecto));
 					camposBitacoraDiaria = bitacoraDiaria(proyecto, listaEquiposCalentamiento, listaEquiposControlador, listaEquiposDosificador, listaEquiposBomba, listaEquiposFiltrado, proyectoNuevo.getAlberca().getIdalberca());
 					//System.out.println("Campos de bitacora diaria: " + camposBitacoraDiaria);

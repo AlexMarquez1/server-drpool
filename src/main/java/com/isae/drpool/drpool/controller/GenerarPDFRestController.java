@@ -1456,8 +1456,8 @@ public class GenerarPDFRestController {
 					Storage storage = (Storage) getStrogaeOptions(serviceAccountt).getService();
 
 					if (reportFile != null) {
-						String nombre = "REPORTEMENSUAL";
-						String objectName = "Proyectos/" + sede.getNombre() + "-" + alberca.getNombrealberca()  + "/Evidencias/" + nombre;
+						String nombre = listReport.get("FOLIO").toString();
+						String objectName = "Proyectos/" + sede.getNombre() + "-" + alberca.getNombrealberca() + nombre;
 
 						Map<String, String> map = new HashMap<>();
 						map.put("firebaseStorageDownloadTokens", nombre.replace(" ", "") + ".pdf");
